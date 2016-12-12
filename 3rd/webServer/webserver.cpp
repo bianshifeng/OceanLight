@@ -5,6 +5,8 @@
 
 #include "webrequestrouter.h"
 #include "webglobaltool.h"
+#include "httplistener.h"
+using namespace stefanfrings;
 
 WebServer::WebServer(QObject *parent) : QObject(parent)
 {

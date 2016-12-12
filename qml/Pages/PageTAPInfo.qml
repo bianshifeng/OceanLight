@@ -13,30 +13,30 @@ Item{
     signal selectedItem(var itemInfo)
     ListModel{
         id: id_listModel
-        ListElement{
-            itemName:"金银花"
-            itemId:"1001"
-            itemIndex:1
-            itemType:"金"
-        }
-        ListElement{
-            itemName:"金银花"
-            itemId:"1001"
-            itemIndex:1
-            itemType:"木"
-        }
-        ListElement{
-            itemName:"金银花"
-            itemId:"1001"
-            itemIndex:1
-            itemType:"水"
-        }
-        ListElement{
-            itemName:"金银花"
-            itemId:"1001"
-            itemIndex:1
-            itemType:"土"
-        }
+//        ListElement{
+//            itemName:"金银花"
+//            itemId:"1001"
+//            itemIndex:1
+//            itemType:"金"
+//        }
+//        ListElement{
+//            itemName:"金银花"
+//            itemId:"1001"
+//            itemIndex:1
+//            itemType:"木"
+//        }
+//        ListElement{
+//            itemName:"金银花"
+//            itemId:"1001"
+//            itemIndex:1
+//            itemType:"水"
+//        }
+//        ListElement{
+//            itemName:"金银花"
+//            itemId:"1001"
+//            itemIndex:1
+//            itemType:"土"
+//        }
     }
 
     Flow{

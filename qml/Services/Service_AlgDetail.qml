@@ -1,6 +1,6 @@
 import QtQuick 2.2
 import XmsManagerEnginio_src 1.0
-import "../Components/Constants/UIConstants.js" as UI
+import "../Controls/UIConstants.js" as UI
 
 ServiceBaseDetail{
     id: id_root
@@ -27,8 +27,8 @@ ServiceBaseDetail{
 
     signal emitAlgParameterLoaded(var strData)
 
-    AlgorithmManager{
-        id: id_algManager
+    Item{
+        id: id_algManager //AlgorithmManager
         property int deviceId: id_root.deviceId
         property int algType: id_root.algType
         property int videoWidth: 100

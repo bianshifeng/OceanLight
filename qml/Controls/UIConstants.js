@@ -2128,6 +2128,9 @@ var app_url_logo_min = "qrc:/image/src/qml/Images/Pages/TopBarCom/mf_logo.png"
 var app_color_base_page = "#009CE4"
 
 var app_scrollBar_width = 15
+var app_color_page_window_backcolor = "#2b3239"
 
+var app_color_page_child_backcolor ="#4c5258"
+var app_color_page_child_forecolor =COLOR_BASE_WHITE
 
 

@@ -7,7 +7,9 @@ import "../Fonts"
 ControlCard{
     id: id_root
     property int size:14
-    property color foreColor:"white"
+    property int sizeIcon:16
+    property int hideTextWidth:120
+    property color foreColor:UI.COLOR_BASE_WHITE_LIGHT
     property string text:""
     property string icon:""
     property string toolTip:""
@@ -23,12 +25,13 @@ ControlCard{
             spacing: 10
             XmsIcon{
                 text: id_root.icon
-                size: 16
+                size: id_root.sizeIcon
                 color:id_root.foreColor
                 anchors.verticalCenter: parent.verticalCenter
                 tooltip: id_root.toolTip
             }
             XmsText{
+                visible: id_root.width >=id_root.hideTextWidth ? true:false
                 text: id_root.text
                 anchors.verticalCenter: parent.verticalCenter
                 color:id_root.foreColor
@@ -37,10 +40,20 @@ ControlCard{
             }
         }
 
-
-        MouseArea{
+        XmsMouseArea{
             anchors.fill: parent
-            onClicked: id_root.clicked()
+            hoverEnabled:false
+
+            onClicked: {
+                if(isCheckedBt){
+                    id_root.checked = true
+                }else{
+                    id_root.checked = false
+                }
+
+
+                id_root.clicked()
+            }
         }
     }
 }

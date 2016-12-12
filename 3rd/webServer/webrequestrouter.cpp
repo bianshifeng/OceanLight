@@ -2,6 +2,7 @@
 
 #include "controller/dumpcontroller.h"
 #include "controller/mainpage_templatecontroller.h"
+#include "controller/controllerAlgconfig.h"
 
 #include "filelogger.h"
 #include "staticfilecontroller.h"
@@ -27,6 +28,11 @@ void WebRequestRouter::service(HttpRequest &request, HttpResponse &response)
     qDebug("WebRequestRouter: path=%s",t_path.data());
     QByteArray t_main_tip = "---*main+++page*---";
     QByteArray t_path_main = t_path.append(t_main_tip);
+
+    if(t_path.startsWith("/algconfig")){
+        ControllerAlgconfig().service(request,response);
+        return;
+    }
 
     if(t_path.startsWith("/")&&t_path_main.startsWith("/"+t_main_tip))
     {

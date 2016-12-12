@@ -38,9 +38,14 @@
 **
 ****************************************************************************/
 #include <QApplication>
+#include <QGuiApplication>
+#include <QOpenGLContext>
 #include <QQuickView>
-#include <QQmlEngine>
+#include <QQuickItem>
 #include <QQmlContext>
+#include <QQmlEngine>
+#include <QtQml>
+
 #include <QScreen>
 #include <QDebug>
 #include <QMessageBox>
@@ -48,30 +53,74 @@
 #include <QQmlApplicationEngine>
 #include <QtQml>
 #include "sqleventmodel.h"
-#include "base/websystetraymenu.h"
+#include "websystetraymenu.h"
+#include "touchsettings.h"
+
+#include "algs/algcpc.h"
+#include "ipcs/xmsipcbase.h"
+
+
+#include "webserver.h"
 
 
 int main(int argc, char *argv[])
 {
 
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
+    qmlRegisterType<AlgCPC>("Xms.Alg", 1, 0, "AlgCPC");
+    qmlRegisterType<XmsIpcBase>("Xms.Ipc", 1, 0, "IpcRstp");
 
+
+
+
+//    QSurfaceFormat format;
+//    if (QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGL) {
+//        format.setVersion(3, 2);
+//        format.setProfile(QSurfaceFormat::CoreProfile);
+//    }
+//    format.setDepthBufferSize(24);
+//    format.setStencilBufferSize(8);
+
+
+    QSettings extraSettings;
+    extraSettings.beginGroup("CPP");
+    extraSettings.setValue("cppSettings", "this is cpp settings");
+    extraSettings.endGroup();
+
+
+
+    //init view
     QQuickView view;
-    view.setResizeMode(QQuickView::SizeRootObjectToView);
-    view.setColor(Qt::transparent);
-    //view.setFlags(Qt::FramelessWindowHint);
-    //view.setModality(Qt::WindowModal);
-    //view.engine()->rootContext()->setContextProperty("g_sebServer",webServer);
+//    view.setFormat(format);
+    view.create();
+
+    TouchSettings touchSettings;
+    view.rootContext()->setContextProperty("touchSettings", &touchSettings);
+
+    QApplication::connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
+
+    QApplication::connect(view.rootContext(),SIGNAL(showFullScreen()),&view,SLOT(showFullScreen()));
     view.setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-    view.show();
 
-    QObject *webServer = new QObject;
-    WebSysteTrayMenu *m_trayMenu = new WebSysteTrayMenu(webServer);
+    view.setResizeMode(QQuickView::SizeRootObjectToView);
+    view.setFlags(Qt::WindowFullscreenButtonHint);
+    //view.setMinimumWidth(516);
+    view.setPosition(200,100);
+    view.showNormal();
 
-    m_trayMenu->show();
 
-    qApp->connect(m_trayMenu,SIGNAL(sigShowView()),&view,SLOT(showNormal()));
-    qApp->connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
+    //view.setFlags(Qt::CustomizeWindowHint|Qt::WindowMinimizeButtonHint);
+    //view.setModality(Qt::WindowModal);
+    //QObject *webServer = new QObject;
+    //view.engine()->rootContext()->setContextProperty("g_sebServer",webServer);
 
+//    QObject *webServer = new QObject;
+//    WebSysteTrayMenu *m_trayMenu = new WebSysteTrayMenu(webServer);
+//    m_trayMenu->show();
+//    qApp->connect(m_trayMenu,SIGNAL(sigShowView()),&view,SLOT(showNormal()));
+//    qApp->connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
+
+
+    WebServer webServer;
     return app.exec();
 }

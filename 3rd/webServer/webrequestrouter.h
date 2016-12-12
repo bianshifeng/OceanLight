@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include "httprequesthandler.h"
-
+using namespace stefanfrings;
 class WebRequestRouter : public HttpRequestHandler
 {
     Q_OBJECT

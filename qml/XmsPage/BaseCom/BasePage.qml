@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.3
 Flickable {
     id: flickable
     ScrollIndicator.vertical: ScrollIndicator { }
-    contentHeight: pane.height
+    contentHeight: id_container.height
 
     Rectangle{
         anchors.fill: parent
@@ -19,6 +19,7 @@ Flickable {
 
     GridLayout{
 
+        id: id_container
         columns: 3
         anchors.left: parent.left
         anchors.right: parent.right

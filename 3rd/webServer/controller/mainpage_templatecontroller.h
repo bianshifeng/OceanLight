@@ -1,7 +1,7 @@
 #ifndef MAINPAGE_TEMPLATECONTROLLER_H
 #define MAINPAGE_TEMPLATECONTROLLER_H
 #include "httprequesthandler.h"
-
+using namespace stefanfrings;
 class MainPage_TemplateController : public HttpRequestHandler
 {
     Q_OBJECT

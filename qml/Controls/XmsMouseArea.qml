@@ -1,5 +1,6 @@
-import QtQuick 2.0
+import QtQuick 2.7
 
-Item {
-
+MouseArea {
+    id: id_root
+    hoverEnabled: touchSettings.isHoverEnabled()
 }

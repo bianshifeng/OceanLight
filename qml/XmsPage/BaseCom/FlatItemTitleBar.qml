@@ -1,5 +1,4 @@
 import QtQuick 2.7
-
 import "../../Controls"
 import "../../Fonts"
 import "../../Fonts/XmsIconFont.js" as FontName
@@ -37,10 +36,12 @@ Item{
                 id: id_title_text
                 text:qsTr("Camera1")
                 font.bold: true
+                size: 12
                 color:id_root.fontColor
             }
             XmsText{
                 id: id_detail_text
+                size: 10
                 text:qsTr("sdsfsfsfdddddddddddddddddd")
                 color:id_root.fontColor
             }

@@ -2,8 +2,9 @@
 #define ALGCPC_H
 
 #include <QObject>
+#include "xmsalgbase.h"
 
-class AlgCPC : public QObject
+class AlgCPC : public XmsAlgBase
 {
     Q_OBJECT
 public:

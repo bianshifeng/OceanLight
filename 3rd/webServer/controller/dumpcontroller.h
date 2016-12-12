@@ -1,7 +1,7 @@
 #ifndef DUMPCONTROLLER_H
 #define DUMPCONTROLLER_H
 #include "httpconnectionhandler.h"
-
+using namespace stefanfrings;
 class DumpController : public HttpRequestHandler
 {
     Q_OBJECT

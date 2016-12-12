@@ -38,238 +38,240 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Layouts 1.1
+import QtQuick 2.7
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.3
+import Qt.labs.settings 1.0
+import Qt.labs.folderlistmodel 2.1
+import QtMultimedia 5.5
 import QtGraphicalEffects 1.0
 import "./Theme"
 import "./Pages"
+import "./XmsPage/BaseCom"
 import "./Controls"
 import "./Controls/UIConstants.js" as UI
 import "./Fonts"
 import "./Fonts/XmsIconFont.js" as FontName
 import "./Models"
 import "./UserControls"
+import "./XmsPage/ChildPage"
 
+AppWindow {
+    id: id_app_window
+    implicitHeight: 600
+    implicitWidth: implicitHeight * UI.const_gold_mean
+    property bool isHoverEnabled: false
 
+    signal showFullScreen()
 
-Item {
-    visible: true
-    width: 940
-    height: 800
-
-
-
-    Rectangle{
-        id: id_back
-        anchors.fill: parent
-        opacity:1
-        color:UI.COLOR_BASE_BLACK_BASE
-    }
-//    PageImageTheme{
-//        anchors.fill: parent
-//    }
-
-    Text {
-        id: id_info
-        visible: id_model.count >0 ? false : true
-        text: qsTr("无数据")
-        anchors.centerIn: parent
-        z:2
-    }
-
-
-
-    SystemPalette{
-        id: id_sysStyle
-    }
-
-    ListModel{
-        id: id_model
-
-        ListElement{
-            actorname:"hello"
-            breast:"1"
-            hip:"12"
-            waist:"12"
+    TopbarComponent{
+        id: id_topBar
+        z:100
+        XmsText{
+            text: "OCEAN"
+            size: 16
+            color:UI.COLOR_BASE_WHITE
+            font.bold: true
+            opacity: 0.8
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 20
         }
+        onEmitFullScreen: showFullScreen()
+    }
 
-        function getData(){
-            var getUrl = "http://localhost:8080/list"
-            var http = new XMLHttpRequest()
-            http.onreadystatechange = function(){
-                if(http.readyState == 4 ){ //4 loaded
-                    if(http.status == 200){//200 ok
-                        var xx = http.responseText
-                        console.log(xx)
+    Item{
+        id: id_content
+        anchors.top: id_topBar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        clip: true
+        state: "showMainpage"
 
-                        id_model.createListModel(xx)
-                    }
+        Item{
+            id:id_footBar
+            height: 34
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            Row{
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                spacing: 1
 
-                }else{
-                    id_info.text = "无法连接"
-
+                MainMenuButton{
+                    width: 120
+                    height: 34
+                    size: 12
+                    sizeIcon: 14
+                    icon: FontName.ICON_BASE_CHART
+                    isShowLine: true
+                    text: qsTr("算法报价")
+                    foreColor: UI.COLOR_BASE_WHITE_BASE
+                    hoverColor: UI.COLOR_BASE_ORANGE
+                }
+                MainMenuButton{
+                    width: 120
+                    height: 34
+                    size: 12
+                    sizeIcon: 14
+                    icon: FontName.ICON_ACTION_DETAIL
+                    isShowLine: true
+                    text: qsTr("使用文档")
+                    foreColor: UI.COLOR_BASE_WHITE_BASE
+                    hoverColor: UI.COLOR_BASE_ORANGE
                 }
             }
 
-            http.open("get",getUrl,true)
-
-            http.send()
-
+            XmsText{
+                text: qsTr("Impower")
+                anchors.right: parent.right
+                anchors.rightMargin: 5
+                color: UI.COLOR_BASE_WHITE_BASE
+                size: 12
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
 
-        function createListModel(strJsonData){
+        Item{
+            id: id_mainPage
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: id_footBar.top
+            DropShadow {
+                anchors.fill: id_backImage
+                horizontalOffset: 0
+                verticalOffset: 3
+                radius: 8.0
+                samples: 17
+                color: "#80000000"
+                source: id_backImage
+            }
+            Image {
+                id: id_backImage
+                fillMode: Image.PreserveAspectCrop
+                source: "qrc:/images/images/mainpage/albumcover.png"
+                anchors.fill: parent
+            }
 
-            id_model.clear()
-            var t_array =[]
-            t_array = JSON.parse(strJsonData)
-            id_model.append(t_array)
+            PageImageTheme{
+                id: id_content_page
+                anchors.fill: parent
+                onCurrentInfoChanged: {
+                    id_info_txt.text = currentInfo
+                }
 
+                DropShadow {
+                    anchors.fill: id_title_txt
+                    horizontalOffset: 0
+                    verticalOffset: 3
+                    radius: 8.0
+                    samples: 17
+                    color: "#80000000"
+                    source: id_title_txt
+                }
 
-        }
-    }
+                XmsText{
+                    id: id_title_txt
+                    text: "CPC"
+                    size: 50
+                    color:UI.COLOR_BASE_WHITE
+                    font.bold: true
+                    anchors.left: parent.left
+                    anchors.leftMargin: 30
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 60
+                    XmsText{
+                        id: id_info_txt
+                        text: "The alg is for people collection for the ai computer."
+                        color: parent.color
+                        anchors.left: parent.left
+                        anchors.top: parent.bottom
+                        anchors.topMargin: 10
+                    }
+                }
 
-
-
-    Component.onCompleted: id_model.getData()
-
-    Item{
-        id: id_app_bar
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        height:30
-    }
-
-    Column{
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: id_app_bar.bottom
-
-        PageTAPManager{
-            id: id_tap_container
+            }
         }
 
         Column{
-            id: id_herb_ctr
-            Rectangle{
-                width: 200
-                height: 30
-                border.color: "black"
-                border.width: 2
-                TextInput{
-                    id: id_herbal_input
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.margins: 4
-                    anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 24
-                    onActiveFocusOnPressChanged: {
-                        id_herbal_input.text = "sdfsdf"
-                    }
-                    onTextChanged: {
-                        var searchObj ={
+            id: id_child_page
+            clip: true
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: parent.height
+            Item{
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: id_content.height -40
+                Rectangle{
+                    anchors.fill: parent
+                    color:"#4c5258"
+                    opacity: 0.6
+                }
 
-                        }
-
-                        id_herb_search.reSearchData(searchObj)
-                        id_current_herbs.name = text
-                    }
-                    Model_Herbs{
-                        id: id_current_herbs
-                        name: id_herbal_input.text
-                    }
+                ChildPageManager{
+                    id: id_childPageManager
+                    anchors.fill: parent
                 }
             }
-
-            function setHerbModel(modelInfo){
-                id_current_herbs.setListThumb(modelInfo)
-                id_herbal_input.text = id_current_herbs.name
-            }
-
-            Row{
-                ListModel{
-                    id: id_listModel
-                    ListElement{
-                        numValue: 20
-                        numDanwei:"g"
-                        numValueResult:"黄元御介意重用"
+            NavbarComponent{
+                onEmitShowPage: {
+                    id_childPageManager.replace(pageSource)
+                }
+                onCurrentMenuChanged: {
+                    if(currentMenu === "mainPage"){
+                        id_content.state = "showMainpage"
+                    }else{
+                        id_content.state = "showChildPage"
                     }
                 }
-                Repeater{
-                    id: id_number_repeater
-                    model:id_listModel
-                    Button{
-                        width: 80
-                        height: 20
-                        tooltip: numValueResult
-                        text:numValue + numDanwei
-                    }
-                }
-            }
-            Button{
-                width: 100
-                height: 20
-                text:"save"
-                onClicked: id_tap_container.addHerb(id_current_herbs.getListThumb())
             }
 
         }
 
-        PageHerbSearch{
-            id: id_herb_search
-            onSelectedItem: {
-                id_herb_ctr.setHerbModel(itemInfo)
-            }
 
-        }
+        states: [
+            State {
+                name: "showMainpage"
+                PropertyChanges {
+                    target: id_child_page
+                    y:-(id_content.height -40)
+                }
+                PropertyChanges{
+                    target: id_content_page
+                    visible:true
+                }
+            },
+            State {
+                name: "showChildPage"
+                PropertyChanges {
+                    target: id_child_page
+                    y:0
+                }
+                PropertyChanges{
+                    target: id_content_page
+                    visible:false
+                }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                      NumberAnimation {
+                          target: id_child_page
+                          properties: "x,y";
+                          easing.type: Easing.InOutQuad }
+                  }
+        ]
 
 
 
     }
-    ListView{
-        id: id_view
-        model: id_model
-        visible: false
 
-        delegate: Rectangle{
-            width: 200
-            height: 40
-            Column{
-
-                Text {
-                    text:  actorname
-                }
-                Text {
-                    text: "B:" + breast + " H:" +hip+ " W:" +waist
-                }
-                anchors.centerIn: parent
-                spacing: 4
-
-
-                Text {
-                    text: "sdfds"
-                }
-            }
-
-            color:id_sysStyle.button
-            border.width: 1
-            border.color: "black"
-        }
+    Component.onCompleted: {
+        isHoverEnabled = touchSettings.isHoverEnabled()
     }
-
-    Button{
-        text:"getData"
-        z:1000
-        anchors.bottom: parent.bottom
-
-        onClicked: {
-            id_info.text = "加载数据"
-            id_model.clear()
-            id_model.getData()
-        }
-
-    }
-
-
 }

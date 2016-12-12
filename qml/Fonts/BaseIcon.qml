@@ -18,6 +18,7 @@ Text{
     signal emitExited()
     signal emitEntered()
     font.pixelSize: size
+    elide:Text.ElideRight
     MouseArea {
         id: id_mouseArea
 //        property bool keyPressed: false

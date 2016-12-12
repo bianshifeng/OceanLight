@@ -8,30 +8,31 @@ Item {
     property string stateHover:"hover"
     property string stateSelect:"select"
     property string stateDisable:"disable"
-
-
+    property string stateChecked:"checked"
     property color normalColor:"white"
     property color hoverColor:"white"
     property color selectColor:"white"
+
+    property bool isCheckedBt:false
     property color disableColor:UI.COLOR_BASE_GRAY_DARK
-
     property bool isHovered: id_root.state === stateHover ? true : false
-
-
     property bool checked: false
-    onCheckedChanged: {
-        if(checked){
-            id_back_select.opacity = 0.3
-        }else{
-            id_back_select.opacity = 0
-        }
-    }
-
     property ExclusiveGroup exclusiveGroup: null
     onExclusiveGroupChanged: {
         if (exclusiveGroup)
             exclusiveGroup.bindCheckable(id_root)
     }
+
+    onCheckedChanged: {
+        if(checked){
+            id_root.state = id_root.stateChecked
+        }else{
+            id_root.state = id_root.stateNormal
+        }
+
+    }
+
+
 
     implicitHeight: 80
     implicitWidth: 240
@@ -64,13 +65,20 @@ Item {
         }
     }
 
-    MouseArea{
+    XmsMouseArea{
         anchors.fill: parent
-        hoverEnabled: true
-        onEntered:id_root.state = id_root.stateHover
-        onExited: id_root.state = id_root.stateNormal
-        onPressed: id_root.state = id_root.stateSelect
-        onReleased: id_root.state = id_root.stateHover
+        onEntered:{
+            if(!id_root.checked)id_root.state = id_root.stateHover
+        }
+        onExited: {
+            if(!id_root.checked)id_root.state = id_root.stateNormal
+        }
+        onPressed: {
+            if(!id_root.checked)id_root.state = id_root.stateSelect
+        }
+        onReleased: {
+            if(!id_root.checked)id_root.state = id_root.stateHover
+        }
         Item{
             id: id_container
             anchors.fill: parent
@@ -93,7 +101,7 @@ Item {
 
             PropertyChanges {
                 target: id_back_select
-                opacity: 0.5
+                opacity: 0.3
             }
         },
         State {
@@ -103,7 +111,16 @@ Item {
                 target: id_back_disable
                 opacity: 0.5
             }
+        },
+        State {
+            name: id_root.stateChecked
+
+            PropertyChanges {
+                target: id_back_select
+                opacity: 0.5
+            }
         }
+
     ]
     transitions: Transition {
          NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad }

@@ -2,7 +2,9 @@
 #define XMSIPCBASE_H
 
 #include <QObject>
+#include <QList>
 
+class XmsAlgBase;
 class XmsIpcBase : public QObject
 {
     Q_OBJECT
@@ -12,6 +14,7 @@ public:
 signals:
 
 public slots:
+
 };
 
 #endif // XMSIPCBASE_H
