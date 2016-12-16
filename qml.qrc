@@ -49,6 +49,10 @@
         <file>qml/XmsPage/BaseCom/BasePage.qml</file>
         <file>qml/Utils/CanvasCtrl_Clock.js</file>
         <file>qml/XmsPage/BaseCom/FlatItemTitleBar.qml</file>
+        <file>qml/XmsPage/ChildPage/AlgPage/CPCPage/DrawAlgParamCom.qml</file>
+        <file>qml/XmsPage/BaseCom/FlatLevelSelectCtrl.qml</file>
+        <file>qml/XmsPage/BaseCom/QtPlayer.qml</file>
+        <file>qml/XmsPage/BaseCom/AvPlayer.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/branding.ico</file>

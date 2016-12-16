@@ -1,4 +1,4 @@
-import QtQuick 2.7
+﻿import QtQuick 2.7
 import "../../Controls"
 import "../../Fonts"
 import "../../Fonts/XmsIconFont.js" as FontName
@@ -16,7 +16,7 @@ Item{
     ControlCard {
         id: id_main_body
         anchors.left: parent.left
-        anchors.right:id_title_bt.visible ? id_title_bt.left:parent.right
+        anchors.right:parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
 
@@ -47,16 +47,6 @@ Item{
             }
         }
     }
-    FlatButton{
-        id: id_title_bt
-        width: 70
-        hideTextWidth: 70
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        icon:FontName.ICON_ACTION_SPY
-        normalColor: id_main_body.normalColor
-        text: qsTr("查看")
-    }
+
 }
 

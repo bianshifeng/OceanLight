@@ -1,7 +1,8 @@
 #ifndef CONTROLLER_ALGCONFIG_H
 #define CONTROLLER_ALGCONFIG_H
-#include "httpconnectionhandler.h"
-#include <QObject>
+#include "httprequesthandler.h"
+#include "httprequest.h"
+#include "httpresponse.h"
 using namespace stefanfrings;
 class ControllerAlgconfig : public HttpRequestHandler
 {
@@ -17,6 +18,8 @@ public slots:
     // HttpRequestHandler interface
 public:
     void service(HttpRequest &request, HttpResponse &response);
+
+
 };
 
 #endif // CONTROLLER_ALGCONFIG_H

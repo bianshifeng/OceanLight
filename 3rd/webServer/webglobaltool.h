@@ -5,6 +5,7 @@
 #include "staticfilecontroller.h"
 #include "filelogger.h"
 #include "httplistener.h"
+#include "aidevicebase.h"
 using namespace stefanfrings;
 //在一个大型项目中，首先看看那些类用于全局使用，比如公用的一些，资源类，队列类，
 //将这些类直接放入全局变量文件中，后期使用直接调运即可
@@ -23,6 +24,8 @@ extern StaticFileController* g_staticFileController;
 extern FileLogger* g_logger;
 
 extern HttpListener* g_httpServer;
+
+extern AiDeviceBase* g_AIDevice;
 
 
 #endif // WEBGLOBALTOOL_H

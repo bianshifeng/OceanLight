@@ -15,7 +15,9 @@ HEADERS += \
     $$PWD/webserver.h \
     $$PWD/controller/dumpcontroller.h \
     $$PWD/controller/mainpage_templatecontroller.h \
-    $$PWD/controller/controllerAlgconfig.h
+    $$PWD/controller/controllerAlgconfig.h \
+    $$PWD/controller/fileuploadcontroller.h \
+    $$PWD/controller/controlleripcconfig.h
 
 SOURCES += \
     $$PWD/webglobaltool.cpp \
@@ -23,17 +25,9 @@ SOURCES += \
     $$PWD/webserver.cpp \
     $$PWD/controller/dumpcontroller.cpp \
     $$PWD/controller/mainpage_templatecontroller.cpp \
-    $$PWD/controller/controllerAlgconfig.cpp
-
-
-
-
-
-
-
-
-
-
+    $$PWD/controller/controllerAlgconfig.cpp \
+    $$PWD/controller/fileuploadcontroller.cpp \
+    $$PWD/controller/controlleripcconfig.cpp
 
 
 

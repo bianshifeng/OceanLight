@@ -24,6 +24,10 @@ WebRequestRouter::~WebRequestRouter()
 
 void WebRequestRouter::service(HttpRequest &request, HttpResponse &response)
 {
+
+
+
+
     QByteArray t_path = request.getPath();
     qDebug("WebRequestRouter: path=%s",t_path.data());
     QByteArray t_main_tip = "---*main+++page*---";
@@ -62,7 +66,6 @@ void WebRequestRouter::service(HttpRequest &request, HttpResponse &response)
     {
         g_logger->clear();
     }
-
 
 
 

@@ -1,7 +1,9 @@
-#include "controllerAlgconfig.h"
+﻿#include "controllerAlgconfig.h"
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QJsonDocument>
+#include "webglobaltool.h"
+#include "aidevicebase.h"
 
 ControllerAlgconfig::ControllerAlgconfig()
 {
@@ -10,20 +12,31 @@ ControllerAlgconfig::ControllerAlgconfig()
 
 void ControllerAlgconfig::service(HttpRequest &request, HttpResponse &response)
 {
-    Q_UNUSED(&request);
 
-    QJsonObject json;
-    json.insert("algId", QString("bianshifeng"));
-    json.insert("algName", QString("bianziluo"));
-    json.insert("algParams", QString("[1111111111]"));
-    json.insert("algType", QString("cpc"));
-    json.insert("algIpc", QString("camera001"));
-    json.insert("algActiveStatus", true);
+    if(g_AIDevice){
+        if (request.getParameter("action")=="getAlg")
+        {
+            g_AIDevice->updateAlgConfig();
+            QByteArray body = g_AIDevice->algConfig().toLatin1();
+            response.write(body,true);
+        }
 
+        if(request.getParameter("action")=="setAlg"){
+            g_AIDevice->setAlgConfig(QString(request.getParameter("algConfig")));
+            response.write(g_AIDevice->algConfig().toLatin1(),true);
 
-    QJsonDocument document;
-    document.setObject(json);
-    QByteArray body = document.toJson(QJsonDocument::Compact);
-    //QString json_str(byte_array);
-    response.write(body,true);
+        }
+        if(request.getParameter("action")=="startAlg"){
+            g_AIDevice->setIsRuningAlg(true);
+            response.write("startAlg",true);
+
+        }
+        if(request.getParameter("action") == "stopAlg"){
+            g_AIDevice->setIsRuningAlg(false);
+            response.write("stopAlg",true);
+        }
+
+    }else{
+        response.write("unline",true);
+    }
 }

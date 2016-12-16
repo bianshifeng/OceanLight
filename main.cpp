@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
@@ -103,9 +103,9 @@ int main(int argc, char *argv[])
     view.setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     view.setResizeMode(QQuickView::SizeRootObjectToView);
-    view.setFlags(Qt::WindowFullscreenButtonHint);
+    //view.setFlags(Qt::WindowFullscreenButtonHint);
     //view.setMinimumWidth(516);
-    view.setPosition(200,100);
+    //view.setPosition(200,100);
     view.showNormal();
 
 
@@ -119,7 +119,6 @@ int main(int argc, char *argv[])
 //    m_trayMenu->show();
 //    qApp->connect(m_trayMenu,SIGNAL(sigShowView()),&view,SLOT(showNormal()));
 //    qApp->connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
-
 
     WebServer webServer;
     return app.exec();

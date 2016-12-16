@@ -22,6 +22,7 @@ RCC_DIR  += temp/bulid_rcc_dir
 
 #include(common/common.pri)
 include(3rd/webServer/webServer.pri)
+include(3rd/AiDevice/aidevice.pri)
 include(src/src.pri)
 
 RESOURCES += \

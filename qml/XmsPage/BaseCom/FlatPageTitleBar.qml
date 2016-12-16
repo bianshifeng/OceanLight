@@ -1,4 +1,4 @@
-import QtQuick 2.7
+﻿import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.1
 import "../../Controls"
@@ -42,32 +42,6 @@ Item {
         }
 
     }
-
-    FlatButton{
-        id: id_bt_more
-        width: 70
-        hideTextWidth: 60
-        height: 44
-        sizeIcon:12
-        anchors.right: id_bt_reset.left
-        anchors.bottom: parent.bottom
-        icon:FontName.ICON_ACTION_SPY
-        text: qsTr("详情")
-        onClicked: id_root.state =(id_root.state=== "expandState" ? "normalState":"expandState")
-    }
-    FlatButton{
-        id: id_bt_reset
-        width: 70
-        hideTextWidth: 60
-        height: 44
-        sizeIcon:12
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        icon:FontName.ICON_ACTION_REDO
-        text: qsTr("重置")
-    }
-
-
 
     states: [
         State {

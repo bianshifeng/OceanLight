@@ -1,24 +1,59 @@
-import QtQuick 2.7
+﻿import QtQuick 2.7
 import QtQuick.Controls 2.0
 import "../../Controls"
 import "../../Fonts"
 import "../../Controls/UIConstants.js" as UI
 
-ControlCard {
+
+Item{
     id: id_root
-    isCheckedBt:true
     implicitHeight: 64
     implicitWidth: 170
-    property alias text:id_title.text
-    signal clicked()
+    property alias title:id_title.text
+    property alias detail:id_detail.text
+    property string stateSimply:"simply"
+    property string stateNormal:"normal"
+    property alias isCheckedBt:id_back.isCheckedBt
+    property alias checked:id_back.checked
 
-    XmsText{
-        id: id_title
+    property alias normalColor:id_back.normalColor
+    property alias hoverColor:id_back.hoverColor
+    property alias selectColor:id_back.selectColor
+
+    state: "normal"
+    signal clicked()
+    ControlCard {
+        id: id_back
+        isCheckedBt:true
+        anchors.fill: parent
+
+    }
+
+    Column{
+        id: id_content
         anchors.left: parent.left
         anchors.leftMargin: 20
+        spacing: 3
         anchors.verticalCenter: parent.verticalCenter
+        XmsText{
+            id: id_title
+            color:UI.COLOR_BASE_WHITE
+            text:"title"
+        }
+        XmsText{
+            id: id_detail
+            color:UI.COLOR_BASE_WHITE
+            size: id_title.size - 2
+            opacity: 0.7
+        }
+    }
+
+
+    XmsText{
+        id: id_only_title
+        text: id_root.title
         color:UI.COLOR_BASE_WHITE
-        text:"title"
+        anchors.centerIn: parent
     }
 
     Rectangle{
@@ -34,10 +69,43 @@ ControlCard {
         color:id_root.checked ? UI.COLOR_BASE_WHITE : UI.COLOR_BASE_TRANSPARENT
     }
 
+    states: [
+        State {
+            name: id_root.stateSimply
+            PropertyChanges {
+                target: id_radio
+                visible:false
+            }
+            PropertyChanges {
+                target: id_content
+                visible:false
+            }
+            PropertyChanges {
+                target: id_only_title
+                visible:true
+            }
+        },
+        State {
+            name: id_root.stateNormal
+            PropertyChanges {
+                target: id_radio
+                visible:true
+            }
+            PropertyChanges {
+                target: id_content
+                visible:true
+            }
+            PropertyChanges {
+                target: id_only_title
+                visible:false
+            }
+        }
+    ]
+
+
     XmsMouseArea{
         anchors.fill: parent
         hoverEnabled:false
-
         onClicked: {
             if(isCheckedBt){
                 id_root.checked = true
@@ -46,9 +114,9 @@ ControlCard {
             }
             id_root.clicked()
 
-
-
         }
     }
 
+
 }
+

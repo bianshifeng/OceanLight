@@ -37,6 +37,7 @@ WebServer::WebServer(QObject *parent) : QObject(parent)
 //    connect(m_webRequestRouter,SIGNAL(sig_router_talk(QString)),this,SLOT(slot_webrequest_talk(QString)));
 
 
+    g_AIDevice = new AiDeviceBase(this);
     g_httpServer = new HttpListener(m_listenerSettings,m_webRequestRouter,this);
 
 }

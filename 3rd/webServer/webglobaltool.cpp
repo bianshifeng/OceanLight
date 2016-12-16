@@ -14,5 +14,7 @@ FileLogger* g_logger;
 
 HttpListener* g_httpServer;
 
+AiDeviceBase* g_AIDevice;
+
 
 
