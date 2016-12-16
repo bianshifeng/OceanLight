@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="524ea4d0-49ed-444e-bbfe-3bf07e769c01" name="UMLClassDiagram1" linkedPackageId="ac039bf5-0cd3-4b64-882b-695846bffe5d" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="84a7a4b6-0852-4569-8ab3-0ceb4ac8b511">
+      <profileInstance Id="bde09973-0204-44a0-a3a9-ecf581efcc78" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="c8a7bf52-d395-4be6-ba0e-fa91df6b7757">
+      <profileInstance Id="d109c51a-7ccf-44c8-b131-b3e001ddab34" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <Interface Id="df43251d-489b-49e7-8d24-e2793f1dfafe" name="Interface1" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="01ed19e4-7aec-438b-bc90-be945f1b59f1" />
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="20f3a3fa-118a-4d77-a4f0-12235bc303fa" name="AiIpc" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="a3eadea5-2955-41e7-af84-4311b3e8a856" />
+        <ownedOperationsInternal>
+          <operation Id="05a94248-c2e1-4fde-b865-f95149c0a47e" name="init" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b9e7f427-679f-491d-acd4-3aebfce20a47" />
+          </operation>
+          <operation Id="5f5c6a93-4989-4640-96fa-d826e2c64492" name="getAlgConfig" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="49130654-9d08-4267-a2f7-c7862853133d" />
+          </operation>
+          <operation Id="31dd7263-67d5-4fc1-9f3a-ffd296d88e13" name="setAlgConfig" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="7911f3df-d2a4-4ae4-a66f-bfdfda1e1cc4" />
+          </operation>
+          <operation Id="143a59c8-1db2-47a9-9d7b-7d4e14179a98" name="getIpcInformation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="d331bfc9-7ae5-47d9-b0cd-4bc80e81f8fd" />
+          </operation>
+          <operation Id="0560cb31-3c0a-4f31-a686-7f7a472c2fed" name="setIpcInformation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="29abb6ff-3666-4bcd-b099-e2f6b1c3ab11" />
+          </operation>
+          <operation Id="e653e371-b19d-4e2f-b37c-7547c43cac79" name="getAlgResult" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="49e1313b-116e-45c5-868a-6c6641dd2213" />
+          </operation>
+          <operation Id="bb290939-5629-40b3-8beb-d1f697974370" name="stopAlg" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="f27cfa49-e3da-4980-91ad-989b00cc71f7" />
+          </operation>
+          <operation Id="910a5d6f-0c16-4279-9a15-ca460c8cc1ba" name="runAlg" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="8818ca79-6f8f-457f-8624-285f62f8a267" />
+          </operation>
+          <operation Id="886c534e-d3fb-46c3-ac69-5961a77720e4" name="isLiving" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="07d37600-977d-4215-93d4-62183e148929" />
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="ac039bf5-0cd3-4b64-882b-695846bffe5d" name="OceanLight_Model">
+    <elementDefinition Id="b5afe931-79ce-45bc-865a-755ed1fbf878" />
+  </package>
+</logicalClassDesignerModel>
