@@ -1,10 +1,10 @@
-#ifndef AIDEVICEBASE_H
+﻿#ifndef AIDEVICEBASE_H
 #define AIDEVICEBASE_H
 
 #include <QObject>
-#include "./alg/cpc/include/imp_cpc_para.h"
-#include "./alg/cpc/include/imp_cpc_api.h"
-#include "./alg/cpc/include/imp_algo_type.h"
+#include "imp_cpc_para.h"
+#include "imp_cpc_api.h"
+#include "imp_algo_type.h"
 
 //QByteArray cstr("abcd");
 //QString s = cstr;

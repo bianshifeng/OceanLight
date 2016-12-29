@@ -6,8 +6,8 @@ import "../../Fonts"
 import "../../Fonts/XmsIconFont.js" as FontName
 import "../BaseCom"
 import QtQuick.Layouts 1.3
-import QtAV 1.7
-//import QtMultimedia 5.5
+//import QtAV 1.7
+import QtMultimedia 5.5
 
 Flickable {
     id: flickable
@@ -42,7 +42,7 @@ Flickable {
 
 //            mediaAutoPlay: true
 //        }
-        AvPlayer{
+        QtPlayer{
             Layout.fillWidth: true
             Layout.preferredHeight:200
             mediaUrl: "http://202.108.17.129/v.cctv.com/flash/mp4video54/TMS/2016/08/20/29759cb329ea49aaafc174365ad7b9b0_h264200000nero_aac16-2.mp4"
@@ -51,13 +51,7 @@ Flickable {
 
 
         }
-        AVPlayer{
-            source: "http://202.108.17.129/v.cctv.com/flash/mp4video54/TMS/2016/08/20/29759cb329ea49aaafc174365ad7b9b0_h264200000nero_aac16-2.mp4"
 
-            Layout.fillWidth: true
-            Layout.preferredHeight:200
-            autoPlay: true
-        }
 
 //        QtPlayer{
 //            Layout.fillWidth: true
