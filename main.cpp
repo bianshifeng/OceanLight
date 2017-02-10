@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 
     QApplication::connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
 
-    QApplication::connect(view.rootContext(),SIGNAL(showFullScreen()),&view,SLOT(showFullScreen()));
+    //QApplication::connect(view.rootContext(),SIGNAL(showFullScreen()),&view,SLOT(showFullScreen()));
     view.setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     view.setResizeMode(QQuickView::SizeRootObjectToView);

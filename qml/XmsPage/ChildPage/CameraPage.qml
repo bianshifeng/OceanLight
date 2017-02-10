@@ -35,31 +35,29 @@ Flickable {
             Layout.preferredHeight: height
 
         }
+        QtPlayer{
+            Layout.fillWidth: true
+            Layout.preferredHeight:600
+            mediaUrl: "http://anhui.vtime.cntv.cloudcdn.net/cache/anhuihls.m3u8?ptype=1&AUTH=LCKODVoLaQIx4TkNf2RPHeNWMYciQB167/KPN3qVTmhz3ykMEWDBd3h5KBS+Sf6xEmiigYcX9q7TTDYVFDvLKQ=="
+
+            //mediaUrl:  "file:///e:/pjl.MKV"
+            mediaAutoPlay: true
+        }
 //        QtPlayer{
 //            Layout.fillWidth: true
 //            Layout.preferredHeight:200
-//            mediaUrl: "http://cctv1.vtime.cntv.wscdns.com/live/no/13_/seg0/index.m3u8?uid=default&AUTH=9F0TuDQ4bEafPc6oswSFnYQYBEL+Fd1iDJ4JWHRUvsmTwJh6C+qzyZnRtasPh0NGlS0K0KiDqWqCyHCve0eemw=="
-
+//            mediaUrl: "http://202.108.17.129/v.cctv.com/flash/mp4video54/TMS/2016/08/20/29759cb329ea49aaafc174365ad7b9b0_h264200000nero_aac16-2.mp4"
 //            mediaAutoPlay: true
 //        }
+
+
         QtPlayer{
             Layout.fillWidth: true
-            Layout.preferredHeight:200
-            mediaUrl: "http://202.108.17.129/v.cctv.com/flash/mp4video54/TMS/2016/08/20/29759cb329ea49aaafc174365ad7b9b0_h264200000nero_aac16-2.mp4"
+            Layout.preferredHeight:600
+            mediaUrl: "http://btv1.live.cntv.dnion.com/live/btv1hls_/index.m3u8?ptype=1&AUTH=owstkHDP2wDUbzZmqH3nDZBbYUuR1SxMx4u/68wGReXGfNY4HUUGdnrLxy0uTu8PINJ421qeHNl/Xqs6Y7bo6w=="
 
             mediaAutoPlay: true
-
-
         }
-
-
-//        QtPlayer{
-//            Layout.fillWidth: true
-//            Layout.preferredHeight:600
-//            mediaUrl: "http://cctv2.live.cntv.dnion.com/live/cctv2hls_/index.m3u8?ptype=1&AUTH=WHum47ZcUVwuB5EfYgjjTo52RqCkct+cUL8yvO4QAHi2KtFaJPUWZkx/CAayvHHgXITBTlg0YlAOkvzXSWussQ=="
-
-//            mediaAutoPlay: true
-//        }
 
 
 
@@ -70,7 +68,7 @@ Flickable {
              Layout.columnSpan: id_container.columns
 //             MediaPlayer{
 //                 id: id_player
-//                 //source: "file:///e:/haiyang.mp4"
+//                 //source: "file:///e:/pjl.MKV"
 //                 source:"http://cctv1.vtime.cntv.wscdns.com/live/no/13_/seg0/index.m3u8?uid=default&AUTH=9F0TuDQ4bEafPc6oswSFnYQYBEL+Fd1iDJ4JWHRUvsmTwJh6C+qzyZnRtasPh0NGlS0K0KiDqWqCyHCve0eemw=="
 //                 //source: "pa://cctv_p2p_hdbtv1"
 //                 autoPlay: true
