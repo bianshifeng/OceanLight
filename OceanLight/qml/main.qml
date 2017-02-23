@@ -55,6 +55,7 @@ import "./Fonts/XmsIconFont.js" as FontName
 import "./Models"
 import "./UserControls"
 import "./XmsPage/ChildPage"
+import "./XmsPage/MainPage"
 
 AppWindow {
     id: id_app_window
@@ -95,34 +96,18 @@ AppWindow {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            Row{
+
+            MainPageManagerNavbar{
                 anchors.left: parent.left
                 anchors.leftMargin: 0
-                spacing: 1
-
-                MainMenuButton{
-                    width: 120
-                    height: 34
-                    size: 12
-                    sizeIcon: 14
-                    icon: FontName.ICON_BASE_CHART
-                    isShowLine: true
-                    text: qsTr("算法报价")
-                    foreColor: UI.COLOR_BASE_WHITE_BASE
-                    hoverColor: UI.COLOR_BASE_ORANGE
+                onEmitShowHomePage: {
+                    id_content_page.showHomePage()
                 }
-                MainMenuButton{
-                    width: 120
-                    height: 34
-                    size: 12
-                    sizeIcon: 14
-                    icon: FontName.ICON_ACTION_DETAIL
-                    isShowLine: true
-                    text: qsTr("使用文档")
-                    foreColor: UI.COLOR_BASE_WHITE_BASE
-                    hoverColor: UI.COLOR_BASE_ORANGE
+                onEmitShowCameraPage: {
+                    id_content_page.showCameraPage()
                 }
             }
+
 
             XmsText{
                 text: qsTr("Impower")
@@ -156,44 +141,11 @@ AppWindow {
                 anchors.fill: parent
             }
 
-            PageImageTheme{
+            MainPageManager{
                 id: id_content_page
                 anchors.fill: parent
-                onCurrentInfoChanged: {
-                    id_info_txt.text = currentInfo
-                }
-
-                DropShadow {
-                    anchors.fill: id_title_txt
-                    horizontalOffset: 0
-                    verticalOffset: 3
-                    radius: 8.0
-                    samples: 17
-                    color: "#80000000"
-                    source: id_title_txt
-                }
-
-                XmsText{
-                    id: id_title_txt
-                    text: "CPC"
-                    size: 50
-                    color:UI.COLOR_BASE_WHITE
-                    font.bold: true
-                    anchors.left: parent.left
-                    anchors.leftMargin: 30
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 60
-                    XmsText{
-                        id: id_info_txt
-                        text: "The alg is for people collection for the ai computer."
-                        color: parent.color
-                        anchors.left: parent.left
-                        anchors.top: parent.bottom
-                        anchors.topMargin: 10
-                    }
-                }
-
             }
+
         }
 
         Column{

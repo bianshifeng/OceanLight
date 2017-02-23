@@ -1,4 +1,4 @@
-#ifndef WEBGLOBALTOOL_H
+﻿#ifndef WEBGLOBALTOOL_H
 #define WEBGLOBALTOOL_H
 #include "templatecache.h"
 #include "httpsessionstore.h"

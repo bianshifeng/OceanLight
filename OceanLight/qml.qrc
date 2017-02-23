@@ -8,7 +8,6 @@
         <file>qml/Theme/Theme.qml</file>
         <file>qml/Theme/ThemePalette.qml</file>
         <file>qml/Pages/PageMain.qml</file>
-        <file>qml/Pages/PageImageTheme.qml</file>
         <file>qml/Controls/SuperButton.qml</file>
         <file>qml/Controls/Styles/SuperButtonStyle.qml</file>
         <file>qml/Controls/CBoxTabButton.qml</file>
@@ -54,6 +53,10 @@
         <file>qml/XmsPage/BaseCom/QtPlayer.qml</file>
         <file>qml/XmsPage/BaseCom/AvPlayer.qml</file>
         <file>qml/XmsPage/ChildPage/CameraAlgPage.qml</file>
+        <file>qml/XmsPage/MainPage/MainPageManager.qml</file>
+        <file>qml/XmsPage/MainPage/PageImageTheme.qml</file>
+        <file>qml/XmsPage/MainPage/MainCameraPage.qml</file>
+        <file>qml/XmsPage/MainPage/MainPageManagerNavbar.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/branding.ico</file>

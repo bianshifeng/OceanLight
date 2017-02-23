@@ -5,7 +5,7 @@ import "../BaseCom"
 
 Pane {
     id: pane
-    readonly property int itemWidth: Math.max(slider.implicitWidth, Math.min(slider.implicitWidth * 2, pane.availableWidth / 3))
+    //readonly property int itemWidth: Math.max(slider.implicitWidth, Math.min(slider.implicitWidth * 2, pane.availableWidth / 3))
 
     Rectangle{
         anchors.fill: parent
