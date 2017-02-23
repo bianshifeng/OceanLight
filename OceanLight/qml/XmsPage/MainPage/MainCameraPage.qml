@@ -20,11 +20,10 @@ Item {
          }
          flash.mode: Camera.FlashRedEyeReduction
          imageCapture {
-             onImageCaptured: {
-                 id_photoPreview.source = preview  // Show the preview in an Image
-             }
          }
      }
+
+
     VideoOutput {
         source: id_camera
         anchors.fill: parent

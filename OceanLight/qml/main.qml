@@ -90,37 +90,10 @@ AppWindow {
         clip: true
         state: "showMainpage"
 
-        Item{
-            id:id_footBar
-            height: 34
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-
-            MainPageManagerNavbar{
-                anchors.left: parent.left
-                anchors.leftMargin: 0
-                onEmitShowHomePage: {
-                    id_content_page.showHomePage()
-                }
-                onEmitShowCameraPage: {
-                    id_content_page.showCameraPage()
-                }
-            }
-
-
-            XmsText{
-                text: qsTr("Impower")
-                anchors.right: parent.right
-                anchors.rightMargin: 5
-                color: UI.COLOR_BASE_WHITE_BASE
-                size: 12
-                anchors.verticalCenter: parent.verticalCenter
-            }
-        }
 
         Item{
             id: id_mainPage
+            z:100
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -151,6 +124,7 @@ AppWindow {
         Column{
             id: id_child_page
             clip: true
+            z:100
             anchors.left: parent.left
             anchors.right: parent.right
             height: parent.height
@@ -182,6 +156,34 @@ AppWindow {
                 }
             }
 
+        }
+        Item{
+            id:id_footBar
+            height: 34
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            MainPageManagerNavbar{
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                onEmitShowHomePage: {
+                    id_content_page.showHomePage()
+                }
+                onEmitShowCameraPage: {
+                    id_content_page.showCameraPage()
+                }
+            }
+
+
+            XmsText{
+                text: qsTr("Impower")
+                anchors.right: parent.right
+                anchors.rightMargin: 5
+                color: UI.COLOR_BASE_WHITE_BASE
+                size: 12
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
 
 

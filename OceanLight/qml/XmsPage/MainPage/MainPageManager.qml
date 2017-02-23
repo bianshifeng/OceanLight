@@ -57,10 +57,10 @@ StackView {
 
 
     function showHomePage(){
-        id_root.push(id_HomePage)
+        id_root.replace(id_HomePage)
     }
     function showCameraPage(){
-        id_root.push(id_CameraPage)
+        id_root.replace(id_CameraPage)
     }
 
 }
