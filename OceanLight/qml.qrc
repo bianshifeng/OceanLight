@@ -57,6 +57,10 @@
         <file>qml/XmsPage/MainPage/PageImageTheme.qml</file>
         <file>qml/XmsPage/MainPage/MainCameraPage.qml</file>
         <file>qml/XmsPage/MainPage/MainPageManagerNavbar.qml</file>
+        <file>qml/Controls/three.js</file>
+        <file>qml/XmsPage/MainPage/CameraCanvas/jsCamera.js</file>
+        <file>qml/XmsPage/MainPage/CameraCanvas/flamingo.js</file>
+        <file>qml/XmsPage/MainPage/CameraCanvas/CanvasFrame.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/branding.ico</file>

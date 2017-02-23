@@ -24,6 +24,7 @@ FocusScope{
         source: id_backrect
     }
 
+
     LinearGradient {
         id: id_backrect
         anchors.fill: parent

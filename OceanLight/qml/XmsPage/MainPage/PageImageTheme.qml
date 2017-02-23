@@ -1,6 +1,8 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
+import "./CameraCanvas"
+
 Item {
     id: id_root
     property alias backImageUrl: id_backImage.source
@@ -61,5 +63,9 @@ Item {
         }
     }
 
+
+    CanvasFrame{
+        anchors.fill: parent
+    }
 }
 

@@ -124,7 +124,7 @@ AppWindow {
         Column{
             id: id_child_page
             clip: true
-            z:100
+            z:200
             anchors.left: parent.left
             anchors.right: parent.right
             height: parent.height

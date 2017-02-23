@@ -1,6 +1,7 @@
 ﻿import QtQuick 2.7
 import QtMultimedia 5.5
 
+
 Item {
     id: id_root
     implicitHeight: 500
@@ -10,6 +11,8 @@ Item {
         anchors.fill: parent
         color:"black"
     }
+
+
 
     Camera {
          id: id_camera
