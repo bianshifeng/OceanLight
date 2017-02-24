@@ -98,6 +98,7 @@ AppWindow {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: id_footBar.top
+            anchors.topMargin: 40
             DropShadow {
                 anchors.fill: id_backImage
                 horizontalOffset: 0
