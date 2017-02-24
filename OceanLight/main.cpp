@@ -51,19 +51,22 @@
 #include <QMessageBox>
 #include <QSystemTrayIcon>
 #include <QQmlApplicationEngine>
-#include <QtQml>
+
+#include "3rd/algServer/alg_server.h"
+#include "3rd/webServer/webserver.h"
+
+
 #include "sqleventmodel.h"
 #include "websystetraymenu.h"
 #include "touchsettings.h"
 
 #include "algs/algcpc.h"
 #include "ipcs/xmsipcbase.h"
-#include "3rd/ffmpegPlayer/ffmpeg_logger.h"
 
 
-#include "webserver.h"
 
-FFMPEGLogger* FFMPEGLogger::_instance = nullptr;
+
+AlgServer* AlgServer::_instance = nullptr;
 
 int main(int argc, char *argv[])
 {
@@ -72,8 +75,8 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<AlgCPC>("Xms.Alg", 1, 0, "AlgCPC");
     qmlRegisterType<XmsIpcBase>("Xms.Ipc", 1, 0, "IpcRstp");
-    qmlRegisterSingletonType<FFMPEGLogger>("Xms.Logger",1,0,"FFmpegLogger",FFMPEGLogger::GetInstance);
-    qRegisterMetaType<FFMPEGLogger::Level>("Level");
+    qmlRegisterSingletonType<AlgServer>("Xms.Server",1,0,"AlgServer",AlgServer::qml_singleton_provider);
+
 
 
     QSettings extraSettings;

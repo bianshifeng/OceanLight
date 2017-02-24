@@ -23,6 +23,8 @@ RCC_DIR  += temp/bulid_rcc_dir
 
 #include(common/common.pri)
 include(3rd/webServer/webServer.pri)
+include(3rd/algServer/algServer.pri)
+
 include(3rd/AiDevice/aidevice.pri)
 include(3rd/ffmpegPlayer/ffmpegPlayer.pri)
 include(src/src.pri)

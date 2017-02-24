@@ -3,6 +3,7 @@
 FFMPEGLogger::Level FFMPEGLogger::level() const
 {
 
+    return m_level;
 }
 
 void FFMPEGLogger::setLevel(FFMPEGLogger::Level level)
@@ -12,6 +13,6 @@ void FFMPEGLogger::setLevel(FFMPEGLogger::Level level)
 
 FFMPEGLogger::FFMPEGLogger(QObject *parent) : QObject(parent)
 {
-    return m_level;
+
 
 }
