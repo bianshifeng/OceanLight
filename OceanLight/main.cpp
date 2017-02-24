@@ -58,28 +58,22 @@
 
 #include "algs/algcpc.h"
 #include "ipcs/xmsipcbase.h"
+#include "3rd/ffmpegPlayer/ffmpeg_logger.h"
 
 
 #include "webserver.h"
 
+FFMPEGLogger* FFMPEGLogger::_instance = nullptr;
 
 int main(int argc, char *argv[])
 {
 
     QGuiApplication app(argc, argv);
+
     qmlRegisterType<AlgCPC>("Xms.Alg", 1, 0, "AlgCPC");
     qmlRegisterType<XmsIpcBase>("Xms.Ipc", 1, 0, "IpcRstp");
-
-
-
-
-//    QSurfaceFormat format;
-//    if (QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGL) {
-//        format.setVersion(3, 2);
-//        format.setProfile(QSurfaceFormat::CoreProfile);
-//    }
-//    format.setDepthBufferSize(24);
-//    format.setStencilBufferSize(8);
+    qmlRegisterSingletonType<FFMPEGLogger>("Xms.Logger",1,0,"FFmpegLogger",FFMPEGLogger::GetInstance);
+    qRegisterMetaType<FFMPEGLogger::Level>("Level");
 
 
     QSettings extraSettings;
@@ -88,13 +82,14 @@ int main(int argc, char *argv[])
     extraSettings.endGroup();
 
 
+    TouchSettings touchSettings;
 
     //init view
     QQuickView view;
 //    view.setFormat(format);
     view.create();
 
-    TouchSettings touchSettings;
+
     view.rootContext()->setContextProperty("touchSettings", &touchSettings);
 
     QApplication::connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
@@ -109,17 +104,26 @@ int main(int argc, char *argv[])
     view.showNormal();
 
 
-    //view.setFlags(Qt::CustomizeWindowHint|Qt::WindowMinimizeButtonHint);
-    //view.setModality(Qt::WindowModal);
-    //QObject *webServer = new QObject;
-    //view.engine()->rootContext()->setContextProperty("g_sebServer",webServer);
+    WebServer webServer;
+    return app.exec();
+}
+
+
+
+//    QSurfaceFormat format;
+//    if (QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGL) {
+//        format.setVersion(3, 2);
+//        format.setProfile(QSurfaceFormat::CoreProfile);
+//    }
+//    format.setDepthBufferSize(24);
+//    format.setStencilBufferSize(8);
+//view.setFlags(Qt::CustomizeWindowHint|Qt::WindowMinimizeButtonHint);
+//view.setModality(Qt::WindowModal);
+//QObject *webServer = new QObject;
+//view.engine()->rootContext()->setContextProperty("g_sebServer",webServer);
 
 //    QObject *webServer = new QObject;
 //    WebSysteTrayMenu *m_trayMenu = new WebSysteTrayMenu(webServer);
 //    m_trayMenu->show();
 //    qApp->connect(m_trayMenu,SIGNAL(sigShowView()),&view,SLOT(showNormal()));
 //    qApp->connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
-
-    WebServer webServer;
-    return app.exec();
-}
