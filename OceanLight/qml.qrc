@@ -57,10 +57,20 @@
         <file>qml/XmsPage/MainPage/PageImageTheme.qml</file>
         <file>qml/XmsPage/MainPage/MainCameraPage.qml</file>
         <file>qml/XmsPage/MainPage/MainPageManagerNavbar.qml</file>
-        <file>qml/Controls/three.js</file>
         <file>qml/XmsPage/MainPage/CameraCanvas/jsCamera.js</file>
         <file>qml/XmsPage/MainPage/CameraCanvas/flamingo.js</file>
         <file>qml/XmsPage/MainPage/CameraCanvas/CanvasFrame.qml</file>
+        <file>qml/Controls/3rd/d3.js</file>
+        <file>qml/Controls/3rd/three.js</file>
+        <file>qml/Controls/3rd/ThreeJSLoader.js</file>
+        <file>qml/Controls/3rd/threexdragcontrols.js</file>
+        <file>qml/Controls/3rd/threexdrawitem.js</file>
+        <file>qml/Controls/3rd/threexdrawitemnew.js</file>
+        <file>qml/Controls/3rd/threexorbitcontrols.js</file>
+        <file>qml/Controls/3rd/XmsCanvas_Chart.js</file>
+        <file>qml/Controls/3rd/XmsCanvas_Chart_Service.js</file>
+        <file>qml/Controls/3rd/xmscanvas3dlineeditor.js</file>
+        <file>qml/Controls/3rd/xmscloudcanvas.js</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/branding.ico</file>

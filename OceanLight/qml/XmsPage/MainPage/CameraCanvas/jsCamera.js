@@ -1,4 +1,4 @@
-Qt.include("../../../Controls/three.js")
+﻿Qt.include("../../../Controls/3rd/three.js")
 
 var camera, scene, renderer, dirLight, hemiLight;
 var mixers = [];
