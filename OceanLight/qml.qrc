@@ -71,15 +71,16 @@
         <file>qml/Controls/3rd/XmsCanvas_Chart_Service.js</file>
         <file>qml/Controls/3rd/xmscanvas3dlineeditor.js</file>
         <file>qml/Controls/3rd/xmscloudcanvas.js</file>
+        <file>qml/XmsPage/MainPage/CameraAlgInfo.qml</file>
+        <file>qml/XmsPage/BaseCom/FlatItemTitleBar_Vertical.qml</file>
+        <file>qml/XmsPage/MainPage/MainPricePage.qml</file>
     </qresource>
     <qresource prefix="/images">
+        <file>images/arrow.png</file>
         <file>images/branding.ico</file>
         <file>images/page/back.png</file>
-        <file>images/base/borderback.png</file>
-        <file>images/mainpage/wall004-1920x1200.jpg</file>
-        <file>images/mainpage/wall000-1680x1050.jpg</file>
-        <file>images/mainpage/wall001-1680x1050.jpg</file>
         <file>images/arrow.png</file>
+        <file>images/base/borderback.png</file>
         <file>images/mainpage/albumcover.png</file>
     </qresource>
 </RCC>

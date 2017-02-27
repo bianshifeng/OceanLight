@@ -10,6 +10,8 @@ Row{
 
     signal emitShowHomePage()
     signal emitShowCameraPage()
+    signal emitShowPricePage()
+    signal emitShowHelpPage()
 
     ExclusiveGroup{
         id: id_group
@@ -22,7 +24,7 @@ Row{
         height: 34
         size: 12
         sizeIcon: 14
-        icon: FontName.ICON_BASE_CHART
+        icon: FontName.ICON_BASE_HOME
         isShowLine: true
         text: qsTr("首页")
         foreColor: UI.COLOR_BASE_WHITE_BASE
@@ -37,13 +39,43 @@ Row{
         height: 34
         size: 12
         sizeIcon: 14
-        icon: FontName.ICON_ACTION_DETAIL
+        icon: FontName.ICON_ALG_SPY
         isShowLine: true
         text: qsTr("监控")
         foreColor: UI.COLOR_BASE_WHITE_BASE
         hoverColor: UI.COLOR_BASE_ORANGE
         onClicked: {
             emitShowCameraPage()
+        }
+    }
+    MainMenuButton{
+        exclusiveGroup: id_group
+        width: 120
+        height: 34
+        size: 12
+        sizeIcon: 14
+        icon: FontName.ICON_BASE_CHARTBAR
+        isShowLine: true
+        text: qsTr("报价")
+        foreColor: UI.COLOR_BASE_WHITE_BASE
+        hoverColor: UI.COLOR_BASE_ORANGE
+        onClicked: {
+            emitShowPricePage()
+        }
+    }
+    MainMenuButton{
+        exclusiveGroup: id_group
+        width: 120
+        height: 34
+        size: 12
+        sizeIcon: 14
+        icon: FontName.ICON_BASE_PEOPLE
+        isShowLine: true
+        text: qsTr("帮助")
+        foreColor: UI.COLOR_BASE_WHITE_BASE
+        hoverColor: UI.COLOR_BASE_ORANGE
+        onClicked: {
+            emitShowHelpPage()
         }
     }
 

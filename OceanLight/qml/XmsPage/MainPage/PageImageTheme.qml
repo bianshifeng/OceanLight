@@ -1,17 +1,23 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import "./CameraCanvas"
+
 
 Item {
     id: id_root
     property alias backImageUrl: id_backImage.source
     property string currentInfo:""
+    property string currentAlg:""
+
+    property string _backImagePwd:"file:///I:/XMS/OceanLight/OceanLight/images/mainpage/"
+
+
     implicitHeight: 500
     implicitWidth: 1000
 
     Image {
         id: id_backImage
+        visible: source
         fillMode: Image.PreserveAspectCrop
         anchors.fill: parent
     }
@@ -19,21 +25,57 @@ Item {
     ListModel{
         id: id_listModel
         ListElement{
+            imgAlg:"IPD"
             imgTitle:"The alg can give you a future for sale."
-            imgUrl:"qrc:/images/images/mainpage/wall000-1680x1050.jpg"
+            imgUrl:"alg_ipd_img_001.jpg"
         }
         ListElement{
+            imgAlg:"IPD"
             imgTitle:"From here you can konw ------- ocean have the power for wolrd, the Ai is the my company."
-            imgUrl:"qrc:/images/images/mainpage/wall001-1680x1050.jpg"
+            imgUrl:"alg_ipd_img_002.jpg"
         }
         ListElement{
+            imgAlg:"IPD"
             imgTitle:"In the future cpc can been setting all of the shop  and home."
-            imgUrl:"qrc:/images/images/mainpage/wall004-1920x1200.jpg"
+            imgUrl:"alg_ipd_img_003.jpg"
         }
 
         ListElement{
+            imgAlg:"VFD"
             imgTitle:"World have the dream"
-            imgUrl:"qrc:/images/images/mainpage/albumcover.png"
+            imgUrl:"alg_vfd_img_001.jpg"
+        }
+        ListElement{
+            imgAlg:"VFD"
+            imgTitle:"World have the dream"
+            imgUrl:"alg_vfd_img_002.jpg"
+        }
+        ListElement{
+            imgAlg:"VFD"
+            imgTitle:"World have the dream"
+            imgUrl:"alg_vfd_img_003.jpg"
+        }
+        ListElement{
+            imgAlg:"VIP"
+            imgTitle:"World have the dream"
+            imgUrl:"alg_vip_img.jpg"
+        }
+
+        ListElement{
+            imgAlg:"AFS"
+            imgTitle:"World have the dream"
+            imgUrl:"alg_afd_img_001.jpg"
+        }
+
+        ListElement{
+            imgAlg:"AI"
+            imgTitle:"World have the dream"
+            imgUrl:"alg_ai_img_001.jpg"
+        }
+        ListElement{
+            imgAlg:"CCC"
+            imgTitle:"World have the dream"
+            imgUrl:"alg_ccc_img_001.jpg"
         }
     }
 
@@ -44,28 +86,21 @@ Item {
         repeat: true
         running: true
         onTriggered: {
-
-
+            var item;
             if(currentIndex < id_listModel.count){
-
-                var item = id_listModel.get(currentIndex)
-                id_backImage.source = item["imgUrl"]
-                id_root.currentInfo = item["imgTitle"]
-                console.log(item["imgUrl"])
+                item = id_listModel.get(currentIndex)
                 currentIndex++;
             }else{
                 currentIndex = 0
-                var item = id_listModel.get(currentIndex)
-                id_backImage.source = item["imgUrl"]
-                id_root.currentInfo = item["imgTitle"]
+                item = id_listModel.get(currentIndex)
             }
-
+            id_root.currentAlg = item["imgAlg"]
+            id_backImage.source = id_root._backImagePwd + item["imgUrl"]
+            id_root.currentInfo = item["imgTitle"]
         }
     }
 
 
-    CanvasFrame{
-        anchors.fill: parent
-    }
+
 }
 

@@ -9,8 +9,8 @@ QtObject{
     property string info:""
     property string unit:"g"
     property int dosage:10
-    property string dosageReason:"10g可以入心烦"
-    property string usage:"煎服"
+    property string dosageReason:"ssssss"
+    property string usage:"dddd"
     property string usageReason:""
 
     function getListThumb(){

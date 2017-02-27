@@ -5,7 +5,10 @@
 #include <QQmlEngine>
 #include <QJSEngine>
 #include <QImage>
+#include <QUrl>
 
+
+class QVideoFrame;
 class AlgServer : public QObject
 {
     Q_OBJECT
@@ -20,7 +23,7 @@ public:
         return _instance = new AlgServer();
     }
 
-    Q_INVOKABLE void setCameraImage(const QImage& image);
+    Q_INVOKABLE void setCameraImage(const QString& imageUrl);
 
 
 signals:
@@ -30,6 +33,10 @@ signals:
 public slots:
 
     void setImage(const QImage& image);
+
+    void setVideoFrame(const QVideoFrame& frame);
+
+    QImage imageFromVideoFrame(const QVideoFrame& buffer) const;
 
 private:
     explicit AlgServer(QObject *parent = 0);

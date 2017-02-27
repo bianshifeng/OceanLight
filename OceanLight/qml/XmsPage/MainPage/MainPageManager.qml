@@ -17,6 +17,10 @@ StackView {
             onCurrentInfoChanged: {
                 id_info_txt.text = currentInfo
             }
+            onCurrentAlgChanged: {
+                id_title_txt.text = currentAlg
+            }
+
             DropShadow {
                 anchors.fill: id_title_txt
                 horizontalOffset: 0

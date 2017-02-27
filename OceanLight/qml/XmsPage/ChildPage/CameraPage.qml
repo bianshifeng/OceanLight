@@ -22,29 +22,19 @@ Flickable {
         anchors.leftMargin: 0
         anchors.rightMargin: 0
 
-        QtPlayer{
-            Layout.columnSpan: id_container.columns
-            Layout.fillWidth: true
-            Layout.fillHeight:true
-            //mediaUrl: "http://anhui.vtime.cntv.cloudcdn.net/cache/anhuihls.m3u8?ptype=1&AUTH=LCKODVoLaQIx4TkNf2RPHeNWMYciQB167/KPN3qVTmhz3ykMEWDBd3h5KBS+Sf6xEmiigYcX9q7TTDYVFDvLKQ=="
+        FlatPageTitleBar{
+            id: id_title_bar
 
-            mediaUrl:  "file:///e:/pjl.MKV"
-            mediaAutoPlay: true
+            Layout.fillWidth: true
+            Layout.preferredHeight: id_title_bar.height
         }
 
-//        FlatPageTitleBar{
-//            id: id_title_bar
+        FlatItemTitleBar{
+            Layout.columnSpan: id_container.columns
+            Layout.fillWidth: true
+            Layout.preferredHeight: height
 
-//            Layout.fillWidth: true
-//            Layout.preferredHeight: id_title_bar.height
-//        }
-
-//        FlatItemTitleBar{
-//            Layout.columnSpan: id_container.columns
-//            Layout.fillWidth: true
-//            Layout.preferredHeight: height
-
-//        }
+        }
 
 //        QtPlayer{
 //            Layout.fillWidth: true

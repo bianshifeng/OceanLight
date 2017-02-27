@@ -53,6 +53,7 @@
 #include <QQmlApplicationEngine>
 
 #include "3rd/algServer/alg_server.h"
+#include "3rd/algServer/camera_filter.h"
 #include "3rd/webServer/webserver.h"
 
 
@@ -76,7 +77,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<AlgCPC>("Xms.Alg", 1, 0, "AlgCPC");
     qmlRegisterType<XmsIpcBase>("Xms.Ipc", 1, 0, "IpcRstp");
     qmlRegisterSingletonType<AlgServer>("Xms.Server",1,0,"AlgServer",AlgServer::qml_singleton_provider);
-
+    qmlRegisterType<CameraFilter>("Xms.Server",1,0,"CameraFilter");
 
 
     QSettings extraSettings;

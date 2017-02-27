@@ -59,7 +59,7 @@ import "./XmsPage/MainPage"
 
 AppWindow {
     id: id_app_window
-    implicitHeight: 600
+    implicitHeight: 700
     implicitWidth: implicitHeight * UI.const_gold_mean
     property bool isHoverEnabled: false
 
@@ -98,7 +98,7 @@ AppWindow {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: id_footBar.top
-            anchors.topMargin: 40
+            anchors.topMargin: 41
             DropShadow {
                 anchors.fill: id_backImage
                 horizontalOffset: 0

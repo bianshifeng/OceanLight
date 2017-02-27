@@ -44,9 +44,9 @@ Column{
             anchors.right: parent.right
             width: 100
             icon:FontName.ICON_ACTION_RIGHT
-            text: qsTr("完成")
+            text: qsTr("OK")
             onClicked: {
-                console.log("save 药房")
+                console.log("save tabel")
             }
         }
     }

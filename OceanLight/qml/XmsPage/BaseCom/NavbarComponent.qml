@@ -108,7 +108,7 @@ FocusScope{
             itemName:"camera"
             itemTitle:"相机"
             itemIcon:"\u00cd"
-            pageSource:"qrc:/qml/XmsPage/ChildPage/CameraAlgPage.qml"
+            pageSource:"qrc:/qml/XmsPage/ChildPage/CameraPage.qml"
         }
         ListElement{
             itemName:"alg"

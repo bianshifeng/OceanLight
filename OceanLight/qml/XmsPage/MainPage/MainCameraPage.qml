@@ -3,7 +3,11 @@ import QtMultimedia 5.5
 import Xms.Server 1.0
 
 import "../../Fonts"
+import "../../Fonts/XmsIconFont.js" as FontName
 import "../../Controls/UIConstants.js" as UI
+import "../BaseCom"
+
+import "./CameraCanvas"
 
 
 Item {
@@ -20,34 +24,44 @@ Item {
         id: id_cnt
         target: AlgServer
         onSig_alg_test_data:{
-
             id_txt_image.text = message;
+            id_camera.imageCapture.capture()
         }
     }
 
     Camera {
          id: id_camera
+         //deviceId: QtMultimedia.availableCameras[1].deviceId
          imageProcessing.whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
          exposure {
              exposureCompensation: -1.0
              exposureMode: Camera.ExposurePortrait
          }
+         captureMode: Camera.CaptureVideo
          flash.mode: Camera.FlashRedEyeReduction
-         imageCapture {
+         imageCapture{
              onImageCaptured: {
-                 AlgServer.setCameraImage(preview)
-                 AlgServer.setImage(preview)
                  id_photoPreview.source = preview
              }
          }
      }
 
+    CameraFilter{
+        id: id_cameraFilter
+        objectName: "cameraFilterObject"
+    }
+
 
     VideoOutput {
+        id: id_camera_output
         source: id_camera
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.right: id_alg_message.left
         anchors.margins: 20
         focus : visible // to receive focus and capture key events when visible
+        filters: [id_cameraFilter]
     }
     Rectangle{
         anchors.fill: id_photoPreview
@@ -59,11 +73,15 @@ Item {
 
     Image {
         id: id_photoPreview
-        width: 200
+        width: 150
         height: 100
-        anchors.right: parent.right
+        anchors.left: parent.left
         anchors.top: parent.top
-        anchors.topMargin:  40
+        anchors.margins: 20
+        onSourceChanged: {
+            console.log(id_photoPreview.data)
+        }
+
         MouseArea{
             anchors.fill: parent
             onClicked: id_camera.imageCapture.capture()
@@ -79,4 +97,116 @@ Item {
         }
     }
 
+
+
+    Row{
+        id: id_alg_message
+        spacing: 2
+        anchors.right:  parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.margins: 2
+        Item{
+            visible: id_info_pea.isChecked
+            width: 100
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            Rectangle{
+                anchors.fill: parent
+                opacity: 0.2
+            }
+        }
+        FlatItemTitleBar_Vertical{
+            id: id_info_pea
+            logo: FontName.ICON_ALG_PEA
+            logoColor:  UI.COLOR_BASE_YELLOW_BASE
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            MouseArea{
+                anchors.fill: parent
+                onClicked:id_info_pea.isChecked = id_info_pea.isChecked ? false : true
+            }
+        }
+        Item{
+            visible: id_info_ring.isChecked
+            width: 100
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            Rectangle{
+                anchors.fill: parent
+                opacity: 0.2
+            }
+        }
+        FlatItemTitleBar_Vertical{
+            id: id_info_ring
+            logo: FontName.ICON_ALG_RING
+            logoColor:  UI.COLOR_BASE_YELLOW_BASE
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            MouseArea{
+                anchors.fill: parent
+                onClicked:id_info_ring.isChecked = id_info_ring.isChecked ? false : true
+            }
+        }
+
+        Item{
+            visible: id_info_face.isChecked
+            width: 200
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            clip: true
+            Rectangle{
+                anchors.fill: parent
+                opacity: 0.2
+            }
+
+            Flickable{
+                anchors.fill: parent
+                contentHeight: id_container.height
+
+                Column{
+                    id: id_container
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 20
+                    Repeater{
+                        model: 20
+                        Image{
+                            width: 160
+                            height: 120
+
+                            source: id_photoPreview.source
+
+                            XmsText{
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.bottom: parent.bottom
+                                anchors.bottomMargin:- contentHeight - 2
+                                color:UI.COLOR_BASE_WHITE
+
+                                text:"bianshifeng"
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        FlatItemTitleBar_Vertical{
+            id: id_info_face
+            logo: FontName.ICON_ALG_FACE
+
+            logoColor:  UI.COLOR_BASE_YELLOW_BASE
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            MouseArea{
+                anchors.fill: parent
+                onClicked:id_info_face.isChecked = id_info_face.isChecked ? false : true
+            }
+
+        }
+    }
+
+    CanvasFrame{
+        anchors.fill: parent
+    }
 }
