@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Welcome  by bianshifeng</title>
+        <link rel ="stylesheet" type="text/css" href="./css/main.css" media ="screen">
+        <script src="./js/framework/react.js"></script>
+        <script src="./js/framework/react-dom.js"></script>
+        <script src="./js/framework/browser.min.js"></script>
+        <script src = "./js/framework/knockout-3.4.0.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+    <header>
+        <h1> hello world </h1>
+        <nav>
+            <ul>
+                <li><a href="./index.html">Page1</a></li>
+                <li><a href="#">Page1</a></li>
+                <li><a href="#">Page1</a></li>
+                <li><a href="#">Page1</a></li>
+                <li><a href="#">Page1</a></li>
+                <li><a href="#">Page1</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div>
+        <p >This name is <span data-bind="text: personName"></span></p>
+        <p >This name is <span data-bind="text: personName"></span></p>
+
+
+
+    </div>
+    <footer>
+        <p> I am footer </p>
+        <input type="text" data-bind ="text: personName">heelow </input>
+        <script type="text/javascript">
+        var myViewModel = {
+            personName:"bianshiddfdsfsfeng",
+            presonAge:123
+        }
+        ko.applyBindings(myViewModel);
+     </script>
+    </footer>
+    </body>
+
+</html>
