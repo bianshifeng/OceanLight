@@ -15,6 +15,7 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
+
 SOURCES += main.cpp \
     ipd_processor.cpp \
     IMP_Lock.cpp \
@@ -29,18 +30,15 @@ HEADERS += \
     IMP_Lock.h \
     IMP_Frame.h \
     IMP_FrameQueue.h
-LIBS    += \
-    IPD.lib
 
 OTHER_FILES += \
     IPD.lib
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/ -lIP
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/ -lIPd
-
 INCLUDEPATH += $$PWD/
 DEPENDPATH += $$PWD/
 
-win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/IP.lib
-else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/IPd.lib
+LIBS += -LI:/XMS/OceanLight/ThirdProject/XmsAlg/ipd_processor -lIPD
+
+#win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/IPD.lib
+#else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/IPD.lib
