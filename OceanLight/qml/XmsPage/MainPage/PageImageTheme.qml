@@ -1,4 +1,4 @@
-import QtQuick 2.7
+﻿import QtQuick 2.7
 import QtQuick.Controls 2.0
 
 
@@ -9,7 +9,9 @@ Item {
     property string currentInfo:""
     property string currentAlg:""
 
-    property string _backImagePwd:"file:///I:/XMS/OceanLight/OceanLight/images/mainpage/"
+    property string _backImagePwd:"file:///"+rootPath+"/etc/docroot/www/images/mainpage/"
+
+    //property string _backImagePwd:"http://localhost:8080/"+"www/images/mainpage/"
 
 
     implicitHeight: 500
@@ -17,9 +19,9 @@ Item {
 
     Image {
         id: id_backImage
-        visible: source
         fillMode: Image.PreserveAspectCrop
         anchors.fill: parent
+        source: "qrc:/images/images/mainpage/albumcover.png"
     }
 
     ListModel{
@@ -75,7 +77,7 @@ Item {
         ListElement{
             imgAlg:"CCC"
             imgTitle:"World have the dream"
-            imgUrl:"alg_ccc_img_001.jpg"
+            imgUrl:"alg_ccc_img_001.png"
         }
     }
 

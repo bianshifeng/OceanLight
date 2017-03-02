@@ -79,6 +79,9 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType<AlgServer>("Xms.Server",1,0,"AlgServer",AlgServer::qml_singleton_provider);
     qmlRegisterType<CameraFilter>("Xms.Server",1,0,"CameraFilter");
 
+    QString rootPath = qApp->applicationDirPath();
+    qDebug()<<rootPath;
+
 
     QSettings extraSettings;
     extraSettings.beginGroup("CPP");
@@ -95,6 +98,7 @@ int main(int argc, char *argv[])
 
 
     view.rootContext()->setContextProperty("touchSettings", &touchSettings);
+    view.rootContext()->setContextProperty("rootPath",rootPath);
 
     QApplication::connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
 

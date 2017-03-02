@@ -32,6 +32,8 @@ QImage AlgServer::imageFromVideoFrame(const QVideoFrame &buffer) const
     QImage img;
     QVideoFrame frame(buffer);  // make a copy we can call map (non-const) on
     frame.map(QAbstractVideoBuffer::ReadOnly);
+
+
     QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(
                 frame.pixelFormat());
     // BUT the frame.pixelFormat() is QVideoFrame::Format_Jpeg, and this is
@@ -53,6 +55,9 @@ QImage AlgServer::imageFromVideoFrame(const QVideoFrame &buffer) const
         img = QImage::fromData(frame.bits(), nbytes);
         //img.save("456.png");
     }
+
+
+
     frame.unmap();
     return img;
 
