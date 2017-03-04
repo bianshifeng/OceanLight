@@ -1,9 +1,11 @@
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/ipd_processor
 
-LIBS += -LG:/OceanLightProject/ThirdProject/XmsAlg/lib -lIPD
+#LIBS += -LG:/OceanLightProject/ThirdProject/XmsAlg/lib -lIPD
+#LIBS += -LG:/OceanLightProject/ThirdProject/XmsAlg/lib -lVFD
 
-LIBS += -LG:/OceanLightProject/ThirdProject/XmsAlg/lib -lVFD
+LIBS += -LI:/XMS/OceanLight/ThirdProject/XmsAlg/lib -lIPD
+LIBS += -LI:/XMS/OceanLight/ThirdProject/XmsAlg/lib -lVFD
 
 HEADERS += \
     $$PWD/alg_server.h \

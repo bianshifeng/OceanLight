@@ -25,7 +25,8 @@ public:
     }
 signals:
     void sig_alg_test_data(const QString& message);
-    void sig_alg_warning_data(const QString& message);
+    void sig_alg_ipd_data(const QString& message);
+    void sig_alg_vfd_data(const QString& message);
 
 public slots:
     void setVideoFrame(const QVideoFrame& frame);

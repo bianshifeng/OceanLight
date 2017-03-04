@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
     QString rootPath = qApp->applicationDirPath();
 
     view.rootContext()->setContextProperty("touchSettings", &touchSettings);
-    view.rootContext()->setContextProperty("rootPath",rootPath);
+    view.rootContext()->setContextProperty("g_root_path",rootPath);
     view.rootContext()->setContextProperty("g_window",&view);
 
     QApplication::connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));

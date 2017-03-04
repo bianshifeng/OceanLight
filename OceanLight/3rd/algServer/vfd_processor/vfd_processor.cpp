@@ -2,6 +2,7 @@
 #include <QJsonObject>
 #include "vfd_processor.h"
 #include "imp_vfd_api.h"
+using namespace std;
 
 typedef struct face_path
 {
@@ -305,7 +306,7 @@ void VFDProcessor::RGBA2YUV420P(unsigned char *RgbaBuf,int nWidth,int nHeight,un
             y = (unsigned char)( ( 66 * r + 129 * g +  25 * b + 128) >> 8) + 16  ;
             u = (unsigned char)( ( -38 * r -  74 * g + 112 * b + 128) >> 8) + 128 ;
             v = (unsigned char)( ( 112 * r -  94 * g -  18 * b + 128) >> 8) + 128 ;
-            *(bufY++) = max( 0, min(y, 255 ));
+            *(bufY++) = max( 0, min((int)y, 255 ));
 
             if (j%2==0&&i%2 ==0)
             {

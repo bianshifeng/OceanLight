@@ -9,7 +9,7 @@ Item {
     property string currentInfo:""
     property string currentAlg:""
 
-    property string _backImagePwd:"file:///"+rootPath+"/etc/docroot/www/images/mainpage/"
+    property string _backImagePwd:"file:///"+g_root_path+"/etc/docroot/www/images/mainpage/"
 
     //property string _backImagePwd:"http://localhost:8080/"+"www/images/mainpage/"
 

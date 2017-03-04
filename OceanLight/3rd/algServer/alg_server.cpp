@@ -18,8 +18,8 @@ AlgServer::AlgServer(QObject *parent) : QObject(parent),
 
     m_ptr_ipd_processor = new IPDProcessor();
     m_ptr_vfd_processor = new VFDProcessor();
-    connect(m_ptr_ipd_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_warning_data(QString)));
-    connect(m_ptr_vfd_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_warning_data(QString)));
+    connect(m_ptr_ipd_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_ipd_data(QString)));
+    connect(m_ptr_vfd_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_vfd_data(QString)));
 }
 
 

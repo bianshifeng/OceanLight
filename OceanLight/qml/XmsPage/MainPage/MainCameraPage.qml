@@ -30,12 +30,17 @@ Item {
         target: AlgServer
         onSig_alg_test_data:{
             //id_txt_image.text = message;
-            id_camera.imageCapture.capture()
+            //id_camera.imageCapture.capture()
         }
 
-        onSig_alg_warning_data:{
+        onSig_alg_ipd_data:{
             id_txt_image.text = message;
             id_ipd_listView.appendItem(message)
+        }
+
+        onSig_alg_vfd_data:{
+            id_txt_image.text = message;
+            id_photoPreview.source = "file:///"+g_root_path + "/" + message
         }
     }
 
