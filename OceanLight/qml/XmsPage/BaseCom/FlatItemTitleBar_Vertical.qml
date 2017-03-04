@@ -1,4 +1,4 @@
-import QtQuick 2.7
+﻿import QtQuick 2.7
 import "../../Controls"
 import "../../Fonts"
 import "../../Fonts/XmsIconFont.js" as FontName
@@ -10,6 +10,7 @@ Item{
     width: 48
     implicitHeight: 500
     property color fontColor: UI.COLOR_BASE_WHITE_LIGHT
+    property string tooltip:""
     property alias isChecked:id_main_body.checked
     property alias title:id_title_text.text
     property alias info:id_detail_text.text
@@ -29,6 +30,8 @@ Item{
             anchors.horizontalCenter: parent.horizontalCenter
             size: 20
             text: FontName.ICON_DEVICE_CAMERA
+            tooltip: id_root.tooltip
+
         }
         Column{
             anchors.bottom:  parent.bottom
@@ -37,14 +40,14 @@ Item{
             XmsText{
                 id: id_title_text
                 text:qsTr("NO")
-                font.bold: true
                 size: 12
                 color:id_root.fontColor
                 anchors.horizontalCenter: parent.horizontalCenter
             }
             XmsText{
                 id: id_detail_text
-                size: 10
+                size: 14
+                font.bold: true
                 text:qsTr("12")
                 color:id_root.fontColor
                 anchors.horizontalCenter: parent.horizontalCenter

@@ -5,7 +5,7 @@ Date: 2016.7.23
 */
 #ifndef _IMP_IPD_API_H_
 #define _IMP_IPD_API_H_
-#include "imp_algo_type.h"
+#include "common/imp_algo_type.h"
 #include "imp_ipd_para.h"
 
 #ifdef __cplusplus

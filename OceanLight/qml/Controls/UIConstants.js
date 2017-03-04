@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
@@ -166,6 +166,11 @@ var COLOR_BASE_GREEN_MAIN ="#3D5F44"  //暗绿 3D5F44
 var COLOR_BASE_BLUE_LIGHT ="#2EACF5" //淡Blue
 var COLOR_BASE_BLUE_BASE ="#0064C8" //Blue
 var COLOR_BASE_BLUE_DARK ="#0064C8" //暗Blue
+
+//red
+var COLOR_BASE_RED_LIGHT =Qt.lighter(COLOR_BASE_RED) //淡Blue
+var COLOR_BASE_RED_BASE =COLOR_BASE_RED //Blue
+var COLOR_BASE_RED_DARK =Qt.darker(COLOR_BASE_RED) //暗Blue
 
 //yellow
 var COLOR_BASE_YELLOW_LIGHT ="#BF9852" //淡Blue

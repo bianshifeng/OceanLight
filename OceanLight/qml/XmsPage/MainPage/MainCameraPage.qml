@@ -6,8 +6,13 @@ import "../../Fonts"
 import "../../Fonts/XmsIconFont.js" as FontName
 import "../../Controls/UIConstants.js" as UI
 import "../BaseCom"
+import "../AlgCom"
+import "../../Controls"
 
-import "./CameraCanvas"
+//import "./CameraCanvas"
+//    CanvasFrame{
+//        anchors.fill: parent
+//    }
 
 
 Item {
@@ -24,8 +29,13 @@ Item {
         id: id_cnt
         target: AlgServer
         onSig_alg_test_data:{
-            id_txt_image.text = message;
+            //id_txt_image.text = message;
             id_camera.imageCapture.capture()
+        }
+
+        onSig_alg_warning_data:{
+            id_txt_image.text = message;
+            id_ipd_listView.appendItem(message)
         }
     }
 
@@ -78,9 +88,6 @@ Item {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.margins: 20
-        onSourceChanged: {
-            console.log(id_photoPreview.data)
-        }
 
         MouseArea{
             anchors.fill: parent
@@ -132,21 +139,40 @@ Item {
             width: 100
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            clip: true
             Rectangle{
                 anchors.fill: parent
                 opacity: 0.2
             }
+            IPDListView{
+                id: id_ipd_listView
+                anchors.fill: parent
+            }
+
         }
         FlatItemTitleBar_Vertical{
             id: id_info_ring
             logo: FontName.ICON_ALG_RING
-            logoColor:  UI.COLOR_BASE_YELLOW_BASE
+            logoColor:  id_ipd_listView.alarmCount >0 ? UI.COLOR_BASE_RED_LIGHT:UI.COLOR_BASE_YELLOW_BASE
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            info: id_ipd_listView.alarmCount
             MouseArea{
                 anchors.fill: parent
                 onClicked:id_info_ring.isChecked = id_info_ring.isChecked ? false : true
+
+                FlatButton{
+                    text: "add"
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    onClicked:{
+                        id_ipd_listView.appendItem("{\"name\":\"IPD\",\"status\":\"warning\"}")
+                    }
+                    anchors.centerIn: parent
+                }
             }
+
+
         }
 
         Item{
@@ -206,7 +232,5 @@ Item {
         }
     }
 
-    CanvasFrame{
-        anchors.fill: parent
-    }
+
 }

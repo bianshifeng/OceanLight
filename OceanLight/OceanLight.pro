@@ -11,6 +11,8 @@ DESTDIR = ./Bin/Win32/UnicodeRelease
 QT += qml quick sql quickcontrols2
 QT += widgets core gui multimedia
 
+DEFINES += _WINDOWS
+
 QTPLUGIN += qsqlite
 
 #生成的中间代码
@@ -18,6 +20,13 @@ OBJECTS_DIR += temp/bulid_obj_dir
 MOC_DIR  += temp/bulid_moc_dir
 UI_DIR   += temp/bulid_ui_dir
 RCC_DIR  += temp/bulid_rcc_dir
+
+
+#DISTFILES += \
+#    qml/View.qml \
+#    qml/*.qml \
+#    qml/Utils/*.* \
+
 
 
 

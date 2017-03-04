@@ -13,6 +13,8 @@ SOURCES += \
     $$PWD/algs/xmsalgbase.cpp \
     $$PWD/algs/algcpc.cpp \
     $$PWD/ipcs/xmsipcbase.cpp
+#    $$PWD/common/cbox_allwidget_move_filter.cpp \
+#    $$PWD/quick_qml_widget.cpp
 
 
 HEADERS += \
@@ -25,3 +27,5 @@ HEADERS += \
     $$PWD/algs/xmsalgbase.h \
     $$PWD/algs/algcpc.h \
     $$PWD/ipcs/xmsipcbase.h
+#    $$PWD/common/cbox_allwidget_move_filter.h \
+#    $$PWD/quick_qml_widget.h

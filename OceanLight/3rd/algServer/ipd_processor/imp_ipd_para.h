@@ -1,4 +1,4 @@
-/************************************************************************/
+﻿/************************************************************************/
 /* @File:      imp_ipd_para.h, IPD: Indoor Person Detection
    @Descrip:   Detect Indoor Person, no need detect other object,
         this file will define some user configuration parameter and
@@ -11,7 +11,7 @@
 #ifndef _IMP_IPD_PARA_H_
 #define _IMP_IPD_PARA_H_
 
-#include "imp_algo_type.h"
+#include "common/imp_algo_type.h"
 
 #define TEST_IPD_ADV_PARA  0         /* Test Advanced Parameter */
 

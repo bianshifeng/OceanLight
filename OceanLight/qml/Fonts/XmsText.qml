@@ -1,9 +1,10 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 BaseIcon{
     id: id_root
     property bool rotate:false
     smooth: true
     antialiasing: true
+    elide: Text.ElideRight
     XmsFontLoader{
         id: id_fonter
     }

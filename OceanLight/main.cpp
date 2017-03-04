@@ -64,6 +64,8 @@
 #include "algs/algcpc.h"
 #include "ipcs/xmsipcbase.h"
 
+//#include "common/cbox_allwidget_move_filter.h"
+//#include "quick_qml_widget.h"
 
 
 
@@ -79,8 +81,7 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType<AlgServer>("Xms.Server",1,0,"AlgServer",AlgServer::qml_singleton_provider);
     qmlRegisterType<CameraFilter>("Xms.Server",1,0,"CameraFilter");
 
-    QString rootPath = qApp->applicationDirPath();
-    qDebug()<<rootPath;
+
 
 
     QSettings extraSettings;
@@ -89,27 +90,35 @@ int main(int argc, char *argv[])
     extraSettings.endGroup();
 
 
-    TouchSettings touchSettings;
+
+
+
+//    QuickQmlWidget t_c;
+
+//    CBoxAllWidgetMoveFilter e;
+//    e.startMonitoring();
+
+
+
+
 
     //init view
     QQuickView view;
-//    view.setFormat(format);
+
     view.create();
 
+    TouchSettings touchSettings;
+    QString rootPath = qApp->applicationDirPath();
 
     view.rootContext()->setContextProperty("touchSettings", &touchSettings);
     view.rootContext()->setContextProperty("rootPath",rootPath);
+    view.rootContext()->setContextProperty("g_window",&view);
 
     QApplication::connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
-
-    //QApplication::connect(view.rootContext(),SIGNAL(showFullScreen()),&view,SLOT(showFullScreen()));
     view.setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-
     view.setResizeMode(QQuickView::SizeRootObjectToView);
-    //view.setFlags(Qt::WindowFullscreenButtonHint);
-    //view.setMinimumWidth(516);
-    //view.setPosition(200,100);
     view.showNormal();
+
 
 
     WebServer webServer;

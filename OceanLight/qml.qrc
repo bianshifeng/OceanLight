@@ -74,6 +74,12 @@
         <file>qml/XmsPage/MainPage/CameraAlgInfo.qml</file>
         <file>qml/XmsPage/BaseCom/FlatItemTitleBar_Vertical.qml</file>
         <file>qml/XmsPage/MainPage/MainPricePage.qml</file>
+        <file>qml/XmsPage/AlgCom/IPDListView.qml</file>
+        <file>qml/Utils/Calculations.js</file>
+        <file>qml/Utils/lodash.js</file>
+        <file>qml/Utils/Parser.js</file>
+        <file>qml/Utils/System.js</file>
+        <file>qml/Utils/underscore.js</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/arrow.png</file>

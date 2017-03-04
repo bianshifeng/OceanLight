@@ -7,7 +7,8 @@
 #include <QImage>
 #include <QUrl>
 
-
+class IPDProcessor;
+class VFDProcessor;
 class QVideoFrame;
 class AlgServer : public QObject
 {
@@ -22,24 +23,21 @@ public:
         Q_UNUSED(jsEngine);
         return _instance = new AlgServer();
     }
-
-    Q_INVOKABLE void setCameraImage(const QString& imageUrl);
-
-
 signals:
-
     void sig_alg_test_data(const QString& message);
+    void sig_alg_warning_data(const QString& message);
 
 public slots:
-
-    void setImage(const QImage& image);
-
     void setVideoFrame(const QVideoFrame& frame);
-
+    bool initProcessor(const int &img_width, const int &img_height );
     QImage imageFromVideoFrame(const QVideoFrame& buffer) const;
 
 private:
     explicit AlgServer(QObject *parent = 0);
+
+    IPDProcessor* m_ptr_ipd_processor;
+    VFDProcessor* m_ptr_vfd_processor;
+    bool m_is_processor_init;
 };
 
 #endif // ALG_SERVER_H

@@ -4,10 +4,10 @@
 #include "IMP_Lock.h"
 #include "IMP_Frame.h"
 
-#define DEFAULT_MAX_FRAME_QUEUE_SIZE		15
-#define DEFAULT_MALLOC_WIDTH				1920
-#define DEFAULT_MALLOC_HEIGHT				1080
-#define ALGO_RESULT_DATA_SIZE				1000
+const int DEFAULT_MAX_FRAME_QUEUE_SIZE =15;
+const int DEFAULT_MALLOC_WIDTH	= 1920;
+const int DEFAULT_MALLOC_HEIGHT	= 1080;
+const int ALGO_RESULT_DATA_SIZE	= 1000;
 
 
 class IMP_FrameQueue
@@ -16,6 +16,10 @@ public:
 	IMP_FrameQueue();
     explicit IMP_FrameQueue(int maxQueueSize, int nMallocWidth, int nMallocHeight);
 	~IMP_FrameQueue();
+
+
+    void setMallocWidth(const int &width);
+    void setMallocHeight(const int &height);
 
 	int InitFrameQueue();
 	
@@ -44,7 +48,7 @@ private:
 	volatile int m_queueHead;
 	volatile int m_queueTail;		
 	
-	int m_queueMaxSize;		//队列的最大长度
+    int m_queueMaxSize;		//队列的最大长度
 	int m_nMallocWidth;
 	int m_nMallocHeight;
     int m_nQueueLen;

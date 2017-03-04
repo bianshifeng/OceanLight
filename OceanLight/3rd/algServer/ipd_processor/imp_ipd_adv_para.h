@@ -1,6 +1,6 @@
-#ifndef _IMP_IPD_ADV_PARA_H_
+﻿#ifndef _IMP_IPD_ADV_PARA_H_
 #define _IMP_IPD_ADV_PARA_H_
-#include "imp_algo_type.h"
+#include "common/imp_algo_type.h"
 
 typedef struct impIPD_Adv_Para_S
 {

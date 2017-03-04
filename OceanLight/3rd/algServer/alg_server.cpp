@@ -4,28 +4,54 @@
 #include <QImage>
 #include <QVideoFrame>
 
+
+#include "ipd_processor/ipd_processor.h"
+#include "vfd_processor/vfd_processor.h"
+
 static int c_alg_image_index = 0;
-void AlgServer::setCameraImage(const QString& imageUrl)
-{
-    Q_UNUSED(imageUrl);
 
+AlgServer::AlgServer(QObject *parent) : QObject(parent),
+    m_ptr_ipd_processor(Q_NULLPTR),
+    m_ptr_vfd_processor(Q_NULLPTR),
+    m_is_processor_init(false)
+{
+
+    m_ptr_ipd_processor = new IPDProcessor();
+    m_ptr_vfd_processor = new VFDProcessor();
+    connect(m_ptr_ipd_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_warning_data(QString)));
+    connect(m_ptr_vfd_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_warning_data(QString)));
 }
 
-void AlgServer::setImage(const QImage &image)
+
+bool AlgServer::initProcessor(const int &img_width, const int &img_height)
 {
-    Q_UNUSED(image);
+    m_ptr_ipd_processor->set_video_resolution(img_width,img_height);
+    m_ptr_ipd_processor->initFrameQueue();
+    m_ptr_ipd_processor->start();
 
+    m_ptr_vfd_processor->set_video_resolution(img_width,img_height);
+    m_ptr_vfd_processor->initFrameQueue();
+    m_ptr_vfd_processor->start();
 
+    m_is_processor_init = true;
+    return true;
 }
+
 
 void AlgServer::setVideoFrame(const QVideoFrame &frame)
 {
-
-    //qDebug("w(%d),h(%d) format(%d) used(%d) bits(%d) mapped(%d)\n",frame.width(),frame.height(),frame.pixelFormat(),frame.isValid(),frame.bits(),frame.mappedBytes());
-    c_alg_image_index++;
-    emit sig_alg_test_data(QString::number(c_alg_image_index));
-    imageFromVideoFrame(frame);
+    if(!m_is_processor_init){
+        this->initProcessor(frame.width(),frame.height());
+    }else{
+        m_ptr_ipd_processor->push_video_frame(frame);
+        m_ptr_vfd_processor->push_video_frame(frame);
+        c_alg_image_index++;
+        emit sig_alg_test_data(QString::number(c_alg_image_index));
+    }
 }
+
+
+
 
 QImage AlgServer::imageFromVideoFrame(const QVideoFrame &buffer) const
 {
@@ -63,7 +89,3 @@ QImage AlgServer::imageFromVideoFrame(const QVideoFrame &buffer) const
 
 }
 
-AlgServer::AlgServer(QObject *parent) : QObject(parent)
-{
-
-}

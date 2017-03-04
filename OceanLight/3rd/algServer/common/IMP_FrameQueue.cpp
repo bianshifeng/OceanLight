@@ -5,14 +5,26 @@
 
 
 
-IMP_FrameQueue::IMP_FrameQueue():m_nQueueLen(0), m_peekFlag(0), m_queueHead(0), m_queueTail(0), m_queueMaxSize(DEFAULT_MAX_FRAME_QUEUE_SIZE),
-m_nMallocWidth(DEFAULT_MALLOC_WIDTH), m_nMallocHeight(DEFAULT_MALLOC_HEIGHT)
+IMP_FrameQueue::IMP_FrameQueue():
+    m_nQueueLen(0),
+    m_peekFlag(0),
+    m_queueHead(0),
+    m_queueTail(0),
+    m_queueMaxSize(DEFAULT_MAX_FRAME_QUEUE_SIZE),
+    m_nMallocWidth(DEFAULT_MALLOC_WIDTH),
+    m_nMallocHeight(DEFAULT_MALLOC_HEIGHT)
 {
 
 }
 
-IMP_FrameQueue::IMP_FrameQueue(int maxQueueSize, int nMallocWidth, int nMallocHeight):m_nQueueLen(0), m_peekFlag(0), m_queueHead(0),
-m_queueTail(0), m_queueMaxSize(maxQueueSize), m_nMallocWidth(nMallocWidth), m_nMallocHeight(nMallocHeight)
+IMP_FrameQueue::IMP_FrameQueue(int maxQueueSize, int nMallocWidth, int nMallocHeight):
+    m_nQueueLen(0),
+    m_peekFlag(0),
+    m_queueHead(0),
+    m_queueTail(0),
+    m_queueMaxSize(maxQueueSize),
+    m_nMallocWidth(nMallocWidth),
+    m_nMallocHeight(nMallocHeight)
 {
 
 }
@@ -69,7 +81,19 @@ IMP_FrameQueue::~IMP_FrameQueue()
 		}
 		delete[] m_pArrayFrames;
 		m_pArrayFrames = NULL;
-	}
+    }
+}
+
+void IMP_FrameQueue::setMallocWidth(const int &width)
+{
+    m_nMallocWidth = width;
+
+}
+
+void IMP_FrameQueue::setMallocHeight(const int &height)
+{
+    m_nMallocHeight = height;
+
 }
 
 
