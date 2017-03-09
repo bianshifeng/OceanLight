@@ -2129,6 +2129,9 @@ var color_user_gridView_item_back ="#d9e9f1"
 
 
 //for app
+var app_page_base_color_border = "#000000";
+var app_page_base_color_border_inner = "#3D414A";
+
 var app_url_logo_min = "qrc:/image/src/qml/Images/Pages/TopBarCom/mf_logo.png"
 var app_color_base_page = "#009CE4"
 

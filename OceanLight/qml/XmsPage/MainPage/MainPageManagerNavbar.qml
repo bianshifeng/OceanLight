@@ -49,6 +49,7 @@ Row{
         }
     }
     MainMenuButton{
+        visible: false
         exclusiveGroup: id_group
         width: 120
         height: 34
@@ -64,6 +65,7 @@ Row{
         }
     }
     MainMenuButton{
+        visible: false
         exclusiveGroup: id_group
         width: 120
         height: 34
@@ -78,5 +80,7 @@ Row{
             emitShowHelpPage()
         }
     }
+
+
 
 }

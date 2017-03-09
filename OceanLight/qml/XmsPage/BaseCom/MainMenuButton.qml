@@ -1,10 +1,11 @@
-import QtQuick 2.7
+﻿import QtQuick 2.7
 import "../../Controls"
 import "../../Controls/UIConstants.js" as UI
 
 FlatButton{
     id: id_bt
     property bool isShowLine:false
+    enabled: checked? false : true
     isCheckedBt:true
     foreColor:UI.COLOR_BASE_BLACK_DARK
     hoverColor: UI.COLOR_BASE_BLACK_LIGHT

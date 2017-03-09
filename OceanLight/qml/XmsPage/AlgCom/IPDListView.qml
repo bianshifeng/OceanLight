@@ -37,51 +37,30 @@ Flickable{
 
     Column{
         id: id_container
-        anchors.horizontalCenter: parent.horizontalCenter
         spacing: 3
         Repeater{
             id: id_repeater
             model: id_listModel
-
-            Item{
-
-                width: 100
-                height: 40
-                Rectangle{
-                    anchors.fill: parent
-                    color:UI.COLOR_BASE_YELLOW_DARK
-                }
-
-                Column{
-                    anchors.fill: parent
-                    anchors.margins: 2
-                    spacing: 2
-                    XmsText{
-                        text: itemName
-                        color:UI.COLOR_BASE_WHITE
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                    }
-                    XmsText{
-                        text:itemTime
-                        color:UI.COLOR_BASE_WHITE
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                    }
-                }
+            AlarmItemDelegate{
+                width: id_root.width
+                nameStr: itemName
+                timeStr: itemTime
+                imageUrl: ""
             }
+
         }
+
+        ListModel{
+            id: id_listModel
+            ListElement{
+                itemId:001
+                itemTime:"001"
+                itemName:"sdfsdf"
+            }
+     }
 
     }
 
-    ListModel{
-        id: id_listModel
-        ListElement{
-            itemId:001
-            itemTime:"001"
-            itemName:"sdfsdf"
-        }
-    }
 
     Component.onCompleted: id_listModel.clear()
 

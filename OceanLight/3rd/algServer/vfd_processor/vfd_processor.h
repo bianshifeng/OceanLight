@@ -19,7 +19,7 @@ public:
 
 protected:
     void run();
-    void setEmitVfdData(QString &dataStr);
+    void setEmitVfdData(QJsonObject &dataStr);
 
 signals:
     void sig_alg_result(const QString &algMessage);
@@ -32,6 +32,7 @@ private:
 
     void downSize(IMAGE3_S *pstSrc, IMAGE3_S *pstDst);
     void RGBA2YUV420P(unsigned char *RgbaBuf,int nWidth,int nHeight,unsigned char *yuvBuf);
+    void RGBA2YUV420P_QVideoFrame(unsigned char *RgbaBuf,int nWidth,int nHeight,unsigned char *yuvBuf);
 
 
 };

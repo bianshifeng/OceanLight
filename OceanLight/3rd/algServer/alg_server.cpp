@@ -25,15 +25,26 @@ AlgServer::AlgServer(QObject *parent) : QObject(parent),
 
 bool AlgServer::initProcessor(const int &img_width, const int &img_height)
 {
-    m_ptr_ipd_processor->set_video_resolution(img_width,img_height);
-    m_ptr_ipd_processor->initFrameQueue();
-    m_ptr_ipd_processor->start();
+    if(m_ptr_ipd_processor)
+    {
+        m_ptr_ipd_processor->set_video_resolution(img_width,img_height);
+        m_ptr_ipd_processor->initFrameQueue();
+        m_ptr_ipd_processor->start();
+        m_is_processor_init = true;
 
-    m_ptr_vfd_processor->set_video_resolution(img_width,img_height);
-    m_ptr_vfd_processor->initFrameQueue();
-    m_ptr_vfd_processor->start();
+    }
 
-    m_is_processor_init = true;
+
+    if(m_ptr_vfd_processor)
+    {
+        m_ptr_vfd_processor->set_video_resolution(img_width,img_height);
+        m_ptr_vfd_processor->initFrameQueue();
+        m_ptr_vfd_processor->start();
+        m_is_processor_init = true;
+    }
+
+
+
     return true;
 }
 
@@ -43,8 +54,15 @@ void AlgServer::setVideoFrame(const QVideoFrame &frame)
     if(!m_is_processor_init){
         this->initProcessor(frame.width(),frame.height());
     }else{
-        m_ptr_ipd_processor->push_video_frame(frame);
-        m_ptr_vfd_processor->push_video_frame(frame);
+        if(m_ptr_ipd_processor)
+        {
+            m_ptr_ipd_processor->push_video_frame(frame);
+        }
+        if(m_ptr_vfd_processor)
+        {
+            m_ptr_vfd_processor->push_video_frame(frame);
+        }
+
         c_alg_image_index++;
         emit sig_alg_test_data(QString::number(c_alg_image_index));
     }

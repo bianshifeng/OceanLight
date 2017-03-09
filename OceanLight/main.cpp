@@ -81,26 +81,15 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType<AlgServer>("Xms.Server",1,0,"AlgServer",AlgServer::qml_singleton_provider);
     qmlRegisterType<CameraFilter>("Xms.Server",1,0,"CameraFilter");
 
-
-
-
     QSettings extraSettings;
     extraSettings.beginGroup("CPP");
     extraSettings.setValue("cppSettings", "this is cpp settings");
     extraSettings.endGroup();
 
-
-
-
-
 //    QuickQmlWidget t_c;
 
 //    CBoxAllWidgetMoveFilter e;
 //    e.startMonitoring();
-
-
-
-
 
     //init view
     QQuickView view;
@@ -117,9 +106,9 @@ int main(int argc, char *argv[])
     QApplication::connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
     view.setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     view.setResizeMode(QQuickView::SizeRootObjectToView);
+    view.setFlags(Qt::CustomizeWindowHint|Qt::WindowMinimizeButtonHint);
     view.showNormal();
-
-
+    view.setPosition(200,200);
 
     WebServer webServer;
     return app.exec();

@@ -1,8 +1,14 @@
 ﻿#include <QDebug>
 #include <QJsonObject>
+#include <QJsonDocument>
+#include <iostream>
+#include <QImage>
+#include <QApplication>
 #include "vfd_processor.h"
 #include "imp_vfd_api.h"
 using namespace std;
+
+static int RESULT_COUNT = 0;
 
 typedef struct face_path
 {
@@ -64,8 +70,8 @@ void VFDProcessor::push_video_frame(const QVideoFrame &videoFrame)
 
 void VFDProcessor::run()
 {
-    IMP_S32 width = 960;
-    IMP_S32 height = 540;
+    IMP_S32 width = this->videoWidth;
+    IMP_S32 height = this->videoHeight;
     IMP_HANDLE handle;
     handle = IMP_VFD_Create(width, height);
     IMP_VFD_RESULT_S stResult;
@@ -105,6 +111,11 @@ void VFDProcessor::run()
     int frame_count = 0,ipd_count = 0, isWarning = 0;
     FACEPATH face_path[IMP_VFD_MAX_FACE_NUMBER];
     memset(face_path, 0, sizeof(FACEPATH)*IMP_VFD_MAX_FACE_NUMBER);
+
+    #define F_PATH "g:\\960x540.yuv"
+//    FILE *fp = NULL;
+//    fp = fopen(F_PATH,"wb");
+
     while(!stopped)
     {
         m_frame_queue->PeekFrame(&frame);
@@ -113,62 +124,92 @@ void VFDProcessor::run()
             usleep(100000);
             continue;
         }
-        IMP_U8 *tmpMem = (IMP_U8*)malloc(sizeof(IMP_U8)*frame->nWidth*frame->nHeight*1.5);
-        this->RGBA2YUV420P(frame->pu8D1,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
+        this->RGBA2YUV420P_QVideoFrame(frame->pu8D1,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
         this->downSize(&tmpImage,&image);
-        //QVideoFrame *tmp = new QVideoFrame();
-        //QVideoFrame::
+
         IMP_VFD_Process(handle,&image);
         IMP_VFD_GetResult(handle,&stResult);
         if(stResult.s32Facenumber > 0)
         {
+
             int tmpSizeTimes = frame->nWidth/width;
             for(int i = 0; i < stResult.s32Facenumber; i ++)
             {
+
                 int flag_isExist = 0;
                 for(int j = 0; j < IMP_VFD_MAX_FACE_NUMBER; j ++)
                 {
-                    if(face_path[i].isUsed == 1 && face_path[i].ID == stResult.stFace[i].u32FaceID)
+                    if(face_path[j].isUsed == 1 && face_path[j].ID == stResult.stFace[i].u32FaceID)
                         flag_isExist = 1;
                 }
                 if(0 == flag_isExist)
                 {
-                    qDebug()<<"face++";
+
                     int startX = stResult.stFace[i].stPosition.s16X1 * tmpSizeTimes;
+                    int endX = stResult.stFace[i].stPosition.s16X2 * tmpSizeTimes;
                     int startY = stResult.stFace[i].stPosition.s16Y1 * tmpSizeTimes;
                     int endY = stResult.stFace[i].stPosition.s16Y2 * tmpSizeTimes;
                     int faceW = (stResult.stFace[i].stPosition.s16X2 - stResult.stFace[i].stPosition.s16X1) * tmpSizeTimes;
                     int faceH = (stResult.stFace[i].stPosition.s16Y2 - stResult.stFace[i].stPosition.s16Y1) * tmpSizeTimes;
                     uchar *tmpM = (uchar*)malloc(sizeof(int)*faceW*faceH);
                     uchar *tmpN = tmpM;
-                    for(int j = startY; j < endY; j ++)
+                    tmpN = tmpM + (sizeof(int)*(faceW*faceH - 1));
+                    /*for(int j = startY; j < endY; j ++)
                     {
                         memcpy(tmpM,frame->pu8D1 + j * frame->nWidth * sizeof(int) + startX * sizeof(int),faceW * sizeof(int));
                         tmpM += faceW * sizeof(int);
+                    }*/
+                    for(int j = frame->nHeight - endY; j < frame->nHeight - startY; j ++)
+                    {
+                        //memcpy(tmpM,frame->pu8D1 + j * frame->nWidth * sizeof(int) + (frame->nWidth - endX) * sizeof(int),faceW * sizeof(int));
+                        //tmpM += faceW * sizeof(int);
+                        for(int m = frame->nWidth - endX; m < frame->nWidth - startX; m ++)
+                        {
+                            memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int),sizeof(int));
+                            tmpN -= sizeof(int);
+                            /*memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int),sizeof(uchar));
+                            tmpN--;
+                            memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int) + sizeof(uchar),sizeof(uchar));
+                            tmpN--;
+                            memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int) + sizeof(uchar) * 2,sizeof(uchar));
+                            tmpN--;
+                            memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int) + sizeof(uchar) * 3,sizeof(uchar));
+                            tmpN--;*/
+                        }
                     }
-                    tmpM = tmpN;
-                    QImage *tmpQ = new QImage(tmpM,faceW,faceH,QImage::Format_RGB32);
+                    //tmpM = tmpN;
                     QString tmpID = QString::number(stResult.stFace[i].u32FaceID,10);
                     QString tmpPath("face");
                     tmpPath.append("_");
                     tmpPath.append(tmpID);
-
                     if(stResult.stFace[i].faceQA == 1)
                     {
                         tmpPath.append("_QA");
                     }
-                    else
+                    else{
                         tmpPath.append("_common");
-                    tmpPath.append(".jpg");
-                    tmpQ->save(tmpPath);
-                    this->setEmitVfdData(tmpPath);
+                    }
+                    tmpPath.append(".png");
+
+
+                    QString abs_path = qApp->applicationDirPath();
+                    QImage t_face_image(tmpM,faceW,faceH,QImage::Format_RGB32);
+                    abs_path = abs_path.append("/").append(tmpPath);
+                    t_face_image.save(abs_path,"PNG");
+
+                    QJsonObject json;
+                    json.insert("name",QString("VFD"));
+                    json.insert("imageUrl",abs_path);
+                    qDebug() << "face++ " << QString::number(RESULT_COUNT++);
+
+                    this->setEmitVfdData(json);
                     for(int j = 0; j < IMP_VFD_MAX_FACE_NUMBER; j ++)
                     {
-                        if(face_path[i].isUsed == 0)
+                        if(face_path[j].isUsed == 0)
                         {
-                            face_path[i].isUsed = 1;
-                            face_path[i].ID = stResult.stFace[i].u32FaceID;
-                            face_path[i].isQA = stResult.stFace[i].faceQA;
+                            face_path[j].isUsed = 1;
+                            face_path[j].ID = stResult.stFace[i].u32FaceID;
+                            face_path[j].isQA = stResult.stFace[i].faceQA;
                             //face_path[i].path = tmpPath;
                             break;
                         }
@@ -177,14 +218,19 @@ void VFDProcessor::run()
                 }
             }
         }
-        qDebug()<<"res";
         m_frame_queue->RemoveFrame();
         usleep(100000);
     }
+
+//    fclose(fp);//关闭文件
+//    fp=NULL;//需要指向空，否则会指向原打开文件地址
+
     IMP_VFD_Release(&handle);
     free(image.pu8D1);
     free(tmpImage.pu8D1);
     stopped = false;
+
+    qDebug() << "exit vfd workder";
 }
 
 void VFDProcessor::stop()
@@ -192,10 +238,9 @@ void VFDProcessor::stop()
     stopped = true;
 }
 
-void VFDProcessor::setEmitVfdData(QString &dataStr)
+void VFDProcessor::setEmitVfdData(QJsonObject &dataStr)
 {
-    qDebug() << dataStr;
-    emit sig_alg_result(dataStr);
+    emit sig_alg_result(QString(QJsonDocument(dataStr).toJson()));
 }
 
 void VFDProcessor::downSize(IMAGE3_S *pstSrc, IMAGE3_S *pstDst)
@@ -333,6 +378,68 @@ void VFDProcessor::RGBA2YUV420P(unsigned char *RgbaBuf,int nWidth,int nHeight,un
                         v = 0;
                     }
                     *(bufV++) =v;
+                }
+            }
+        }
+    }
+}
+
+void VFDProcessor::RGBA2YUV420P_QVideoFrame(unsigned char *RgbaBuf, int nWidth, int nHeight, unsigned char *yuvBuf)
+{
+    int i,j,pos;
+    unsigned char*bufY,*bufU,*bufV,*bufRGBA,*bufYuv;
+    unsigned char y,u,v,r,g,b,a,testu,testv;
+    unsigned int ylen = nWidth * nHeight;
+    unsigned int ulen = (nWidth * nHeight)/4;
+    unsigned int vlen = (nWidth * nHeight)/4;
+    bufY = yuvBuf + nWidth * nHeight - 1;
+    bufV = yuvBuf + nWidth * nHeight + (nWidth * nHeight* 1/4) - 1;
+    bufU = yuvBuf + (nWidth * nHeight* 3/2) - 1;
+
+
+
+    for (j = 0; j<nHeight;j++)
+    {
+        bufRGBA = RgbaBuf + nWidth * j * 4 ;
+        for (i = 0;i<nWidth;i++)
+        {
+            pos = nWidth * i + j;
+
+            r = *(bufRGBA++);
+            g = *(bufRGBA++);
+            b = *(bufRGBA++);
+            a = *(bufRGBA++);
+
+            y = (unsigned char)( ( 66 * r + 129 * g +  25 * b + 128) >> 8) + 16  ;
+            u = (unsigned char)( ( -38 * r -  74 * g + 112 * b + 128) >> 8) + 128 ;
+            v = (unsigned char)( ( 112 * r -  94 * g -  18 * b + 128) >> 8) + 128 ;
+            *(bufY--) = max( 0, min(y, 255 ));
+
+            if (j%2==0&&i%2 ==0)
+            {
+                if (u>255)
+                {
+                    u =	255;
+                }
+                if (u<0)
+                {
+                    u = 0;
+                }
+                *(bufU--) =u;
+            }
+            else
+            {
+                if (i%2==0)
+                {
+                    if (v>255)
+                    {
+                        v = 255;
+                    }
+                    if (v<0)
+                    {
+                        v = 0;
+                    }
+                    *(bufV--) =v;
                 }
             }
         }

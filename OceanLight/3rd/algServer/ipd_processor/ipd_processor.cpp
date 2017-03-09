@@ -102,7 +102,6 @@ void IPDProcessor::run()
             usleep(100000);
             continue;
         }
-        IMP_U8 *tmpMem = (IMP_U8*)malloc(sizeof(IMP_U8)*frame->nWidth*frame->nHeight*1.5);
         this->RGBA2YUV420P(frame->pu8D1,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
         this->downSize(&tmpImage,&image);
         IMP_IPD_Process(handle,&image,NULL,&stResult);
@@ -150,7 +149,6 @@ void IPDProcessor::stop()
 
 void IPDProcessor::setEmitIpdData(QJsonObject &dataStr)
 {
-    qDebug() << dataStr;
 
     emit sig_alg_result(QString(QJsonDocument(dataStr).toJson()));
 }

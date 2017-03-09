@@ -34,13 +34,11 @@ Item {
         }
 
         onSig_alg_ipd_data:{
-            id_txt_image.text = message;
             id_ipd_listView.appendItem(message)
         }
 
         onSig_alg_vfd_data:{
-            id_txt_image.text = message;
-            id_photoPreview.source = "file:///"+g_root_path + "/" + message
+            id_vfd_listView.appendItem(message)
         }
     }
 
@@ -78,13 +76,7 @@ Item {
         focus : visible // to receive focus and capture key events when visible
         filters: [id_cameraFilter]
     }
-    Rectangle{
-        anchors.fill: id_photoPreview
-        border.color: "white"
-        border.width: 2
-        color:UI.COLOR_BASE_TRANSPARENT
-        anchors.margins: -2
-    }
+
 
     Image {
         id: id_photoPreview
@@ -93,6 +85,7 @@ Item {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.margins: 20
+        visible: false
 
         MouseArea{
             anchors.fill: parent
@@ -113,35 +106,16 @@ Item {
 
     Row{
         id: id_alg_message
-        spacing: 2
+        spacing: 1
         anchors.right:  parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.margins: 2
-        Item{
-            visible: id_info_pea.isChecked
-            width: 100
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            Rectangle{
-                anchors.fill: parent
-                opacity: 0.2
-            }
-        }
-        FlatItemTitleBar_Vertical{
-            id: id_info_pea
-            logo: FontName.ICON_ALG_PEA
-            logoColor:  UI.COLOR_BASE_YELLOW_BASE
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            MouseArea{
-                anchors.fill: parent
-                onClicked:id_info_pea.isChecked = id_info_pea.isChecked ? false : true
-            }
-        }
+
+        // alg ipd
         Item{
             visible: id_info_ring.isChecked
-            width: 100
+            width: 200
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             clip: true
@@ -168,6 +142,7 @@ Item {
 
                 FlatButton{
                     text: "add"
+                    visible: false
                     anchors.left: parent.left
                     anchors.right: parent.right
                     onClicked:{
@@ -180,6 +155,7 @@ Item {
 
         }
 
+        //alg vfd
         Item{
             visible: id_info_face.isChecked
             width: 200
@@ -191,42 +167,17 @@ Item {
                 opacity: 0.2
             }
 
-            Flickable{
+            VFDListView{
+                id: id_vfd_listView
                 anchors.fill: parent
-                contentHeight: id_container.height
-
-                Column{
-                    id: id_container
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 20
-                    Repeater{
-                        model: 20
-                        Image{
-                            width: 160
-                            height: 120
-
-                            source: id_photoPreview.source
-
-                            XmsText{
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                anchors.bottom: parent.bottom
-                                anchors.bottomMargin:- contentHeight - 2
-                                color:UI.COLOR_BASE_WHITE
-
-                                text:"bianshifeng"
-                            }
-                        }
-
-                    }
-                }
             }
         }
-
         FlatItemTitleBar_Vertical{
             id: id_info_face
             logo: FontName.ICON_ALG_FACE
 
             logoColor:  UI.COLOR_BASE_YELLOW_BASE
+            info: id_vfd_listView.alarmCount
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             MouseArea{

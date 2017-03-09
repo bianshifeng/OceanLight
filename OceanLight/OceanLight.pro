@@ -4,7 +4,13 @@ TARGET = Ocean
 VERSION = 1.0.0
 
 #程序编译发布路径
-DESTDIR = ./Bin/Win32/UnicodeRelease
+
+
+win32:CONFIG(release, debug|release){
+    DESTDIR = ./Bin/Win32/UnicodeRelease
+}else:win32:CONFIG(debug, debug|release){
+    DESTDIR = ./Bin/Win32/UnicodeDebug
+}
 
 
 
