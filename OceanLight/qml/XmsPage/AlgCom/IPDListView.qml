@@ -3,6 +3,7 @@ import "../../Controls/UIConstants.js" as UI
 import "../../Controls"
 import "../../Fonts"
 import "../../Utils/Calculations.js" as Utils
+import QtQuick.Controls 1.2
 
 
 Flickable{
@@ -20,11 +21,13 @@ Flickable{
             var t_no  = id_listModel.count + 1
             var t_time =Utils.timeToDate(Date.now(),"HH:mm:ss")
             var t_name = t_json.name
+            var t_imageUrl = "file:///"+t_json.imageUrl
 
             var t_obj = {
                 itemId:t_no,
                 itemTime:t_time,
-                itemName:t_name
+                itemName:t_name,
+                itemImageUrl:t_imageUrl
             }
 
             id_listModel.insert(0,t_obj)
@@ -35,17 +38,30 @@ Flickable{
 
     }
 
+
+
+    signal emitShowDetailInfo(var nameStr,var imageUrl,var timeStr)
+
     Column{
         id: id_container
         spacing: 3
+        ExclusiveGroup{
+            id: id_itemGroup
+        }
+
         Repeater{
             id: id_repeater
             model: id_listModel
             AlarmItemDelegate{
+
+                exclusiveGroup: id_itemGroup
                 width: id_root.width
                 nameStr: itemName
                 timeStr: itemTime
-                imageUrl: ""
+                imageUrl: itemImageUrl
+                onEmitClick: {
+                    emitShowDetailInfo(nameStr,imageUrl,timeStr)
+                }
             }
 
         }
@@ -56,6 +72,7 @@ Flickable{
                 itemId:001
                 itemTime:"001"
                 itemName:"sdfsdf"
+                itemImageUrl:""
             }
      }
 

@@ -20,6 +20,8 @@ Item{
     property alias hoverColor:id_back.hoverColor
     property alias selectColor:id_back.selectColor
 
+    property alias exclusiveGroup: id_back.exclusiveGroup
+
     state: "normal"
     signal clicked()
     ControlCard {

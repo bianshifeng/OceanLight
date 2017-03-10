@@ -1,4 +1,4 @@
-import QtQuick 2.4
+﻿import QtQuick 2.4
 import "../Controls/UIConstants.js" as UI
 import "../Fonts/XmsIconFont.js" as FontName
 import "../Fonts"
@@ -46,7 +46,7 @@ ControlCard{
 
             onClicked: {
                 if(isCheckedBt){
-                    id_root.checked = true
+                    id_root.checked = !id_root.checked
                 }else{
                     id_root.checked = false
                 }

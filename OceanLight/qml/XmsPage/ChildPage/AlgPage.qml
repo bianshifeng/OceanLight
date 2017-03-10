@@ -1,6 +1,8 @@
 ﻿import QtQuick 2.6
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
+import Xms.Server 1.0
+
 import "../../Controls"
 import "../../Fonts"
 import "../BaseCom"
@@ -8,17 +10,14 @@ import "../../Controls/UIConstants.js" as UI
 import "../../Services"
 import "../../Fonts/XmsIconFont.js" as FontName
 import "./AlgPage/CPCPage"
-import Xms.Alg 1.0
+import "../AlgCom"
+
 
 Flickable {
     id: id_root
     property string algId:"bianshifeng"
     contentHeight: id_container.height
 
-    AlgCPC{
-        id: id_alg
-
-    }
     GridLayout{
         id: id_container
         width: parent.width
@@ -57,103 +56,54 @@ Flickable {
             }
 
         }
-        FlatItemTitleBar{
-            logo: FontName.ICON_ALG_CPC
-            title:qsTr("人数统计算法001")
-            info: "算法id：001；配置时间：2016-12-09；参数信息如下："
+
+        AlgConfigCom{
+            id: id_config_ipd
             Layout.columnSpan: id_container.columns
             Layout.fillWidth: true
             Layout.preferredHeight: height
 
-            Row{
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.right: parent.right
-                spacing: 2
-                FlatButton{
-                    id: id_bt_getconfig
-                    height: parent.height
-                    width: 70
-                    hideTextWidth: 70
-                    icon:FontName.ICON_ACTION_DETAIL
-                    normalColor: UI.COLOR_BASE_WHITE
-                    text: qsTr("查看")
-                    onClicked: {
-                        id_algWorker.getAlgConfig()
-                    }
-                }
-                FlatButton{
-                    id: id_bt_saveConfig
-                    height: parent.height
-                    width: 70
-                    hideTextWidth: 70
-                    icon:FontName.ICON_ACTION_SAVE
-                    normalColor: UI.COLOR_BASE_WHITE
-                    text: qsTr("保存")
-                    onClicked: {
-                        id_algWorker.setAlgConfig()
-                    }
-                }
-                FlatButton{
-                    id: id_bt_deleteConfig
-                    height: parent.height
-                    width: 70
-                    hideTextWidth: 70
-                    icon:FontName.ICON_ACTION_DELETE
-                    normalColor: UI.COLOR_BASE_WHITE
-                    foreColor:UI.COLOR_BASE_RED
+            algLogo: FontName.ICON_ALG_RING
+            algTitle: "IPD - Interact pretect detect."
+            algInfo: "This alg is for record the camera active people"
+            onAlgIsActiveChanged: {
+                AlgServer.setIsIpdActive(algIsActive)
+            }
 
-                    text: qsTr("删除")
-                }
-
+            Component.onCompleted: {
+                id_config_ipd.algIsActive = AlgServer.isIpdActive
             }
 
         }
-        FlatCheckButton{
-            title: qsTr("获取算法参数")
-            Layout.fillWidth: true
-            onClicked: {
-                id_algWorker.getAlgConfig()
-            }
-        }
-        FlatCheckButton{
-            title: qsTr("修改算法参数")
-            Layout.fillWidth: true
-            onClicked: {
-                id_algWorker.setAlgConfig()
-            }
-        }
-        FlatCheckButton{
-            title: qsTr("启动算法")
-            Layout.fillWidth: true
-            onClicked: {
-                id_algWorker.startAlg()
-            }
-        }
-        FlatCheckButton{
-            title: qsTr("停止算法")
-            Layout.fillWidth: true
-            onClicked: {
-                id_algWorker.stopAlg()
-            }
-        }
-
-        FlatLevelSelectCtrl{
-            title: qsTr("miangandu")
-            detail: qsTr("the density is for alg no")
-            Layout.fillWidth: true
-        }
-
-        DrawAlgParamCom{
+        AlgConfigCom{
+            id: id_config_vfd
             Layout.columnSpan: id_container.columns
             Layout.fillWidth: true
-            Layout.fillHeight: true
+            Layout.preferredHeight: height
+
+            algLogo: FontName.ICON_ALG_PEA
+            algTitle: "VFD - Interact pretect detect."
+            algInfo: "This alg is for record the camera active people"
+            onAlgIsActiveChanged: {
+                AlgServer.setIsVfdActive(algIsActive)
+            }
+
+            Component.onCompleted: {
+                id_config_vfd.algIsActive = AlgServer.isVfdActive
+            }
+
+
         }
+        AlgConfigCom{
+            id: id_config_pfr
+            Layout.columnSpan: id_container.columns
+            Layout.fillWidth: true
+            Layout.preferredHeight: height
 
-
-
-
-
+            algLogo: FontName.ICON_ALG_FACE
+            algTitle: "PFR - Interact pretect detect."
+            algInfo: "This alg is for record the camera active people"
+        }
     }
 
 

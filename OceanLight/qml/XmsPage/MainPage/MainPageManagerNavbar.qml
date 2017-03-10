@@ -26,7 +26,7 @@ Row{
         sizeIcon: 14
         icon: FontName.ICON_BASE_HOME
         isShowLine: true
-        text: qsTr("首页")
+        text: qsTr("HOME")
         foreColor: UI.COLOR_BASE_WHITE_BASE
         hoverColor: UI.COLOR_BASE_ORANGE
         onClicked: {
@@ -41,7 +41,7 @@ Row{
         sizeIcon: 14
         icon: FontName.ICON_ALG_SPY
         isShowLine: true
-        text: qsTr("监控")
+        text: qsTr("MONITOR")
         foreColor: UI.COLOR_BASE_WHITE_BASE
         hoverColor: UI.COLOR_BASE_ORANGE
         onClicked: {
@@ -57,7 +57,7 @@ Row{
         sizeIcon: 14
         icon: FontName.ICON_BASE_CHARTBAR
         isShowLine: true
-        text: qsTr("报价")
+        text: qsTr("PRICE")
         foreColor: UI.COLOR_BASE_WHITE_BASE
         hoverColor: UI.COLOR_BASE_ORANGE
         onClicked: {
@@ -73,7 +73,7 @@ Row{
         sizeIcon: 14
         icon: FontName.ICON_BASE_PEOPLE
         isShowLine: true
-        text: qsTr("帮助")
+        text: qsTr("HELP")
         foreColor: UI.COLOR_BASE_WHITE_BASE
         hoverColor: UI.COLOR_BASE_ORANGE
         onClicked: {

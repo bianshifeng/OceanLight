@@ -56,6 +56,7 @@ import "./Models"
 import "./UserControls"
 import "./XmsPage/ChildPage"
 import "./XmsPage/MainPage"
+import Xms.Server 1.0
 
 AppWindow {
     id: id_app_window
@@ -231,5 +232,7 @@ AppWindow {
 
     Component.onCompleted: {
         isHoverEnabled = touchSettings.isHoverEnabled()
+
+        console.log(AlgServer.Alg_IPD);
     }
 }

@@ -5,6 +5,7 @@ BaseIcon{
     smooth: true
     antialiasing: true
     elide: Text.ElideRight
+    color:"white"
     XmsFontLoader{
         id: id_fonter
     }

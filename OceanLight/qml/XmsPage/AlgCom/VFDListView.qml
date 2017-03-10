@@ -31,6 +31,8 @@ Flickable{
 
     }
 
+    signal emitShowDetailInfo(var nameStr,var imageUrl,var timeStr)
+
     Column{
         id: id_container
         spacing: 3
@@ -42,6 +44,9 @@ Flickable{
                 nameStr: itemName
                 timeStr: itemTime
                 imageUrl: itemImageUrl
+                onEmitClick: {
+                    emitShowDetailInfo(nameStr,imageUrl,timeStr)
+                }
             }
         }
         ListModel{

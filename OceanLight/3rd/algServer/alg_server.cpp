@@ -13,97 +13,106 @@ static int c_alg_image_index = 0;
 AlgServer::AlgServer(QObject *parent) : QObject(parent),
     m_ptr_ipd_processor(Q_NULLPTR),
     m_ptr_vfd_processor(Q_NULLPTR),
-    m_is_processor_init(false)
+    m_is_processor_init(false),
+    m_isIpdActive(false),
+    m_isVfdActive(false)
 {
 
-    m_ptr_ipd_processor = new IPDProcessor();
-    m_ptr_vfd_processor = new VFDProcessor();
-    connect(m_ptr_ipd_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_ipd_data(QString)));
-    connect(m_ptr_vfd_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_vfd_data(QString)));
+    this->add_ipd_processor();
+    this->add_vfd_processor();
+
 }
 
-
-bool AlgServer::initProcessor(const int &img_width, const int &img_height)
+bool AlgServer::isIpdActive() const
 {
-    if(m_ptr_ipd_processor)
-    {
-        m_ptr_ipd_processor->set_video_resolution(img_width,img_height);
-        m_ptr_ipd_processor->initFrameQueue();
-        m_ptr_ipd_processor->start();
-        m_is_processor_init = true;
+    return m_isIpdActive;
+}
 
-    }
-
-
-    if(m_ptr_vfd_processor)
-    {
-        m_ptr_vfd_processor->set_video_resolution(img_width,img_height);
-        m_ptr_vfd_processor->initFrameQueue();
-        m_ptr_vfd_processor->start();
-        m_is_processor_init = true;
-    }
-
-
-
-    return true;
+bool AlgServer::isVfdActive() const
+{
+    return m_isVfdActive;
 }
 
 
 void AlgServer::setVideoFrame(const QVideoFrame &frame)
 {
-    if(!m_is_processor_init){
-        this->initProcessor(frame.width(),frame.height());
-    }else{
-        if(m_ptr_ipd_processor)
-        {
-            m_ptr_ipd_processor->push_video_frame(frame);
-        }
-        if(m_ptr_vfd_processor)
-        {
-            m_ptr_vfd_processor->push_video_frame(frame);
-        }
-
-        c_alg_image_index++;
-        emit sig_alg_test_data(QString::number(c_alg_image_index));
-    }
+    if(m_ptr_ipd_processor){this->push_ipd_videoFrame(frame);}
+    if(m_ptr_vfd_processor){this->push_vfd_videoFrame(frame);}
 }
 
 
-
-
-QImage AlgServer::imageFromVideoFrame(const QVideoFrame &buffer) const
+void AlgServer::add_ipd_processor()
 {
-    QImage img;
-    QVideoFrame frame(buffer);  // make a copy we can call map (non-const) on
-    frame.map(QAbstractVideoBuffer::ReadOnly);
+    if(m_ptr_ipd_processor == Q_NULLPTR){
+        m_ptr_ipd_processor = new IPDProcessor();
+        connect(m_ptr_ipd_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_ipd_data(QString)));
+    }
+}
+
+void AlgServer::setIsIpdActive(bool isIpdActive)
+{
+    if (m_isIpdActive == isIpdActive)
+        return;
+
+    m_isIpdActive = isIpdActive;
+
+    if(m_isIpdActive){
+        m_ptr_ipd_processor->startProcessor();
+    }else{
+        m_ptr_ipd_processor->stop();
+    }
+    emit isIpdActiveChanged(isIpdActive);
+}
 
 
-    QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(
-                frame.pixelFormat());
-    // BUT the frame.pixelFormat() is QVideoFrame::Format_Jpeg, and this is
-    // mapped to QImage::Format_Invalid by
-    // QVideoFrame::imageFormatFromPixelFormat
-    if (imageFormat != QImage::Format_Invalid) {
-        img = QImage(frame.bits(),
-                     frame.width(),
-                     frame.height(),
-                     // frame.bytesPerLine(),
-                     imageFormat);
+void AlgServer::push_ipd_videoFrame(const QVideoFrame &frame)
+{
 
-
-
-        //img.save(QString::number(c_alg_image_index).append(".png"));
-    } else {
-        // e.g. JPEG
-        int nbytes = frame.mappedBytes();
-        img = QImage::fromData(frame.bits(), nbytes);
-        //img.save("456.png");
+    if(!m_ptr_ipd_processor->is_processor_init){
+        m_ptr_ipd_processor->initFrameQueue(frame.width(),frame.height());
+    }
+    if(m_isIpdActive){
+            m_ptr_ipd_processor->push_video_frame(frame);
     }
 
 
+}
 
-    frame.unmap();
-    return img;
+void AlgServer::add_vfd_processor()
+{
+    if(m_ptr_vfd_processor == Q_NULLPTR){
+        m_ptr_vfd_processor = new VFDProcessor();
+        connect(m_ptr_vfd_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_vfd_data(QString)));
+    }
 
 }
+void AlgServer::setIsVfdActive(bool isVfdActive)
+{
+    if (m_isVfdActive == isVfdActive)
+        return;
+
+    m_isVfdActive = isVfdActive;
+
+    if(m_isVfdActive){
+        m_ptr_vfd_processor->startProcessor();
+    }else{
+        m_ptr_vfd_processor->stop();
+    }
+    emit isVfdActiveChanged(isVfdActive);
+}
+
+void AlgServer::push_vfd_videoFrame(const QVideoFrame &frame)
+{
+    if(!m_is_processor_init){
+        m_ptr_vfd_processor->set_video_resolution(frame.width(),frame.height());
+        m_ptr_vfd_processor->initFrameQueue();
+        m_is_processor_init = true;
+
+    }
+
+    if(m_isVfdActive){
+        m_ptr_vfd_processor->push_video_frame(frame);
+    }
+}
+
 

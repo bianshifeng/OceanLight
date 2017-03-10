@@ -87,6 +87,8 @@
         <file>qml/Controls/XmsScrollView.qml</file>
         <file>qml/Controls/Styles/XmsScrollViewStyle.qml</file>
         <file>qml/XmsPage/AlgCom/AlarmItemDelegate.qml</file>
+        <file>qml/XmsPage/ChildPage/PageImageShow.qml</file>
+        <file>qml/XmsPage/AlgCom/AlgConfigCom.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/arrow.png</file>
@@ -95,5 +97,6 @@
         <file>images/arrow.png</file>
         <file>images/base/borderback.png</file>
         <file>images/mainpage/albumcover.png</file>
+        <file>images/bs_logo.ico</file>
     </qresource>
 </RCC>

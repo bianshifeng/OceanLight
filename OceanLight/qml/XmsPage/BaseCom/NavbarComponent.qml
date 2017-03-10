@@ -106,31 +106,31 @@ FocusScope{
         id: id_menuList
         ListElement{
             itemName:"camera"
-            itemTitle:"相机"
+            itemTitle:"Camera"
             itemIcon:"\u00cd"
             pageSource:"qrc:/qml/XmsPage/ChildPage/CameraPage.qml"
         }
         ListElement{
             itemName:"alg"
-            itemTitle:"算法"
+            itemTitle:"Algorithm"
             itemIcon:"\u0091"
             pageSource:"qrc:/qml/XmsPage/ChildPage/AlgPage.qml"
         }
         ListElement{
             itemName:"alram"
-            itemTitle:"告警"
+            itemTitle:"Alarm"
             itemIcon:"\u00c0"
             pageSource:"qrc:/qml/XmsPage/ChildPage/SettingPage.qml"
         }
         ListElement{
             itemName:"video"
-            itemTitle:"视频"
+            itemTitle:"Video"
             itemIcon:"\u00c4";
             pageSource:"qrc:/qml/XmsPage/ChildPage/AlgPage.qml"
         }
         ListElement{
             itemName:"setting"
-            itemTitle:"设置"
+            itemTitle:"Setting"
             itemIcon:"\u00c6"
             pageSource:"qrc:/qml/XmsPage/ChildPage/SettingPage.qml"
         }

@@ -16,6 +16,7 @@ public:
     void initFrameQueue();
     void push_video_frame(const QVideoFrame &videoFrame);
     void stop();
+    void startProcessor();
 
 protected:
     void run();

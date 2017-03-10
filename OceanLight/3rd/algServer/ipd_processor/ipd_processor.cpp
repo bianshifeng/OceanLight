@@ -4,65 +4,17 @@
 #include "ipd_processor.h"
 #include "imp_ipd_api.h"
 using namespace std;
-IPDProcessor::IPDProcessor():
-    m_frame_queue(Q_NULLPTR),
-    videoWidth(DEFAULT_MALLOC_WIDTH),
-    videoHeight(DEFAULT_MALLOC_WIDTH),
-    stopped(false)
+
+IPDProcessor::IPDProcessor():AlgProcessor()
 {
-    m_frame_queue = new IMP_FrameQueue();
-    moveToThread(this);
+    this->m_alg_type = AlgServer::Alg_IPD;
 }
-
-IPDProcessor::~IPDProcessor()
-{
-    qDebug() << "~IPDProcessor()";
-    stopped = false;
-    if(m_frame_queue){
-        delete m_frame_queue;
-    }
-}
-
-void IPDProcessor::set_video_resolution(int width, int height)
-{
-    videoWidth = width;
-    videoHeight = height;
-}
-
-void IPDProcessor::initFrameQueue()
-{
-    m_frame_queue->setMallocWidth(this->videoWidth);
-    m_frame_queue->setMallocWidth(this->videoHeight);
-    m_frame_queue->InitFrameQueue();
-
-}
-
-void IPDProcessor::push_video_frame(const QVideoFrame &videoFrame)
-{
-    IMP_PicOutFrame *t_free_frame = m_frame_queue->GetFrameAddr();
-    if(!t_free_frame) return;
-
-
-    QVideoFrame t_frame(videoFrame);
-    t_frame.map(QAbstractVideoBuffer::ReadOnly);
-
-    memcpy(t_free_frame->pu8D1,t_frame.bits(),t_frame.width()*t_frame.height()*4);
-    t_free_frame->nWidth = t_frame.width();
-    t_free_frame->nHeight = t_frame.height();
-
-    t_frame.unmap();
-}
-
-
-
 
 void IPDProcessor::run()
 {
-    IMP_S32 width = 320;
-    IMP_S32 height = 180;
+    IMP_S32 width = this->videoWidth;
+    IMP_S32 height = this->videoHeight;
     IMP_HANDLE handle;
-
-
 
     IMP_IPD_Create(width, height, &handle);
 
@@ -111,9 +63,14 @@ void IPDProcessor::run()
         {
             if(ipd_count > 7 && isWarning == 0)
             {
+
+                QString imageName;
+                imageName = imageName.append("ipd_").append(QString::number(frame_count,10)).append(".png");
+                QString imageSavePath = this->saveImageFrameMetaData(imageName,frame->pu8D1,frame->nWidth,frame->nHeight,QImage::Format_RGB32);
                 QJsonObject json;
                 json.insert("name",QString("IPD"));
                 json.insert("status",QString("warning"));
+                json.insert("imageUrl",imageSavePath);
                 this->setEmitIpdData(json);
                 isWarning = 1;
             }
@@ -122,6 +79,7 @@ void IPDProcessor::run()
                 QJsonObject json;
                 json.insert("name",QString("IPD"));
                 json.insert("status",QString("clear"));
+                json.insert("imageUrl","");
                 this->setEmitIpdData(json);
                 isWarning = 0;
 
@@ -141,157 +99,10 @@ void IPDProcessor::run()
     stopped = false;
 }
 
-void IPDProcessor::stop()
-{
-    stopped = true;
-}
 
 
 void IPDProcessor::setEmitIpdData(QJsonObject &dataStr)
 {
 
     emit sig_alg_result(QString(QJsonDocument(dataStr).toJson()));
-}
-
-
-
-void IPDProcessor::downSize(IMAGE3_S *pstSrc, IMAGE3_S *pstDst)
-{
-    IMP_S32 w_src = 0, h_src = 0, w_dst = 0, h_dst = 0;
-    IMP_U8 *pYsrc = NULL, *pUsrc = NULL, *pVsrc = NULL, *pYdst = NULL, *pUdst = NULL, *pVdst = NULL;
-
-    IMP_S32 i = 0, j = 0, x = 0, y = 0;
-
-    w_src = pstSrc->s32W;
-    h_src = pstSrc->s32H;
-
-    w_dst = pstDst->s32W;
-    h_dst = pstDst->s32H;
-
-    IMP_FLOAT fSampleItvlW = (IMP_FLOAT)w_src / w_dst;
-    IMP_FLOAT fSampleItvlH = (IMP_FLOAT)h_src / h_dst;
-
-    IMP_FLOAT fCoorW = 0.0, fCoorH = 0.0;
-    IMP_S32 *as32IdxW = (IMP_S32 *)malloc(w_dst * sizeof(IMP_S32));
-    IMP_S32 *as32IdxH = (IMP_S32 *)malloc(h_dst * sizeof(IMP_S32));
-
-    for (i=0; i<w_dst; ++i)
-    {
-        as32IdxW[i] = (IMP_S32)(fCoorW + 0.5);
-        fCoorW += fSampleItvlW;
-        //printf("%d ", as32IdxW[i]);
-    }
-
-    for (i=0; i<h_dst; ++i)
-    {
-        as32IdxH[i] = (IMP_S32)(fCoorH + 0.5);
-        fCoorH += fSampleItvlH;
-    }
-    //yuv420
-    //if(pstSrc->enFormat == IMAGE_FORMAT_IMP_YUV420)
-    if (1)
-    {
-        pstDst->enFormat = IMAGE_FORMAT_IMP_YUV420;
-
-        for(j=0; j<h_dst; ++j)
-        {
-            y = as32IdxH[j];
-            pYsrc = pstSrc->pu8D1 + y*w_src;
-
-            pYdst = pstDst->pu8D1 + j*w_dst;
-
-            for(i=0; i<w_dst; ++i)
-            {
-                x = as32IdxW[i];
-                *(pYdst + i) = *(pYsrc + x);
-            }
-        }
-
-        for (j=0; j<h_dst; j+=2)
-        {
-            y = as32IdxH[j];
-
-            pUsrc = pstSrc->pu8D2 + (y>>1) * (w_src>>1);
-            pVsrc = pstSrc->pu8D3 + (y>>1) * (w_src>>1);
-
-            pUdst = pstDst->pu8D2 + (j>>1) * (w_dst>>1);
-            pVdst = pstDst->pu8D3 + (j>>1) * (w_dst>>1);
-
-            for (i=0; i<w_dst; i+=2)
-            {
-                x = as32IdxW[i];
-
-                *(pUdst + (i>>1)) = *(pUsrc + (x>>1));
-                *(pVdst + (i>>1)) = *(pVsrc + (x>>1));
-            }
-        }
-    }
-
-    free(as32IdxH);
-    as32IdxH = NULL;
-
-    free(as32IdxW);
-    as32IdxW = NULL;
-}
-
-void IPDProcessor::RGBA2YUV420P(unsigned char *RgbaBuf,int nWidth,int nHeight,unsigned char *yuvBuf)
-{
-    int i,j,pos;
-    unsigned char*bufY,*bufU,*bufV,*bufRGBA,*bufYuv;
-    unsigned char y,u,v,r,g,b,a,testu,testv;
-    unsigned int ylen = nWidth * nHeight;
-    unsigned int ulen = (nWidth * nHeight)/4;
-    unsigned int vlen = (nWidth * nHeight)/4;
-    bufY = yuvBuf;
-    bufV = yuvBuf + nWidth * nHeight;
-    bufU = bufV + (nWidth * nHeight* 1/4);
-
-
-
-    for (j = 0; j<nHeight;j++)
-    {
-        bufRGBA = RgbaBuf + nWidth * j * 4 ;
-        for (i = 0;i<nWidth;i++)
-        {
-            pos = nWidth * i + j;
-
-            r = *(bufRGBA++);
-            g = *(bufRGBA++);
-            b = *(bufRGBA++);
-            a = *(bufRGBA++);
-
-            y = (unsigned char)( ( 66 * r + 129 * g +  25 * b + 128) >> 8) + 16  ;
-            u = (unsigned char)( ( -38 * r -  74 * g + 112 * b + 128) >> 8) + 128 ;
-            v = (unsigned char)( ( 112 * r -  94 * g -  18 * b + 128) >> 8) + 128 ;
-            *(bufY++) = max( 0, min((int)y, 255));
-
-            if (j%2==0&&i%2 ==0)
-            {
-                if (u>255)
-                {
-                    u =	255;
-                }
-                if (u<0)
-                {
-                    u = 0;
-                }
-                *(bufU++) =u;
-            }
-            else
-            {
-                if (i%2==0)
-                {
-                    if (v>255)
-                    {
-                        v = 255;
-                    }
-                    if (v<0)
-                    {
-                        v = 0;
-                    }
-                    *(bufV++) =v;
-                }
-            }
-        }
-    }
 }

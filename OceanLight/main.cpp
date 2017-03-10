@@ -76,10 +76,13 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    qApp->setWindowIcon(QIcon(":/images/images/bs_logo.ico")); //设置程序的主icon
+
     qmlRegisterType<AlgCPC>("Xms.Alg", 1, 0, "AlgCPC");
     qmlRegisterType<XmsIpcBase>("Xms.Ipc", 1, 0, "IpcRstp");
     qmlRegisterSingletonType<AlgServer>("Xms.Server",1,0,"AlgServer",AlgServer::qml_singleton_provider);
     qmlRegisterType<CameraFilter>("Xms.Server",1,0,"CameraFilter");
+    qRegisterMetaType<AlgServer::AlgType>("AlgType");
 
     QSettings extraSettings;
     extraSettings.beginGroup("CPP");
@@ -106,7 +109,7 @@ int main(int argc, char *argv[])
     QApplication::connect(view.engine(),SIGNAL(quit()),qApp,SLOT(quit()));
     view.setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     view.setResizeMode(QQuickView::SizeRootObjectToView);
-    view.setFlags(Qt::CustomizeWindowHint|Qt::WindowMinimizeButtonHint);
+    view.setFlags(Qt::WindowMinMaxButtonsHint|Qt::Window|Qt::FramelessWindowHint);
     view.showNormal();
     view.setPosition(200,200);
 

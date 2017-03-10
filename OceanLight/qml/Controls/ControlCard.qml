@@ -1,9 +1,15 @@
-import QtQuick 2.4
+﻿import QtQuick 2.4
 import "./UIConstants.js" as UI
 import QtQuick.Controls 1.2
 
 Item {
     id: id_root
+
+    property double opacityNormal:0.1
+    property double opacityHover:0.3
+    property double opacityClick:0.3
+    property double opacitySelect:0.5
+
     property string stateNormal:"normal"
     property string stateHover:"hover"
     property string stateSelect:"select"
@@ -42,7 +48,7 @@ Item {
         Rectangle{
             id: id_back_normal
             anchors.fill: parent
-            opacity: 0.1
+            opacity: id_root.opacityNormal
             color:normalColor
         }
         Rectangle{
@@ -93,7 +99,7 @@ Item {
 
             PropertyChanges {
                 target: id_back_hover
-                opacity: 0.3
+                opacity: id_root.opacityHover
             }
         },
         State {
@@ -101,7 +107,7 @@ Item {
 
             PropertyChanges {
                 target: id_back_select
-                opacity: 0.3
+                opacity: id_root.opacityClick
             }
         },
         State {
@@ -109,7 +115,7 @@ Item {
 
             PropertyChanges {
                 target: id_back_disable
-                opacity: 0.5
+                opacity: id_root.opacitySelect
             }
         },
         State {
@@ -117,7 +123,7 @@ Item {
 
             PropertyChanges {
                 target: id_back_select
-                opacity: 0.5
+                opacity: id_root.opacitySelect
             }
         }
 

@@ -22,7 +22,9 @@ HEADERS += \
     $$PWD/vfd_processor/imp_vfd_para.h \
     $$PWD/vfd_processor/vfd_processor.h \
     $$PWD/vfd_processor/imp_align.h \
-    $$PWD/vfd_processor/model_all2_int.h
+    $$PWD/vfd_processor/model_all2_int.h \
+    $$PWD/alg_processor/alg_processor.h \
+    $$PWD/pfr_processor/pfr_processor.h
 
 
 SOURCES += \
@@ -31,4 +33,6 @@ SOURCES += \
     $$PWD/common/IMP_FrameQueue.cpp \
     $$PWD/common/IMP_Lock.cpp \
     $$PWD/ipd_processor/ipd_processor.cpp \
-    $$PWD/vfd_processor/vfd_processor.cpp
+    $$PWD/vfd_processor/vfd_processor.cpp \
+    $$PWD/alg_processor/alg_processor.cpp \
+    $$PWD/pfr_processor/pfr_processor.cpp

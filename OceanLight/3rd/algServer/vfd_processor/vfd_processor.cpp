@@ -238,6 +238,12 @@ void VFDProcessor::stop()
     stopped = true;
 }
 
+void VFDProcessor::startProcessor()
+{
+    this->stopped = false;
+    this->start();
+}
+
 void VFDProcessor::setEmitVfdData(QJsonObject &dataStr)
 {
     emit sig_alg_result(QString(QJsonDocument(dataStr).toJson()));
