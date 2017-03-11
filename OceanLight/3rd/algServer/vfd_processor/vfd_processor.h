@@ -6,6 +6,8 @@
 #include <QVideoFrame>
 #include "common/IMP_FrameQueue.h"
 #include "common/imp_algo_type.h"
+
+#include "imp_vfd_api.h"
 class VFDProcessor : public QThread
 {
     Q_OBJECT
@@ -35,6 +37,9 @@ private:
     void RGBA2YUV420P(unsigned char *RgbaBuf,int nWidth,int nHeight,unsigned char *yuvBuf);
     void RGBA2YUV420P_QVideoFrame(unsigned char *RgbaBuf,int nWidth,int nHeight,unsigned char *yuvBuf);
 
+
+    QString _saveFacePic(uchar *tmpM,int faceW, int faceH,IMP_VFD_RESULT_S &stResult) const;
+    QString _saveBigPic(IMP_PicOutFrame *frame,IMP_VFD_RESULT_S &stResult) const;
 
 };
 

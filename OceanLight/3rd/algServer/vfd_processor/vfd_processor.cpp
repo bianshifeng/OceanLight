@@ -5,7 +5,7 @@
 #include <QImage>
 #include <QApplication>
 #include "vfd_processor.h"
-#include "imp_vfd_api.h"
+
 using namespace std;
 
 static int RESULT_COUNT = 0;
@@ -105,6 +105,7 @@ void VFDProcessor::run()
     stParas.u32Enablerotate = 0;
     stParas.u32RotateLevel = 0;
     stParas.s32Level = 2;
+    stParas.s32Confidence = 2;
 
     IMP_VFD_Config(handle,&stParas);
 
@@ -124,13 +125,32 @@ void VFDProcessor::run()
             usleep(100000);
             continue;
         }
+        IMP_U8 *tmpMem = (IMP_U8*)malloc(sizeof(IMP_U8)*frame->nWidth*frame->nHeight*1.5);
         this->RGBA2YUV420P_QVideoFrame(frame->pu8D1,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
         this->downSize(&tmpImage,&image);
 
         IMP_VFD_Process(handle,&image);
         IMP_VFD_GetResult(handle,&stResult);
+
+        if(stResult.s32Facenumber == 0)
+            memset(face_path, 0, sizeof(FACEPATH)*IMP_VFD_MAX_FACE_NUMBER);
+
         if(stResult.s32Facenumber > 0)
         {
+            for(int i = 0; i < 32; i ++)
+            {
+                int flag_isInScreen = 0;
+                for(int j = 0; j < stResult.s32Facenumber; j ++)
+                {
+                    if(face_path[i].isUsed == 1 && face_path[i].ID == stResult.stFace[j].u32FaceID)
+                    {
+                        flag_isInScreen = 1;
+                        break;
+                    }
+                }
+                if(0 == flag_isInScreen)
+                    face_path[i].isUsed = 0;
+            }
 
             int tmpSizeTimes = frame->nWidth/width;
             for(int i = 0; i < stResult.s32Facenumber; i ++)
@@ -140,81 +160,53 @@ void VFDProcessor::run()
                 for(int j = 0; j < IMP_VFD_MAX_FACE_NUMBER; j ++)
                 {
                     if(face_path[j].isUsed == 1 && face_path[j].ID == stResult.stFace[i].u32FaceID)
+                    {
                         flag_isExist = 1;
+                        break;
+                    }
                 }
                 if(0 == flag_isExist)
                 {
 
-                    int startX = stResult.stFace[i].stPosition.s16X1 * tmpSizeTimes;
-                    int endX = stResult.stFace[i].stPosition.s16X2 * tmpSizeTimes;
-                    int startY = stResult.stFace[i].stPosition.s16Y1 * tmpSizeTimes;
-                    int endY = stResult.stFace[i].stPosition.s16Y2 * tmpSizeTimes;
-                    int faceW = (stResult.stFace[i].stPosition.s16X2 - stResult.stFace[i].stPosition.s16X1) * tmpSizeTimes;
-                    int faceH = (stResult.stFace[i].stPosition.s16Y2 - stResult.stFace[i].stPosition.s16Y1) * tmpSizeTimes;
-                    uchar *tmpM = (uchar*)malloc(sizeof(int)*faceW*faceH);
-                    uchar *tmpN = tmpM;
-                    tmpN = tmpM + (sizeof(int)*(faceW*faceH - 1));
-                    /*for(int j = startY; j < endY; j ++)
+                    if(stResult.stFace[i].u8Flag == 1)
                     {
-                        memcpy(tmpM,frame->pu8D1 + j * frame->nWidth * sizeof(int) + startX * sizeof(int),faceW * sizeof(int));
-                        tmpM += faceW * sizeof(int);
-                    }*/
-                    for(int j = frame->nHeight - endY; j < frame->nHeight - startY; j ++)
-                    {
-                        //memcpy(tmpM,frame->pu8D1 + j * frame->nWidth * sizeof(int) + (frame->nWidth - endX) * sizeof(int),faceW * sizeof(int));
-                        //tmpM += faceW * sizeof(int);
-                        for(int m = frame->nWidth - endX; m < frame->nWidth - startX; m ++)
+                        int startX = stResult.stFace[i].stPosition.s16X1 * tmpSizeTimes;
+                        int endX = stResult.stFace[i].stPosition.s16X2 * tmpSizeTimes;
+                        int startY = stResult.stFace[i].stPosition.s16Y1 * tmpSizeTimes;
+                        int endY = stResult.stFace[i].stPosition.s16Y2 * tmpSizeTimes;
+                        int faceW = (stResult.stFace[i].stPosition.s16X2 - stResult.stFace[i].stPosition.s16X1) * tmpSizeTimes;
+                        int faceH = (stResult.stFace[i].stPosition.s16Y2 - stResult.stFace[i].stPosition.s16Y1) * tmpSizeTimes;
+                        uchar *tmpM = (uchar*)malloc(sizeof(int)*faceW*faceH);
+                        uchar *tmpN = tmpM;
+                        for(int j = startY; j < endY; j ++)
                         {
-                            memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int),sizeof(int));
-                            tmpN -= sizeof(int);
-                            /*memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int),sizeof(uchar));
-                            tmpN--;
-                            memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int) + sizeof(uchar),sizeof(uchar));
-                            tmpN--;
-                            memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int) + sizeof(uchar) * 2,sizeof(uchar));
-                            tmpN--;
-                            memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int) + sizeof(uchar) * 3,sizeof(uchar));
-                            tmpN--;*/
+                            memcpy(tmpM,frame->pu8D1 + j * frame->nWidth * sizeof(int) + startX * sizeof(int),faceW * sizeof(int));
+                            tmpM += faceW * sizeof(int);
                         }
-                    }
-                    //tmpM = tmpN;
-                    QString tmpID = QString::number(stResult.stFace[i].u32FaceID,10);
-                    QString tmpPath("face");
-                    tmpPath.append("_");
-                    tmpPath.append(tmpID);
-                    if(stResult.stFace[i].faceQA == 1)
-                    {
-                        tmpPath.append("_QA");
-                    }
-                    else{
-                        tmpPath.append("_common");
-                    }
-                    tmpPath.append(".png");
+                        tmpM = tmpN;
 
+                        QJsonObject json;
+                        json.insert("name",QString("VFD"));
+                        json.insert("imageUrl",this->_saveFacePic(tmpM,faceW,faceH,stResult));
+                        json.insert("metaImageUrl",this->_saveBigPic(frame,stResult));
 
-                    QString abs_path = qApp->applicationDirPath();
-                    QImage t_face_image(tmpM,faceW,faceH,QImage::Format_RGB32);
-                    abs_path = abs_path.append("/").append(tmpPath);
-                    t_face_image.save(abs_path,"PNG");
+                        qDebug() << "face++ " << QString::number(RESULT_COUNT++);
 
-                    QJsonObject json;
-                    json.insert("name",QString("VFD"));
-                    json.insert("imageUrl",abs_path);
-                    qDebug() << "face++ " << QString::number(RESULT_COUNT++);
-
-                    this->setEmitVfdData(json);
-                    for(int j = 0; j < IMP_VFD_MAX_FACE_NUMBER; j ++)
-                    {
-                        if(face_path[j].isUsed == 0)
+                        this->setEmitVfdData(json);
+                        for(int j = 0; j < IMP_VFD_MAX_FACE_NUMBER; j ++)
                         {
-                            face_path[j].isUsed = 1;
-                            face_path[j].ID = stResult.stFace[i].u32FaceID;
-                            face_path[j].isQA = stResult.stFace[i].faceQA;
-                            //face_path[i].path = tmpPath;
-                            break;
+                            if(face_path[j].isUsed == 0)
+                            {
+                                face_path[j].isUsed = 1;
+                                face_path[j].ID = stResult.stFace[i].u32FaceID;
+                                face_path[j].isQA = stResult.stFace[i].faceQA;
+                                //face_path[i].path = tmpPath;
+                                break;
+                            }
                         }
+                        free(tmpM);
                     }
-                    free(tmpM);
+
                 }
             }
         }
@@ -451,3 +443,58 @@ void VFDProcessor::RGBA2YUV420P_QVideoFrame(unsigned char *RgbaBuf, int nWidth, 
         }
     }
 }
+
+QString VFDProcessor::_saveFacePic(uchar *tmpM, int faceW, int faceH,IMP_VFD_RESULT_S &stResult) const
+{
+    //保存面部图片
+    QString tmpID = QString::number(stResult.stFace[i].u32FaceID,10);
+    QString tmpPath("face");
+    tmpPath.append("_");
+    tmpPath.append(tmpID);
+    if(stResult.stFace[i].faceQA == 1)
+    {
+        tmpPath.append("_QA");
+    }
+    else{
+        tmpPath.append("_common");
+    }
+    tmpPath.append(".png");
+
+
+    QString abs_path = qApp->applicationDirPath();
+    QImage t_face_image(tmpM,faceW,faceH,QImage::Format_RGB32);
+    abs_path = abs_path.append("/").append(tmpPath);
+    t_face_image.save(abs_path,"PNG");
+
+    return abs_path;
+
+}
+
+QString VFDProcessor::_saveBigPic(IMP_PicOutFrame *frame, IMP_VFD_RESULT_S &stResult) const
+{
+    QString rootSrc = qApp->applicationDirPath();
+    QString tmpIDSrc = QString::number(stResult.stFace[i].u32FaceID,10);
+    rootSrc.append("/face_").append(tmpID);
+    if(stResult.stFace[i].faceQA == 1)
+        rootSrc.append("_QA");
+    else
+        rootSrc.append("_common");
+    QString tmpPositonX1 = QString::number(stResult.stFace[i].stPosition.s16X1 * tmpSizeTimes,10);
+    rootSrc.append("_").append(tmpPositonX1);
+    QString tmpPositonY1 = QString::number(stResult.stFace[i].stPosition.s16Y1 * tmpSizeTimes,10);
+    rootSrc.append("_").append(tmpPositonY1);
+    QString tmpPositonX2 = QString::number(stResult.stFace[i].stPosition.s16X2 * tmpSizeTimes,10);
+    rootSrc.append("_").append(tmpPositonX2);
+    QString tmpPositonY2 = QString::number(stResult.stFace[i].stPosition.s16Y2 * tmpSizeTimes,10);
+    rootSrc.append("_").append(tmpPositonY2);
+    rootSrc.append(".jpg");
+
+    QImage tmpSrc(frame->pu8D1,frame->nWidth,frame->nHeight,QImage::Format_RGB32);
+    tmpSrc.save(rootSrc);
+
+    return rootSrc;
+
+}
+
+
+

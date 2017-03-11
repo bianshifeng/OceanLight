@@ -255,3 +255,65 @@ void AlgProcessor::RGBA2YUV420P(unsigned char *RgbaBuf, int nWidth, int nHeight,
     }
 
 }
+
+void AlgProcessor::RGBA2YUV420P_QVideoFrame(unsigned char *RgbaBuf, int nWidth, int nHeight, unsigned char *yuvBuf)
+{
+
+    int i,j,pos;
+    unsigned char*bufY,*bufU,*bufV,*bufRGBA,*bufYuv;
+    unsigned char y,u,v,r,g,b,a,testu,testv;
+    unsigned int ylen = nWidth * nHeight;
+    unsigned int ulen = (nWidth * nHeight)/4;
+    unsigned int vlen = (nWidth * nHeight)/4;
+    bufY = yuvBuf + nWidth * nHeight - 1;
+    bufV = yuvBuf + nWidth * nHeight + (nWidth * nHeight* 1/4) - 1;
+    bufU = yuvBuf + (nWidth * nHeight* 3/2) - 1;
+
+    for (j = 0; j<nHeight;j++)
+    {
+        bufRGBA = RgbaBuf + nWidth * j * 4 ;
+        for (i = 0;i<nWidth;i++)
+        {
+            pos = nWidth * i + j;
+
+            r = *(bufRGBA++);
+            g = *(bufRGBA++);
+            b = *(bufRGBA++);
+            a = *(bufRGBA++);
+
+            y = (unsigned char)( ( 66 * r + 129 * g +  25 * b + 128) >> 8) + 16  ;
+            u = (unsigned char)( ( -38 * r -  74 * g + 112 * b + 128) >> 8) + 128 ;
+            v = (unsigned char)( ( 112 * r -  94 * g -  18 * b + 128) >> 8) + 128 ;
+            *(bufY--) = max( 0, min(y, 255 ));
+
+            if (j%2==0&&i%2 ==0)
+            {
+                if (u>255)
+                {
+                    u =	255;
+                }
+                if (u<0)
+                {
+                    u = 0;
+                }
+                *(bufU--) =u;
+            }
+            else
+            {
+                if (i%2==0)
+                {
+                    if (v>255)
+                    {
+                        v = 255;
+                    }
+                    if (v<0)
+                    {
+                        v = 0;
+                    }
+                    *(bufV--) =v;
+                }
+            }
+        }
+    }
+
+}

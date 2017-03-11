@@ -40,6 +40,8 @@ void IPDProcessor::run()
     tmpImage.pu8D3 = tmpImage.pu8D2 + videoWidth*videoHeight/4;
 
     IMP_PicOutFrame *frame = NULL;
+    uchar* tmpframe = (IMP_U8*)malloc(sizeof(int)*videoWidth*videoHeight);
+    uchar* tmpframeS = tmpframe;
 
     stParas.enSensity = IMP_IPD_SENS_NORMAL;
     IMP_IPD_Config(handle,&stParas);
@@ -54,7 +56,7 @@ void IPDProcessor::run()
             usleep(100000);
             continue;
         }
-        this->RGBA2YUV420P(frame->pu8D1,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
+        this->RGBA2YUV420P_QVideoFrame(frame->pu8D1,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
         this->downSize(&tmpImage,&image);
         IMP_IPD_Process(handle,&image,NULL,&stResult);
         frame_count ++;
@@ -63,10 +65,16 @@ void IPDProcessor::run()
         {
             if(ipd_count > 7 && isWarning == 0)
             {
+                for(int i = frame->nHeight -1 ; i >=0;i --)
+                {
+                    memcpy(tmpframe,frame->pu8D1 + i * frame->nWidth * sizeof(int), frame->nWidth * sizeof(int));
+                    tmpframe += frame->nWidth * sizeof(int);
+                }
+                tmpframe = tmpframeS;
 
                 QString imageName;
                 imageName = imageName.append("ipd_").append(QString::number(frame_count,10)).append(".png");
-                QString imageSavePath = this->saveImageFrameMetaData(imageName,frame->pu8D1,frame->nWidth,frame->nHeight,QImage::Format_RGB32);
+                QString imageSavePath = this->saveImageFrameMetaData(imageName,tmpframe,frame->nWidth,frame->nHeight,QImage::Format_RGB32);
                 QJsonObject json;
                 json.insert("name",QString("IPD"));
                 json.insert("status",QString("warning"));

@@ -66,7 +66,7 @@ extern "C"
 
 		IMP_S32 s32Level;	/* Detection balance level, 0 - speed,  5 - accurate */
 		IMP_S32 s32TrackLevel;	/* Track balance level, 0 - speed,  5 - accurate */
-		IMP_S32 s32Reserved1;	/* Reserved 1 */
+		IMP_S32 s32Confidence;	/* avoid errorFace, 0 -detec and track,  5 - confirm and track */
 		IMP_U32 u32Reserved2;	/* Reserved 2 */
 		IMP_U32 u32Reserved3;	/* Reserved 3 */
 
