@@ -53,14 +53,7 @@ void AlgServer::setIsIpdActive(bool isIpdActive)
 {
     if (m_isIpdActive == isIpdActive)
         return;
-
     m_isIpdActive = isIpdActive;
-
-    if(m_isIpdActive){
-        m_ptr_ipd_processor->startProcessor();
-    }else{
-        m_ptr_ipd_processor->stop();
-    }
     emit isIpdActiveChanged(isIpdActive);
 }
 
@@ -70,6 +63,7 @@ void AlgServer::push_ipd_videoFrame(const QVideoFrame &frame)
 
     if(!m_ptr_ipd_processor->is_processor_init){
         m_ptr_ipd_processor->initFrameQueue(frame.width(),frame.height());
+        m_ptr_ipd_processor->startProcessor();
     }
     if(m_isIpdActive){
             m_ptr_ipd_processor->push_video_frame(frame);
@@ -90,14 +84,7 @@ void AlgServer::setIsVfdActive(bool isVfdActive)
 {
     if (m_isVfdActive == isVfdActive)
         return;
-
     m_isVfdActive = isVfdActive;
-
-    if(m_isVfdActive){
-        m_ptr_vfd_processor->startProcessor();
-    }else{
-        m_ptr_vfd_processor->stop();
-    }
     emit isVfdActiveChanged(isVfdActive);
 }
 
@@ -106,6 +93,7 @@ void AlgServer::push_vfd_videoFrame(const QVideoFrame &frame)
     if(!m_is_processor_init){
         m_ptr_vfd_processor->set_video_resolution(frame.width(),frame.height());
         m_ptr_vfd_processor->initFrameQueue();
+        m_ptr_vfd_processor->startProcessor();
         m_is_processor_init = true;
 
     }

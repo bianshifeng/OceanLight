@@ -28,34 +28,13 @@ Item {
 
 
 
-    Camera {
-         id: id_camera
-         //deviceId: QtMultimedia.availableCameras[1].deviceId
-         imageProcessing.whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
-         exposure {
-             exposureCompensation: -1.0
-             exposureMode: Camera.ExposurePortrait
-         }
-         captureMode: Camera.CaptureVideo
-         flash.mode: Camera.FlashRedEyeReduction
-         imageCapture{
-             onImageCaptured: {
-                 id_photoPreview.source = preview
-             }
-         }
-     }
-
-    CameraFilter{
-        id: id_cameraFilter
-        objectName: "cameraFilterObject"
-    }
 
 
 
 
     VideoOutput {
         id: id_camera_output
-        source: id_camera
+        source: id_mediaPlayer
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
@@ -65,12 +44,34 @@ Item {
         filters: [id_cameraFilter]
 
 
-//        MediaPlayer{
-//            id: id_mediaPlayer
-//            autoLoad: true
-//            autoPlay: true
-//            source:"file:///g:/video2.mp4"
-//        }
+        MediaPlayer{
+            id: id_mediaPlayer
+            autoLoad: true
+            autoPlay: true
+            source:"file:///g:/video2.mp4"
+        }
+        Camera {
+             id: id_camera
+             //deviceId: QtMultimedia.availableCameras[1].deviceId
+             imageProcessing.whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
+             exposure {
+                 exposureCompensation: -1.0
+                 exposureMode: Camera.ExposurePortrait
+             }
+             captureMode: Camera.CaptureVideo
+             flash.mode: Camera.FlashRedEyeReduction
+             imageCapture{
+                 onImageCaptured: {
+                     id_photoPreview.source = preview
+                 }
+             }
+         }
+
+        CameraFilter{
+            id: id_cameraFilter
+            objectName: "cameraFilterObject"
+        }
+
     }
 
 
