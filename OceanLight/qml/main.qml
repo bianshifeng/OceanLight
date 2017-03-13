@@ -61,7 +61,7 @@ import Xms.Server 1.0
 AppWindow {
     id: id_app_window
     implicitHeight: 700
-    implicitWidth: implicitHeight * UI.const_gold_mean
+    implicitWidth: (implicitHeight * UI.const_gold_mean-40)
     property bool isHoverEnabled: false
 
     signal showFullScreen()
@@ -139,7 +139,7 @@ AppWindow {
                     Rectangle{
                         anchors.fill: parent
                         color:"#4c5258"
-                        opacity: 0.6
+                        opacity: 0.2
                     }
 
                     ChildPageManager{

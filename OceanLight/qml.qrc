@@ -89,6 +89,8 @@
         <file>qml/XmsPage/AlgCom/AlarmItemDelegate.qml</file>
         <file>qml/XmsPage/ChildPage/PageImageShow.qml</file>
         <file>qml/XmsPage/AlgCom/AlgConfigCom.qml</file>
+        <file>qml/XmsPage/ChildPage/AlarmPage.qml</file>
+        <file>qml/XmsPage/ChildPage/VideoPage.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/arrow.png</file>

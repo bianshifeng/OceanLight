@@ -7,20 +7,22 @@
 
 #include "ipd_processor/ipd_processor.h"
 #include "vfd_processor/vfd_processor.h"
+#include "pfr_processor/pfr_processor.h"
 
 static int c_alg_image_index = 0;
 
 AlgServer::AlgServer(QObject *parent) : QObject(parent),
     m_ptr_ipd_processor(Q_NULLPTR),
     m_ptr_vfd_processor(Q_NULLPTR),
-    m_is_processor_init(false),
+    m_ptr_pfr_processor(Q_NULLPTR),
+    m_is_vfd_processor_init(false),
+    m_is_pfr_processor_init(false),
     m_isIpdActive(false),
     m_isVfdActive(false)
 {
-
     this->add_ipd_processor();
     this->add_vfd_processor();
-
+    this->add_pfr_processor();
 }
 
 bool AlgServer::isIpdActive() const
@@ -33,6 +35,10 @@ bool AlgServer::isVfdActive() const
     return m_isVfdActive;
 }
 
+bool AlgServer::isPfrActive() const
+{
+    return m_isPfrActive;
+}
 
 void AlgServer::setVideoFrame(const QVideoFrame &frame)
 {
@@ -90,16 +96,53 @@ void AlgServer::setIsVfdActive(bool isVfdActive)
 
 void AlgServer::push_vfd_videoFrame(const QVideoFrame &frame)
 {
-    if(!m_is_processor_init){
+    if(!m_is_vfd_processor_init){
         m_ptr_vfd_processor->set_video_resolution(frame.width(),frame.height());
         m_ptr_vfd_processor->initFrameQueue();
         m_ptr_vfd_processor->startProcessor();
-        m_is_processor_init = true;
+        m_is_vfd_processor_init = true;
 
     }
 
     if(m_isVfdActive){
         m_ptr_vfd_processor->push_video_frame(frame);
+    }
+}
+
+
+void AlgServer::add_pfr_processor()
+{
+    if(m_ptr_pfr_processor == Q_NULLPTR){
+        m_ptr_pfr_processor = new PFRProcessor();
+        //connect(m_ptr_pfr_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_ipd_data(QString)));
+    }
+
+}
+
+void AlgServer::setIsPfrActive(bool isPfrActive)
+{
+    if (m_isPfrActive == isPfrActive)
+        return;
+
+    m_isPfrActive = isPfrActive;
+    emit isPfrActiveChanged(isPfrActive);
+}
+
+void AlgServer::push_pfr_imageFrame(const QString &imageName, const QString &imageUrl, int regOrRec)
+{
+
+    if(!m_is_pfr_processor_init){
+        m_ptr_pfr_processor->set_video_resolution(0,0);
+        m_ptr_pfr_processor->initFrameQueue();
+        m_ptr_pfr_processor->startProcessor();
+        m_is_pfr_processor_init = true;
+    }
+
+    if(m_isPfrActive){
+        QString t_imageName = imageName;
+        QString t_imageUrl = imageUrl;
+        t_imageUrl.replace("file:///","");
+        m_ptr_pfr_processor->push_frame(t_imageUrl,regOrRec,t_imageName);
     }
 }
 

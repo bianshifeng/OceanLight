@@ -41,6 +41,7 @@ protected:
 
    void downSize(IMAGE3_S *pstSrc, IMAGE3_S *pstDst);
    virtual void RGBA2YUV420P(unsigned char *RgbaBuf,int nWidth,int nHeight,unsigned char *yuvBuf);
+   virtual void RGBA2YUV420P_QVideoFrame(unsigned char *RgbaBuf,int nWidth,int nHeight,unsigned char *yuvBuf);
 
 };
 

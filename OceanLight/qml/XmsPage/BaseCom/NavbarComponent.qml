@@ -111,6 +111,12 @@ FocusScope{
             pageSource:"qrc:/qml/XmsPage/ChildPage/CameraPage.qml"
         }
         ListElement{
+            itemName:"video"
+            itemTitle:"Video"
+            itemIcon:"\u00c4";
+            pageSource:"qrc:/qml/XmsPage/ChildPage/VideoPage.qml"
+        }
+        ListElement{
             itemName:"alg"
             itemTitle:"Algorithm"
             itemIcon:"\u0091"
@@ -120,13 +126,7 @@ FocusScope{
             itemName:"alram"
             itemTitle:"Alarm"
             itemIcon:"\u00c0"
-            pageSource:"qrc:/qml/XmsPage/ChildPage/SettingPage.qml"
-        }
-        ListElement{
-            itemName:"video"
-            itemTitle:"Video"
-            itemIcon:"\u00c4";
-            pageSource:"qrc:/qml/XmsPage/ChildPage/AlgPage.qml"
+            pageSource:"qrc:/qml/XmsPage/ChildPage/AlarmPage.qml"
         }
         ListElement{
             itemName:"setting"

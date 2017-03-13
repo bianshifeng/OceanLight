@@ -24,7 +24,9 @@ HEADERS += \
     $$PWD/vfd_processor/imp_align.h \
     $$PWD/vfd_processor/model_all2_int.h \
     $$PWD/alg_processor/alg_processor.h \
-    $$PWD/pfr_processor/pfr_processor.h
+    $$PWD/pfr_processor/pfr_processor.h \
+    $$PWD/pfr_processor/IMP_pfr_path.h \
+    $$PWD/pfr_processor/IMP_StringQueue.h
 
 
 SOURCES += \
@@ -35,4 +37,5 @@ SOURCES += \
     $$PWD/ipd_processor/ipd_processor.cpp \
     $$PWD/vfd_processor/vfd_processor.cpp \
     $$PWD/alg_processor/alg_processor.cpp \
-    $$PWD/pfr_processor/pfr_processor.cpp
+    $$PWD/pfr_processor/pfr_processor.cpp \
+    $$PWD/pfr_processor/IMP_StringQueue.cpp

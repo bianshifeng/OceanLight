@@ -26,21 +26,21 @@ Flickable {
         rowSpacing: 2
         FlatPageTitleBar{
             id: id_title_bar
-            pageTitle:"CPC算法是一种在室内进行人数统计的算法：能够完成人员出入统计工作。"
+            pageTitle:"Alg manaer"
             Layout.columnSpan: id_container.columns
             Layout.fillWidth: true
             Layout.preferredHeight: id_title_bar.height
 
             FlatButton{
                 id: id_bt_more
-                width: 70
+                width: 80
                 hideTextWidth: 60
                 height: 44
                 sizeIcon:12
                 anchors.right: id_bt_reset.left
                 anchors.bottom: parent.bottom
                 icon:FontName.ICON_ACTION_SPY
-                text: qsTr("详情")
+                text: qsTr("Detail")
                 onClicked: id_container.state =(id_container.state=== "expandState" ? "normalState":"expandState")
             }
             FlatButton{
@@ -52,7 +52,7 @@ Flickable {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 icon:FontName.ICON_ACTION_ADD
-                text: qsTr("添加算法")
+                text: qsTr("Add")
             }
 
         }
@@ -64,7 +64,7 @@ Flickable {
             Layout.preferredHeight: height
 
             algLogo: FontName.ICON_ALG_RING
-            algTitle: "IPD - Interact pretect detect."
+            algTitle: "IPD: Indoor People Detection"
             algInfo: "This alg is for record the camera active people"
             onAlgIsActiveChanged: {
                 AlgServer.setIsIpdActive(algIsActive)
@@ -82,7 +82,7 @@ Flickable {
             Layout.preferredHeight: height
 
             algLogo: FontName.ICON_ALG_PEA
-            algTitle: "VFD - Interact pretect detect."
+            algTitle: "VFD: Video Face Detection"
             algInfo: "This alg is for record the camera active people"
             onAlgIsActiveChanged: {
                 AlgServer.setIsVfdActive(algIsActive)
@@ -101,7 +101,7 @@ Flickable {
             Layout.preferredHeight: height
 
             algLogo: FontName.ICON_ALG_FACE
-            algTitle: "PFR - Interact pretect detect."
+            algTitle: "PFR: People Face Recognition"
             algInfo: "This alg is for record the camera active people"
         }
     }

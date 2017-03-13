@@ -60,7 +60,7 @@ GridLayout{
 
                 icon:FontName.ICON_ACTION_DETAIL
                 normalColor: UI.COLOR_BASE_WHITE
-                text: qsTr("查看")
+                text: qsTr("Check")
                 onClicked: {
                     id_algWorker.getAlgConfig()
                 }
@@ -72,7 +72,7 @@ GridLayout{
                 hideTextWidth: 70
                 icon:FontName.ICON_ACTION_SAVE
                 normalColor: UI.COLOR_BASE_WHITE
-                text: qsTr("保存")
+                text: qsTr("Save")
                 onClicked: {
                     id_algWorker.setAlgConfig()
                 }
@@ -86,7 +86,7 @@ GridLayout{
                 normalColor: UI.COLOR_BASE_WHITE
                 foreColor:UI.COLOR_BASE_RED
 
-                text: qsTr("删除")
+                text: qsTr("Delete")
             }
 
         }

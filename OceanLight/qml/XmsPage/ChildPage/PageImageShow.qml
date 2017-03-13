@@ -1,17 +1,22 @@
 ﻿import QtQuick 2.5
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.4
+import Xms.Server 1.0
+
 import "../../Controls"
 import "../../Controls/UIConstants.js" as UI
 import "../../Fonts/XmsIconFont.js" as UIFont
 import "../../Fonts"
 import "../BaseCom"
 
+
+
 Item {
     id: id_root
     property alias itemName: id_txt_name.text
     property alias itemImageUrl:id_alg_image.source
     property alias itemInfo: id_txt_info.text
+
 
     signal emitClose()
 
@@ -61,6 +66,7 @@ Item {
 
 
                 MainMenuButton{
+                    enabled: AlgServer.isPfrActive
                     isCheckedBt:false
                     opacityHover: 0.5
                     opacityClick: 0.8
@@ -76,7 +82,8 @@ Item {
                     foreColor: UI.COLOR_BASE_WHITE_BASE
                     hoverColor: UI.COLOR_BASE_RED
                     onClicked: {
-                         emitShowHomePage()
+                        //注册                        
+                         AlgServer.push_pfr_imageFrame(id_root.itemName,id_root.itemImageUrl,0);
                     }
                 }
                 MainMenuButton{

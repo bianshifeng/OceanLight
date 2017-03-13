@@ -19,6 +19,8 @@ Item{
         anchors.right:parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
+        normalColor:"#3c4349"
+        opacityNormal:1
 
         XmsIcon{
             id: id_logo

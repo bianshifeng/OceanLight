@@ -3,6 +3,7 @@ import "../../Controls/UIConstants.js" as UI
 import "../../Controls"
 import "../../Fonts"
 import "../../Utils/Calculations.js" as Utils
+import Xms.Server 1.0
 
 
 Flickable{
@@ -19,15 +20,20 @@ Flickable{
         var t_time =Utils.timeToDate(Date.now(),"HH:mm:ss")
         var t_name = t_json.name
         var t_imageUrl = "file:///"+t_json.imageUrl
+        var t_bigImageUrl = "file:///"+t_json.bigImageUrl
+        var t_bigImageName = t_json.bigImageName
 
         var t_obj = {
             itemId:t_no,
             itemTime:t_time,
             itemName:t_name,
-            itemImageUrl:t_imageUrl
+            itemImageUrl:t_imageUrl,
+            itemBigImageUrl:t_bigImageUrl,
+            itemBigImageName:t_bigImageName
         }
 
         id_listModel.insert(0,t_obj)
+        AlgServer.push_pfr_imageFrame(t_bigImageName,t_bigImageUrl,1)
 
     }
 
@@ -41,9 +47,9 @@ Flickable{
             model: id_listModel
             AlarmItemDelegate{
                 width: id_root.width
-                nameStr: itemName
+                nameStr: itemBigImageName
                 timeStr: itemTime
-                imageUrl: itemImageUrl
+                imageUrl: itemBigImageUrl
                 onEmitClick: {
                     emitShowDetailInfo(nameStr,imageUrl,timeStr)
                 }
@@ -52,10 +58,12 @@ Flickable{
         ListModel{
             id: id_listModel
             ListElement{
-                itemId:001
+                itemId:0
                 itemTime:"001"
                 itemName:"sdfsdf"
                 itemImageUrl:""
+                itemBigImageUrl:""
+                itemBigImageName:""
             }
         }
     }

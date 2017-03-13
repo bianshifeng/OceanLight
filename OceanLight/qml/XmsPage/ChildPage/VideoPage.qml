@@ -11,7 +11,7 @@ BasePage{
     id:id_root
     FlatPageTitleBar{
         id: id_title_bar
-        pageTitle:"Camera & IPC Manager."
+        pageTitle:"Video Manager Page"
         Layout.columnSpan: id_root.columns
         Layout.fillWidth: true
         Layout.preferredHeight: id_title_bar.height
@@ -29,4 +29,6 @@ BasePage{
             //onClicked: id_container.state =(id_container.state=== "expandState" ? "normalState":"expandState")
         }
     }
+
+
 }

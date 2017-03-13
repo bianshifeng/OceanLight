@@ -1,6 +1,7 @@
 ﻿#include "alg_processor.h"
 #include <QImage>
 #include <QApplication>
+#include <QDebug>
 
 AlgProcessor::AlgProcessor():
     m_frame_queue(Q_NULLPTR),
@@ -43,6 +44,8 @@ void AlgProcessor::push_video_frame(const QVideoFrame &videoFrame)
 
     QVideoFrame t_frame(videoFrame);
     t_frame.map(QAbstractVideoBuffer::ReadOnly);
+
+    qDebug() << t_frame.pixelFormat();
 
     memcpy(t_free_frame->pu8D1,t_frame.bits(),t_frame.width()*t_frame.height()*4);
     t_free_frame->nWidth = t_frame.width();
@@ -107,7 +110,7 @@ QString AlgProcessor::saveImageFrameMetaData(const QString &saveName, unsigned c
 {
     QString abs_path = qApp->applicationDirPath();
     QImage t_face_image(ptrFrameBuff,nWidth,nHeight,format);
-    abs_path = abs_path.append("/").append(saveName);
+    abs_path = abs_path.append("/").append(saveName).append(".png");
     t_face_image.save(abs_path,"PNG");
 
     return abs_path;

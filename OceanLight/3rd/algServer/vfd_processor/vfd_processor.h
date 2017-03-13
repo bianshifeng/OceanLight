@@ -38,8 +38,10 @@ private:
     void RGBA2YUV420P_QVideoFrame(unsigned char *RgbaBuf,int nWidth,int nHeight,unsigned char *yuvBuf);
 
 
-    QString _saveFacePic(uchar *tmpM,int faceW, int faceH,IMP_VFD_RESULT_S &stResult) const;
-    QString _saveBigPic(IMP_PicOutFrame *frame,IMP_VFD_RESULT_S &stResult) const;
+    QString _getPicName(IMP_VFD_RESULT_S &stResult,int i) const;
+    QString _saveFacePic(const QString &imageName,uchar *tmpM, int faceW, int faceH) const;
+    QString _getBigPicName(int tmpSizeTimes, IMP_VFD_RESULT_S &stResult,int i)const;
+    QString _saveBigPic(const QString imageName,IMP_PicOutFrame *frame) const;
 
 };
 

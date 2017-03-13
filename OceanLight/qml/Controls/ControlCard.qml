@@ -4,7 +4,9 @@ import QtQuick.Controls 1.2
 
 Item {
     id: id_root
-
+    implicitHeight: 80
+    implicitWidth: 240
+    default property alias content: id_container.children
     property double opacityNormal:0.1
     property double opacityHover:0.3
     property double opacityClick:0.3
@@ -40,9 +42,7 @@ Item {
 
 
 
-    implicitHeight: 80
-    implicitWidth: 240
-    default property alias content: id_container.children
+
     Item{
         anchors.fill: parent
         Rectangle{

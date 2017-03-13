@@ -16,6 +16,8 @@ void IPDProcessor::run()
     IMP_S32 height = this->videoHeight;
     IMP_HANDLE handle;
 
+    qDebug() << QString::number(width) << "x" << QString::number(height);
+
     IMP_IPD_Create(width, height, &handle);
 
 
@@ -65,7 +67,7 @@ void IPDProcessor::run()
         {
             if(ipd_count > 7 && isWarning == 0)
             {
-                for(int i = frame->nHeight -1 ; i >=0;i --)
+                for(int i = frame->nHeight -1 ; i >=0;i--)
                 {
                     memcpy(tmpframe,frame->pu8D1 + i * frame->nWidth * sizeof(int), frame->nWidth * sizeof(int));
                     tmpframe += frame->nWidth * sizeof(int);
@@ -73,10 +75,10 @@ void IPDProcessor::run()
                 tmpframe = tmpframeS;
 
                 QString imageName;
-                imageName = imageName.append("ipd_").append(QString::number(frame_count,10)).append(".png");
+                imageName = imageName.append("ipd_").append(QString::number(frame_count,10));
                 QString imageSavePath = this->saveImageFrameMetaData(imageName,tmpframe,frame->nWidth,frame->nHeight,QImage::Format_RGB32);
                 QJsonObject json;
-                json.insert("name",QString("IPD"));
+                json.insert("name",imageName);
                 json.insert("status",QString("warning"));
                 json.insert("imageUrl",imageSavePath);
                 this->setEmitIpdData(json);

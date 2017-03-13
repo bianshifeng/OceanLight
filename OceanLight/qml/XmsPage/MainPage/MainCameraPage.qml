@@ -39,9 +39,9 @@ Item {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: id_alg_message.left
-        anchors.margins: 20
         focus : visible // to receive focus and capture key events when visible
         filters: [id_cameraFilter]
+//        fillMode: VideoOutput.Stretch
 
 
         MediaPlayer{
@@ -52,19 +52,8 @@ Item {
         }
         Camera {
              id: id_camera
-             //deviceId: QtMultimedia.availableCameras[1].deviceId
-             imageProcessing.whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
-             exposure {
-                 exposureCompensation: -1.0
-                 exposureMode: Camera.ExposurePortrait
-             }
-             captureMode: Camera.CaptureVideo
-             flash.mode: Camera.FlashRedEyeReduction
-             imageCapture{
-                 onImageCaptured: {
-                     id_photoPreview.source = preview
-                 }
-             }
+             captureMode: Camera.CaptureViewfinder
+             viewfinder.resolution:"960x540"     //"1920x1080"
          }
 
         CameraFilter{
@@ -108,7 +97,6 @@ Item {
         anchors.right:  parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.margins: 2
 
         // alg ipd
         Row{

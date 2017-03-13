@@ -9,6 +9,7 @@
 
 class IPDProcessor;
 class VFDProcessor;
+class PFRProcessor;
 class QVideoFrame;
 class AlgServer : public QObject
 {
@@ -19,7 +20,9 @@ class AlgServer : public QObject
 
     Q_PROPERTY(bool isIpdActive READ isIpdActive WRITE setIsIpdActive NOTIFY isIpdActiveChanged)
     Q_PROPERTY(bool isVfdActive READ isVfdActive WRITE setIsVfdActive NOTIFY isVfdActiveChanged)
+    Q_PROPERTY(bool isPfrActive READ isPfrActive WRITE setIsPfrActive NOTIFY isPfrActiveChanged)
 public:
+
 
     enum AlgType {
         Alg_IPD = 11,
@@ -36,16 +39,20 @@ public:
     }
     bool isIpdActive() const;
     bool isVfdActive() const;
+    bool isPfrActive() const;
+
 
 signals:
-    void isIpdActiveChanged(bool isIpdActive);
-    void isVfdActiveChanged(bool isVfdActive);
 
     void sig_alg_test_data(const QString& message);
+
     void sig_alg_ipd_data(const QString& message);
     void sig_alg_vfd_data(const QString& message);
+    void sig_alg_pfr_data(const QString& message);
 
-
+    void isIpdActiveChanged(bool isIpdActive);
+    void isVfdActiveChanged(bool isVfdActive);
+    void isPfrActiveChanged(bool isPfrActive);
 
 public slots:
     void setVideoFrame(const QVideoFrame& frame);
@@ -58,21 +65,23 @@ public slots:
     void setIsVfdActive(bool isVfdActive);
     void push_vfd_videoFrame(const QVideoFrame& frame);
 
-
-
-
-
-
-
+    void add_pfr_processor();
+    void setIsPfrActive(bool isPfrActive);
+    void push_pfr_imageFrame(const QString &imageName,const QString &imageUrl,int regOrRec);
 
 private:
     explicit AlgServer(QObject *parent = 0);
 
     IPDProcessor* m_ptr_ipd_processor;
     VFDProcessor* m_ptr_vfd_processor;
-    bool m_is_processor_init;
+    PFRProcessor* m_ptr_pfr_processor;
+
+    bool m_is_vfd_processor_init;
+    bool m_is_pfr_processor_init;
+
     bool m_isIpdActive;
     bool m_isVfdActive;
+    bool m_isPfrActive;
 };
 
 Q_DECLARE_METATYPE(AlgServer::AlgType) //通过Q_DECLARE_METATYPE声明后，就可以让自定义的类型设置到QVariant
