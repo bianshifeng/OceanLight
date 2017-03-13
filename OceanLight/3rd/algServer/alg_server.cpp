@@ -140,8 +140,9 @@ void AlgServer::push_pfr_imageFrame(const QString &imageName, const QString &ima
 
     if(m_isPfrActive){
         QString t_imageName = imageName;
-        QString t_imageUrl = imageUrl;
-        t_imageUrl.replace("file:///","");
+        QString t_imageUrl = imageName;
+        t_imageUrl.append(".jpg");
+        //t_imageUrl.replace("file:///","");
         m_ptr_pfr_processor->push_frame(t_imageUrl,regOrRec,t_imageName);
     }
 }

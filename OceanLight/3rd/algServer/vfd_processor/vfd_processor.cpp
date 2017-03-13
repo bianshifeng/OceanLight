@@ -484,8 +484,8 @@ QString VFDProcessor::_saveFacePic(const QString &imageName,uchar *tmpM, int fac
 {
     QString abs_path = qApp->applicationDirPath();
     QImage t_face_image(tmpM,faceW,faceH,QImage::Format_RGB32);
-    abs_path = abs_path.append("/").append(imageName).append(".png");
-    t_face_image.save(abs_path,"PNG");
+    abs_path = abs_path.append("/").append(imageName).append(".jpg");
+    t_face_image.save(abs_path,"JPG");
     return abs_path;
 }
 
@@ -512,9 +512,9 @@ QString VFDProcessor::_getBigPicName(int tmpSizeTimes, IMP_VFD_RESULT_S &stResul
 QString VFDProcessor::_saveBigPic(const QString imageName, IMP_PicOutFrame *frame) const
 {
     QString rootSrc = qApp->applicationDirPath();
-    rootSrc.append("/").append(imageName).append(".png");
+    rootSrc.append("/").append(imageName).append(".jpg");
     QImage tmpSrc(frame->pu8D1,frame->nWidth,frame->nHeight,QImage::Format_RGB32);
-    tmpSrc.save(rootSrc);
+    tmpSrc.save(rootSrc,"JPG");
     return rootSrc;
 }
 

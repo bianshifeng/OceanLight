@@ -110,8 +110,8 @@ QString AlgProcessor::saveImageFrameMetaData(const QString &saveName, unsigned c
 {
     QString abs_path = qApp->applicationDirPath();
     QImage t_face_image(ptrFrameBuff,nWidth,nHeight,format);
-    abs_path = abs_path.append("/").append(saveName).append(".png");
-    t_face_image.save(abs_path,"PNG");
+    abs_path = abs_path.append("/").append(saveName).append(".jpg");
+    t_face_image.save(abs_path,"JPG");
 
     return abs_path;
 }
