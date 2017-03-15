@@ -69,8 +69,10 @@ int sent_pic(QTcpSocket *client,char *filename,int len)
     int index = tmpfilename.lastIndexOf('/');
     QString tmpimagename = tmpfilename.mid(index+1);
     QByteArray tmpba = tmpimagename.toLatin1();
+    qDebug()<<"pfr_processor:sentpic()";
+    qDebug()<<tmpimagename;
     char *tmpc = tmpba.data();
-    printf("tmpc %s\n",tmpc);
+    qDebug("tmpc %s\n",tmpc);
     client->write(tmpc,strlen(tmpc));
     //client->write(filename,len);
     client->waitForBytesWritten();
@@ -81,7 +83,7 @@ int sent_pic(QTcpSocket *client,char *filename,int len)
     //ret = send(fd,buff,6,0);
     client->write(buff,10);
     client->waitForBytesWritten();
-    printf("File size = %s \n",buff);
+    qDebug("File size = %s \n",buff);
     fseek(pfile,0,0);
     int count = 0 ;
     while(1)
@@ -96,16 +98,16 @@ int sent_pic(QTcpSocket *client,char *filename,int len)
 
         if(tmp != 1000)
         {
-            client->waitForReadyRead();
-            client->read(buff,1);
+
             break;
         }
         //recv(fd,buff,1,0);
         client->waitForReadyRead();
         client->read(buff,1);
     }
-
-    printf("Send PIC succes: %s (%d B)\n",filename,send_size);
+    client->waitForReadyRead();
+    client->read(buff,1);
+    qDebug("Send PIC succes: %s (%d B)\n",filename,send_size);
 
     fclose(pfile);
     pfile = NULL;
@@ -116,10 +118,9 @@ int Face_Regist(QTcpSocket *client,char *filename,int len, char* name, int namel
 {
     char buff[64];
     int ret = 0;
-    printf(" <<<<<< Input regist Name:");
+    qDebug() <<"<<<<<< Input regist Name:";
     name[namelen] = '\0';
-    printf("%s\n",name);
-    //ret = send(fd,buff,16,0);
+    qDebug() << name;
     client->write(name,16);
     client->waitForBytesWritten();
     do{
@@ -137,10 +138,10 @@ int Face_Regist(QTcpSocket *client,char *filename,int len, char* name, int namel
     client->read(buff,1);
     if( buff[0] == '1')
     {
-        printf(" Regist succes \n");
+        qDebug()<< "Regist succes";
         return 1;
     }else{
-        printf(" Regist failed \n");
+        qDebug()<< "Regist failed";
         return 0;
     }
     return 0;
@@ -192,9 +193,10 @@ void PFRProcessor::run()
     path_tmp.name = (char*)malloc(256);
     path_tmp.pathlen = 0;
     path_tmp.namelen = 0;
+	client->waitForReadyRead();
     while(!stopped)
     {
-        client->waitForReadyRead();
+        
         client->read(&tmprecv,1);
 
         //printf("recv : %c\n",tmprecv);
@@ -229,6 +231,9 @@ void PFRProcessor::run()
         }
         else if(path_tmp.recOrReg == 0)
         {
+
+            qDebug()<<"path"<<path_tmp.path;
+
             QString *one = new QString("0");
             client->write((const char*)one->data(),1);
             client->waitForBytesWritten();

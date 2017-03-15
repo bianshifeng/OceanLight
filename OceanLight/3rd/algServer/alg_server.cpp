@@ -3,11 +3,13 @@
 #include <QDebug>
 #include <QImage>
 #include <QVideoFrame>
+#include <QApplication>
 
 
 #include "ipd_processor/ipd_processor.h"
 #include "vfd_processor/vfd_processor.h"
 #include "pfr_processor/pfr_processor.h"
+
 
 static int c_alg_image_index = 0;
 
@@ -143,7 +145,11 @@ void AlgServer::push_pfr_imageFrame(const QString &imageName, const QString &ima
         QString t_imageName = imageName;
         QString t_imageUrl = imageUrl;
         t_imageUrl.replace("file:///","");
-        m_ptr_pfr_processor->push_frame(t_imageUrl,regOrRec,t_imageName);
+
+
+        QString xx = qApp->applicationDirPath();
+        xx.append("/face_7_QA_395_230_537_372.jpg");
+        m_ptr_pfr_processor->push_frame(xx,regOrRec,t_imageName);
     }
 }
 
