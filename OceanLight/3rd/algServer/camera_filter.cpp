@@ -4,7 +4,7 @@
 
 
 static int c_frame_index_count = 0;
-const int NO_PEEK_FRAME = 5;
+const int NO_PEEK_FRAME = 2;
 CameraFilter::CameraFilter()
 {
 

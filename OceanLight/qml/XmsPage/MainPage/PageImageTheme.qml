@@ -27,57 +27,29 @@ Item {
     ListModel{
         id: id_listModel
         ListElement{
-            imgAlg:"IPD"
-            imgTitle:"The alg can give you a future for sale."
-            imgUrl:"alg_ipd_img_001.jpg"
+            imgAlg:"Ocean"
+            imgTitle:"The earth power is deep in ocean."
+            imgUrl:"ocean_home.jpg"
         }
-        ListElement{
-            imgAlg:"IPD"
-            imgTitle:"From here you can konw ------- ocean have the power for wolrd, the Ai is the my company."
-            imgUrl:"alg_ipd_img_002.jpg"
-        }
-        ListElement{
-            imgAlg:"IPD"
-            imgTitle:"In the future cpc can been setting all of the shop  and home."
-            imgUrl:"alg_ipd_img_003.jpg"
-        }
-
-        ListElement{
-            imgAlg:"VFD"
-            imgTitle:"World have the dream"
-            imgUrl:"alg_vfd_img_001.jpg"
-        }
-        ListElement{
-            imgAlg:"VFD"
-            imgTitle:"World have the dream"
-            imgUrl:"alg_vfd_img_002.jpg"
-        }
-        ListElement{
-            imgAlg:"VFD"
-            imgTitle:"World have the dream"
-            imgUrl:"alg_vfd_img_003.jpg"
-        }
-        ListElement{
-            imgAlg:"VIP"
-            imgTitle:"World have the dream"
-            imgUrl:"alg_vip_img.jpg"
-        }
-
-        ListElement{
-            imgAlg:"AFS"
-            imgTitle:"World have the dream"
-            imgUrl:"alg_afd_img_001.jpg"
-        }
-
         ListElement{
             imgAlg:"AI"
             imgTitle:"World have the dream"
             imgUrl:"alg_ai_img_001.jpg"
         }
         ListElement{
-            imgAlg:"CCC"
-            imgTitle:"World have the dream"
-            imgUrl:"alg_ccc_img_001.png"
+            imgAlg:"IPD"
+            imgTitle:"Indoor People Detection."
+            imgUrl:"alg_ipd_img_002.jpg"
+        }
+        ListElement{
+            imgAlg:"VFD"
+            imgTitle:"Video Face Detection."
+            imgUrl:"alg_vfd_img_001.jpg"
+        }
+        ListElement{
+            imgAlg:"PFR"
+            imgTitle:"People Face Recognition."
+            imgUrl:"alg_pfr_img_001.jpg"
         }
     }
 

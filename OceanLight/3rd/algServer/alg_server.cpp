@@ -18,7 +18,8 @@ AlgServer::AlgServer(QObject *parent) : QObject(parent),
     m_is_vfd_processor_init(false),
     m_is_pfr_processor_init(false),
     m_isIpdActive(false),
-    m_isVfdActive(false)
+    m_isVfdActive(false),
+    m_isPfrActive(false)
 {
     this->add_ipd_processor();
     this->add_vfd_processor();
@@ -114,7 +115,8 @@ void AlgServer::add_pfr_processor()
 {
     if(m_ptr_pfr_processor == Q_NULLPTR){
         m_ptr_pfr_processor = new PFRProcessor();
-        //connect(m_ptr_pfr_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_ipd_data(QString)));
+        connect(m_ptr_pfr_processor,SIGNAL(sig_alg_result(QString)),this,SIGNAL(sig_alg_pfr_data(QString)));
+        connect(m_ptr_pfr_processor,SIGNAL(sig_reg_result(QString)),this,SIGNAL(sig_alg_pfr_reg_data(QString)));
     }
 
 }
@@ -132,7 +134,6 @@ void AlgServer::push_pfr_imageFrame(const QString &imageName, const QString &ima
 {
 
     if(!m_is_pfr_processor_init){
-        m_ptr_pfr_processor->set_video_resolution(0,0);
         m_ptr_pfr_processor->initFrameQueue();
         m_ptr_pfr_processor->startProcessor();
         m_is_pfr_processor_init = true;
@@ -140,9 +141,8 @@ void AlgServer::push_pfr_imageFrame(const QString &imageName, const QString &ima
 
     if(m_isPfrActive){
         QString t_imageName = imageName;
-        QString t_imageUrl = imageName;
-        t_imageUrl.append(".jpg");
-        //t_imageUrl.replace("file:///","");
+        QString t_imageUrl = imageUrl;
+        t_imageUrl.replace("file:///","");
         m_ptr_pfr_processor->push_frame(t_imageUrl,regOrRec,t_imageName);
     }
 }

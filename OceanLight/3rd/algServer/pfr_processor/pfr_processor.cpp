@@ -1,13 +1,12 @@
 ﻿#include <QDebug>
 #include <QJsonObject>
+#include <QJsonDocument>
 #include <QCoreApplication>
 #include <QtNetwork>
 #include "pfr_processor.h"
 
 PFRProcessor::PFRProcessor():
     m_queue(Q_NULLPTR),
-    videoHeight(0),
-    videoWidth(0),
     stopped(false)
 {
     stopped = false;
@@ -22,12 +21,6 @@ PFRProcessor::~PFRProcessor()
     {
         delete m_queue;
     }
-}
-
-void PFRProcessor::set_video_resolution(int width, int height)
-{
-    videoWidth = width;
-    videoHeight = height;
 }
 
 void PFRProcessor::initFrameQueue()
@@ -72,29 +65,41 @@ int sent_pic(QTcpSocket *client,char *filename,int len)
         return -1;
     }
     //send(fd,filename,len,0);
-    client->write(filename,len);
+	QString tmpfilename(filename);
+    int index = tmpfilename.lastIndexOf('/');
+    QString tmpimagename = tmpfilename.mid(index+1);
+    QByteArray tmpba = tmpimagename.toLatin1();
+    char *tmpc = tmpba.data();
+    printf("tmpc %s\n",tmpc);
+    client->write(tmpc,strlen(tmpc));
+    //client->write(filename,len);
     client->waitForBytesWritten();
     //usleep(500);
     fseek(pfile,0,2);
     int size = ftell(pfile);
     itostring(size,buff);
     //ret = send(fd,buff,6,0);
-    client->write(buff,6);
+    client->write(buff,10);
     client->waitForBytesWritten();
     printf("File size = %s \n",buff);
     fseek(pfile,0,0);
     int count = 0 ;
     while(1)
     {
-        ret = fread(buff,1,1024,pfile);
+        ret = fread(buff,1,1000,pfile);
         send_size += ret;
         //tmp = send(fd,buff,ret,0);
-        printf("\n");
+
         tmp = client->write(buff,ret);
         client->waitForBytesWritten();
-        //printf("\n");
-        if(tmp != 1024)
+        //printf("%d %d\n",ret,tmp);
+
+        if(tmp != 1000)
+        {
+            client->waitForReadyRead();
+            client->read(buff,1);
             break;
+        }
         //recv(fd,buff,1,0);
         client->waitForReadyRead();
         client->read(buff,1);
@@ -133,13 +138,16 @@ int Face_Regist(QTcpSocket *client,char *filename,int len, char* name, int namel
     if( buff[0] == '1')
     {
         printf(" Regist succes \n");
+        return 1;
     }else{
         printf(" Regist failed \n");
+        return 0;
     }
     return 0;
 }
 
-int Face_Recog(QTcpSocket *client,char *filename,int len)
+//int Face_Recog(QTcpSocket *client,char *filename,int len)
+QString *Face_Recog(QTcpSocket *client,char *filename,int len)
 {
     char buff[64] = {0};
     int ret = 0;
@@ -158,7 +166,8 @@ int Face_Recog(QTcpSocket *client,char *filename,int len)
     client->read(buff,16);
     //recogniziton result
     printf(" >>>>>> Found :  %s\n",buff);
-
+    QString *tmpS = new QString(buff);
+    qDebug()<<*tmpS;
     //recv(fd,buff,1,0);
     client->waitForReadyRead();
     client->read(buff,1);
@@ -168,43 +177,67 @@ int Face_Recog(QTcpSocket *client,char *filename,int len)
     }else{
         printf(" Recog failed \n");
     }
-    return 0;
+    return tmpS;
 }
 void PFRProcessor::run()
 {
     QTcpSocket *client;
     client = new QTcpSocket(this);
+    //client->connectToHost(QHostAddress("58.246.122.150"), 8888);
     client->connectToHost(QHostAddress("58.246.122.150"), 8888);
-    //client->connectToHost(QHostAddress("192.168.3.144"), 8888);
     char tmprecv;
     IMP_PFR_PATH *path_src;
+	IMP_PFR_PATH path_tmp;
+    path_tmp.path = (char*)malloc(256);
+    path_tmp.name = (char*)malloc(256);
+    path_tmp.pathlen = 0;
+    path_tmp.namelen = 0;
     while(!stopped)
     {
         client->waitForReadyRead();
         client->read(&tmprecv,1);
 
-        printf("recv : %c\n",tmprecv);
+        //printf("recv : %c\n",tmprecv);
         m_queue->Peek(&path_src);
         if(NULL == path_src)
         {
             usleep(100000);
             continue;
         }
-
-        if(path_src->recOrReg == 1)
+		memcpy(path_tmp.path,path_src->path,path_src->pathlen);
+        path_tmp.path[path_src->pathlen] = '\0';
+        memcpy(path_tmp.name,path_src->name,path_src->namelen);
+        path_tmp.name[path_src->namelen] = '\0';
+        path_tmp.pathlen = path_src->pathlen;
+        path_tmp.namelen = path_src->namelen;
+        path_tmp.recOrReg = path_src->recOrReg;
+        if(path_tmp.recOrReg == 1)
         {
             QString *zero = new QString("1");
             client->write((const char*)zero->data(),1);
             client->waitForBytesWritten();
-            printf("path %s\n",path_src->path);
-            Face_Recog(client,path_src->path,path_src->pathlen);
+            printf("path %s\n",path_tmp.path);
+            QString *boolS = Face_Recog(client,path_tmp.path,path_tmp.pathlen);
+
+
+            QJsonObject dataJson;
+            dataJson.insert("imageName",QString(path_tmp.path));
+            dataJson.insert("peopleName",*boolS);
+
+            emit sig_alg_result(QString(QJsonDocument(dataJson).toJson()));
+
         }
-        else if(path_src->recOrReg == 0)
+        else if(path_tmp.recOrReg == 0)
         {
             QString *one = new QString("0");
             client->write((const char*)one->data(),1);
             client->waitForBytesWritten();
-            Face_Regist(client,path_src->path,path_src->pathlen,path_src->name,path_src->namelen);
+            int boolS = Face_Regist(client,path_tmp.path,path_tmp.pathlen,path_tmp.name,path_tmp.namelen);
+            if(1 == boolS){
+                emit sig_reg_result("1");
+            }else{
+                emit sig_reg_result("0");
+            }
         }
         qDebug()<<"res";
         m_queue->Remove();
@@ -224,18 +257,8 @@ void PFRProcessor::startProcessor()
 {
     this->stopped = false;
     this->start();
-
 }
 
-
-void PFRProcessor::setEmitPfrData(QString &dataStr)
-{
-    qDebug() << dataStr;
-}
-void PFRProcessor::set_frame_queue(IMP_StringQueue* queue)
-{
-    m_queue = queue;
-}
 void PFRProcessor::push_frame(QString &file_path,int recOrReg,QString &name)
 {
     IMP_PFR_PATH *free_node = m_queue->GetFrameAddr();

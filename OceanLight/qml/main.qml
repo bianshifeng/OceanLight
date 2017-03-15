@@ -63,25 +63,11 @@ AppWindow {
     implicitHeight: 700
     implicitWidth: (implicitHeight * UI.const_gold_mean-40)
     property bool isHoverEnabled: false
-
-    signal showFullScreen()
     Item{
         anchors.fill: parent
         anchors.margins: 1
         TopbarComponent{
             id: id_topBar
-            z:100
-            XmsText{
-                text: "OCEAN"
-                size: 16
-                color:UI.COLOR_BASE_WHITE
-                font.bold: true
-                opacity: 0.8
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-            }
-            onEmitFullScreen: showFullScreen()
         }
 
         Item{
@@ -92,7 +78,6 @@ AppWindow {
             anchors.bottom: parent.bottom
             clip: true
             state: "showMainpage"
-
 
             Item{
                 id: id_mainPage

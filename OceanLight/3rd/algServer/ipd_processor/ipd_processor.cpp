@@ -12,8 +12,8 @@ IPDProcessor::IPDProcessor():AlgProcessor()
 
 void IPDProcessor::run()
 {
-    IMP_S32 width = this->videoWidth;
-    IMP_S32 height = this->videoHeight;
+    IMP_S32 width = this->videoWidth/2;
+    IMP_S32 height = this->videoHeight/2;
     IMP_HANDLE handle;
 
     qDebug() << QString::number(width) << "x" << QString::number(height);
@@ -42,6 +42,7 @@ void IPDProcessor::run()
     tmpImage.pu8D3 = tmpImage.pu8D2 + videoWidth*videoHeight/4;
 
     IMP_PicOutFrame *frame = NULL;
+	uchar* tmpImageSrc = (IMP_U8*)malloc(sizeof(int)*videoWidth*videoHeight);
     uchar* tmpframe = (IMP_U8*)malloc(sizeof(int)*videoWidth*videoHeight);
     uchar* tmpframeS = tmpframe;
 
@@ -58,22 +59,25 @@ void IPDProcessor::run()
             usleep(100000);
             continue;
         }
-        this->RGBA2YUV420P_QVideoFrame(frame->pu8D1,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
+		memcpy(tmpImageSrc,frame->pu8D1,sizeof(int)*videoWidth*videoHeight);
+        this->RGBA2YUV420P_QVideoFrame(tmpImageSrc,videoWidth,videoHeight,tmpImage.pu8D1);
         this->downSize(&tmpImage,&image);
         IMP_IPD_Process(handle,&image,NULL,&stResult);
         frame_count ++;
         if(stResult.s32TgtNum > 0)ipd_count++;
+		if(frame_count%10 == 5)
+		{
+			for(int i = videoHeight -1 ; i >=0;i--)
+			{
+                memcpy(tmpframe,tmpImageSrc + i * videoWidth * sizeof(int), videoWidth * sizeof(int));
+                tmpframe += videoWidth * sizeof(int);
+            }
+            tmpframe = tmpframeS;
+		}
         if(frame_count%10 == 0)
         {
             if(ipd_count > 7 && isWarning == 0)
             {
-                for(int i = frame->nHeight -1 ; i >=0;i--)
-                {
-                    memcpy(tmpframe,frame->pu8D1 + i * frame->nWidth * sizeof(int), frame->nWidth * sizeof(int));
-                    tmpframe += frame->nWidth * sizeof(int);
-                }
-                tmpframe = tmpframeS;
-
                 QString imageName;
                 imageName = imageName.append("ipd_").append(QString::number(frame_count,10));
                 QString imageSavePath = this->saveImageFrameMetaData(imageName,tmpframe,frame->nWidth,frame->nHeight,QImage::Format_RGB32);

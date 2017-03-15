@@ -14,6 +14,7 @@ Item{
     property alias imageUrl : id_alarm_image.source
     property alias nameStr:id_txt_name.text
     property alias timeStr:id_txt_time.text
+    property alias peopleName: id_reg_name.text
 
 
     property bool checked: false
@@ -50,11 +51,20 @@ Item{
         spacing: 2
         XmsText{
             id: id_txt_name
+            size: 16
             color:UI.COLOR_BASE_WHITE
             anchors.left: parent.left
-            anchors.right: parent.right
+            XmsText{
+                id: id_txt_time
+                size: 12
+                color:UI.COLOR_BASE_WHITE
+                anchors.left: parent.right
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 8
+            }
 
         }
+
         Image{
             id: id_alarm_image
             fillMode: Image.PreserveAspectFit
@@ -62,13 +72,13 @@ Item{
             Layout.fillHeight: true
         }
 
-
         XmsText{
-            id: id_txt_time
+            id: id_reg_name
             color:UI.COLOR_BASE_WHITE
+            text: " "
             anchors.left: parent.left
-            anchors.right: parent.right
         }
+
     }
 
 

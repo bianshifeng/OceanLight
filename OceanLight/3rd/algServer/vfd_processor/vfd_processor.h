@@ -39,9 +39,9 @@ private:
 
 
     QString _getPicName(IMP_VFD_RESULT_S &stResult,int i) const;
-    QString _saveFacePic(const QString &imageName,uchar *tmpM, int faceW, int faceH) const;
-    QString _getBigPicName(int tmpSizeTimes, IMP_VFD_RESULT_S &stResult,int i)const;
-    QString _saveBigPic(const QString imageName,IMP_PicOutFrame *frame) const;
+    QString _saveFacePic(const QString imageName,uchar *tmpM, int faceW, int faceH) const;
+    QString _getBigPicName(int tmpSizeTimes, IMP_VFD_RESULT_S &stResult,int i,int nFrameWidth)const;
+    QString _saveBigPic(const QString imageName,uchar *imageSrc,int imageW,int imageH) const;
 
 };
 

@@ -45,8 +45,6 @@ void AlgProcessor::push_video_frame(const QVideoFrame &videoFrame)
     QVideoFrame t_frame(videoFrame);
     t_frame.map(QAbstractVideoBuffer::ReadOnly);
 
-    qDebug() << t_frame.pixelFormat();
-
     memcpy(t_free_frame->pu8D1,t_frame.bits(),t_frame.width()*t_frame.height()*4);
     t_free_frame->nWidth = t_frame.width();
     t_free_frame->nHeight = t_frame.height();

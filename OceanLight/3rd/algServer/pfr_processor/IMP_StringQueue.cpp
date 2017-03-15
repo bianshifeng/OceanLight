@@ -1,4 +1,4 @@
-#include "QDebug"
+﻿#include "QDebug"
 #include "IMP_StringQueue.h"
 
 IMP_StringQueue::IMP_StringQueue():m_nQueueLen(0), m_peekFlag(0), m_queueHead(0), m_queueTail(0), m_queueMaxSize(DEFAULT_MAX_QUEUE_SIZE)
@@ -24,8 +24,8 @@ int IMP_StringQueue::InitQueue()
     }
     for(int i = 0; i < m_queueMaxSize; i ++)
     {
-        m_pArray[i].path = (char*)malloc(64);
-        m_pArray[i].name = (char*)malloc(64);
+        m_pArray[i].path = (char*)malloc(256);
+        m_pArray[i].name = (char*)malloc(256);
         m_pArray[i].pathlen = 0;
         m_pArray[i].namelen = 0;
     }

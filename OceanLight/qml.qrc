@@ -91,6 +91,7 @@
         <file>qml/XmsPage/AlgCom/AlgConfigCom.qml</file>
         <file>qml/XmsPage/ChildPage/AlarmPage.qml</file>
         <file>qml/XmsPage/ChildPage/VideoPage.qml</file>
+        <file>qml/XmsPage/MediaCom/CameraConfigCom.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/arrow.png</file>

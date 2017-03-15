@@ -50,6 +50,8 @@ signals:
     void sig_alg_vfd_data(const QString& message);
     void sig_alg_pfr_data(const QString& message);
 
+    void sig_alg_pfr_reg_data(const QString& message);
+
     void isIpdActiveChanged(bool isIpdActive);
     void isVfdActiveChanged(bool isVfdActive);
     void isPfrActiveChanged(bool isPfrActive);

@@ -26,15 +26,9 @@ Item {
         color:"black"
     }
 
-
-
-
-
-
-
     VideoOutput {
         id: id_camera_output
-        source: id_mediaPlayer
+        source: id_camera
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
@@ -44,12 +38,12 @@ Item {
 //        fillMode: VideoOutput.Stretch
 
 
-        MediaPlayer{
-            id: id_mediaPlayer
-            autoLoad: true
-            autoPlay: true
-            source:"file:///g:/video2.mp4"
-        }
+//        MediaPlayer{
+//            id: id_mediaPlayer
+//            autoLoad: true
+//            autoPlay: true
+//            source:"file:///g:/video2.mp4"
+//        }
         Camera {
              id: id_camera
              captureMode: Camera.CaptureViewfinder
@@ -62,34 +56,6 @@ Item {
         }
 
     }
-
-
-    Image {
-        id: id_photoPreview
-        width: 150
-        height: 100
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.margins: 20
-        visible: false
-
-        MouseArea{
-            anchors.fill: parent
-            onClicked: id_camera.imageCapture.capture()
-        }
-
-
-        XmsText{
-            id: id_txt_image
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: -(id_txt_image.contentHeight+6)
-            color: "white"
-        }
-    }
-
-
-
 
     Row{
         id: id_alg_message
@@ -120,8 +86,7 @@ Item {
 
                     onEmitShowDetailInfo: {
                         //nameStr,var imageUrl,var timeStr
-                        id_image_loader.showItem(nameStr,imageUrl,timeStr)
-
+                        id_image_loader.showItem(nameStr,imageUrl,timeStr,metaNameStr,metaImageUrl)
                     }
                 }
 
@@ -171,10 +136,9 @@ Item {
                 VFDListView{
                     id: id_vfd_listView
                     anchors.fill: parent
-
                     onEmitShowDetailInfo: {
                         //nameStr,var imageUrl,var timeStr
-                        id_image_loader.showItem(nameStr,imageUrl,timeStr)
+                        id_image_loader.showItem(nameStr,imageUrl,timeStr,metaNameStr,metaImageUrl)
 
                     }
                 }
@@ -200,9 +164,6 @@ Item {
     }
 
 
-
-
-
     Loader{
         id: id_image_loader
         anchors.left: parent.left
@@ -213,11 +174,17 @@ Item {
         property string loaderItemInfo
         property string itemUrl
 
-        function showItem(imgName,imgUrl,imgInfo){
+        function showItem(imgName,imgUrl,imgInfo,metaImgName,metaImgUrl){
+
+
+            id_image_loader.sourceComponent = undefined;
+
             id_image_loader.sourceComponent = id_image_com
             id_image_loader.item.itemName = imgName
             id_image_loader.item.itemImageUrl = imgUrl
             id_image_loader.item.itemInfo = imgInfo
+            id_image_loader.item.itemMetaName = metaImgName
+            id_image_loader.item.itemMetaImageUrl = metaImgUrl
 
         }
 

@@ -104,6 +104,7 @@ FocusScope{
     }
     ListModel{
         id: id_menuList
+
         ListElement{
             itemName:"camera"
             itemTitle:"Camera"

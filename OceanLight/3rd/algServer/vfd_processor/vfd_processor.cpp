@@ -101,14 +101,18 @@ void VFDProcessor::run()
     tmpImage.enFormat = IMAGE_FORMAT_IMP_YUV420;
 
     IMP_PicOutFrame *frame = NULL;
-
+	uchar* tmpImageSrc = (IMP_U8*)malloc(sizeof(int)*videoWidth*videoHeight);
+	uchar* tmpframe = (IMP_U8*)malloc(sizeof(int)*videoWidth*videoHeight);
+    uchar* tmpframeS = tmpframe;
+	
     stParas.s32Sizemax = 320;
+	stParas.s32Sizemin = 48;
     stParas.s32Numax = 4;
     stParas.u32EnableColor = 0;
     stParas.u32Enablerotate = 0;
     stParas.u32RotateLevel = 0;
     stParas.s32Level = 2;
-    stParas.s32Confidence = 2;
+    stParas.s32Confidence = 0;
 
     IMP_VFD_Config(handle,&stParas);
 
@@ -128,8 +132,8 @@ void VFDProcessor::run()
             usleep(100000);
             continue;
         }
-//        IMP_U8 *tmpMem = (IMP_U8*)malloc(sizeof(IMP_U8)*frame->nWidth*frame->nHeight*1.5);
-        this->RGBA2YUV420P_QVideoFrame(frame->pu8D1,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
+		memcpy(tmpImageSrc,frame->pu8D1,sizeof(int)*videoWidth*videoHeight);
+        this->RGBA2YUV420P_QVideoFrame(tmpImageSrc,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
         this->downSize(&tmpImage,&image);
 
         IMP_VFD_Process(handle,&image);
@@ -138,7 +142,6 @@ void VFDProcessor::run()
 
         if(stResult.s32Facenumber == 0){
             memset(face_path, 0, sizeof(FACEPATH)*IMP_VFD_MAX_FACE_NUMBER);
-            qDebug() <<"00";
         }
 
         if(stResult.s32Facenumber > 0)
@@ -174,7 +177,7 @@ void VFDProcessor::run()
                 if(0 == flag_isExist)
                 {
 
-                    if(stResult.stFace[i].u8Flag == 1)
+                    if(stResult.stFace[i].faceQA == 1)
                     {
                         int startX = stResult.stFace[i].stPosition.s16X1 * tmpSizeTimes;
                         int endX = stResult.stFace[i].stPosition.s16X2 * tmpSizeTimes;
@@ -190,7 +193,7 @@ void VFDProcessor::run()
                         {
                             for (int m = frame->nWidth - endX; m <(frame->nWidth - startX);m++)
                             {
-                                memcpy(tmpN,frame->pu8D1 + j * frame->nWidth * sizeof(int) + m * sizeof(int),sizeof(int));
+                                memcpy(tmpN,tmpImageSrc + j * frame->nWidth * sizeof(int) + m * sizeof(int),sizeof(int));
                                 tmpN -= sizeof(int);
                             }
                         }
@@ -198,8 +201,10 @@ void VFDProcessor::run()
                         QString t_imageName = this->_getPicName(stResult,i);
                         QString t_imageUrl = this->_saveFacePic(t_imageName,tmpM,faceW,faceH);
 
-                        QString t_metaImageName = this->_getBigPicName(tmpSizeTimes,stResult,i);
-                        QString t_metaImageUrl = this->_saveBigPic(t_metaImageName,frame);
+
+
+                        QString t_metaImageName = this->_getBigPicName(tmpSizeTimes,stResult,i,frame->nWidth);
+                        QString t_metaImageUrl = this->_saveBigPic(t_metaImageName,tmpImageSrc, videoWidth,videoHeight);
 
                         QJsonObject json;
                         json.insert("name",t_imageName);
@@ -479,17 +484,7 @@ QString VFDProcessor::_getPicName(IMP_VFD_RESULT_S &stResult,int i) const
 
     return picName;
 }
-
-QString VFDProcessor::_saveFacePic(const QString &imageName,uchar *tmpM, int faceW, int faceH) const
-{
-    QString abs_path = qApp->applicationDirPath();
-    QImage t_face_image(tmpM,faceW,faceH,QImage::Format_RGB32);
-    abs_path = abs_path.append("/").append(imageName).append(".jpg");
-    t_face_image.save(abs_path,"JPG");
-    return abs_path;
-}
-
-QString VFDProcessor::_getBigPicName(int tmpSizeTimes, IMP_VFD_RESULT_S &stResult,int i) const
+QString VFDProcessor::_getBigPicName(int tmpSizeTimes, IMP_VFD_RESULT_S &stResult,int i,int nFrameWidth) const
 {
     QString bigPicName("face_");
     QString tmpIDSrc = QString::number(stResult.stFace[i].u32FaceID,10);
@@ -498,23 +493,49 @@ QString VFDProcessor::_getBigPicName(int tmpSizeTimes, IMP_VFD_RESULT_S &stResul
         bigPicName.append("_QA");
     else
         bigPicName.append("_common");
-    QString tmpPositonX1 = QString::number(stResult.stFace[i].stPosition.s16X1 * tmpSizeTimes,10);
+
+    QString tmpPositonX1 = QString::number(nFrameWidth - stResult.stFace[i].stPosition.s16X2 * tmpSizeTimes,10);
     bigPicName.append("_").append(tmpPositonX1);
     QString tmpPositonY1 = QString::number(stResult.stFace[i].stPosition.s16Y1 * tmpSizeTimes,10);
     bigPicName.append("_").append(tmpPositonY1);
-    QString tmpPositonX2 = QString::number(stResult.stFace[i].stPosition.s16X2 * tmpSizeTimes,10);
+    QString tmpPositonX2 = QString::number(nFrameWidth - stResult.stFace[i].stPosition.s16X1 * tmpSizeTimes,10);
     bigPicName.append("_").append(tmpPositonX2);
     QString tmpPositonY2 = QString::number(stResult.stFace[i].stPosition.s16Y2 * tmpSizeTimes,10);
     bigPicName.append("_").append(tmpPositonY2);
+
+
     return bigPicName;
 }
-
-QString VFDProcessor::_saveBigPic(const QString imageName, IMP_PicOutFrame *frame) const
+QString VFDProcessor::_saveFacePic(const QString imageName,uchar *tmpM, int faceW, int faceH) const
 {
+    QString abs_path = qApp->applicationDirPath();
+    abs_path = abs_path.append("/").append(imageName).append(".jpg");
+    QImage t_face_image(tmpM,faceW,faceH,QImage::Format_RGB32);
+    t_face_image.save(abs_path,"JPG");
+    return abs_path;
+}
+QString VFDProcessor::_saveBigPic(const QString imageName,uchar *imageSrc,int imageW,int imageH) const
+{
+    uchar* tmpframe = (IMP_U8*)malloc(sizeof(int)*imageW*imageH);
+    uchar* tmpframeS = tmpframe;
+
+    //save source image
+    for(int i = imageH - 1; i >= 0; i --)
+    {
+        memcpy(tmpframe, imageSrc + i * imageW * sizeof(int),imageW * sizeof(int));
+        tmpframe += imageW * sizeof(int);
+    }
+    tmpframe = tmpframeS;
     QString rootSrc = qApp->applicationDirPath();
     rootSrc.append("/").append(imageName).append(".jpg");
-    QImage tmpSrc(frame->pu8D1,frame->nWidth,frame->nHeight,QImage::Format_RGB32);
+    QImage tmpSrc(tmpframe,imageW,imageH,QImage::Format_RGB32);
     tmpSrc.save(rootSrc,"JPG");
+
+    tmpframeS = Q_NULLPTR;
+    tmpframe = Q_NULLPTR;
+    delete tmpframeS;
+    delete tmpframe;
+
     return rootSrc;
 }
 

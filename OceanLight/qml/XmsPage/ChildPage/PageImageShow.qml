@@ -17,6 +17,9 @@ Item {
     property alias itemImageUrl:id_alg_image.source
     property alias itemInfo: id_txt_info.text
 
+    property string itemMetaName:itemName
+    property string itemMetaImageUrl:itemImageUrl
+
 
     signal emitClose()
 
@@ -60,6 +63,51 @@ Item {
 
 
 
+            Item{
+                Layout.fillWidth: true
+                height: 70
+
+                Rectangle{
+                    radius: 2
+                    anchors.fill:id_input
+                    anchors.margins: -8
+                    Rectangle{
+                        radius: 2
+                        anchors.fill: parent
+                        border.width: 1
+                        border.color: UI.COLOR_BASE_BLACK_BASE
+                        anchors.margins: 1
+                    }
+                }
+
+                XmsText{
+                    text: "Name Tag:"
+                    anchors.left: id_input.left
+                    anchors.bottom: id_input.top
+                    anchors.leftMargin: -8
+                    anchors.bottomMargin: 12
+                    size: 16
+
+                }
+
+                TextInput{
+                    id: id_input
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.leftMargin:  8
+                    anchors.rightMargin:  8
+
+                    font.pixelSize: 16
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 20
+
+                }
+            }
+
+
+
+
+
             Row{
                 spacing: 1
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -82,8 +130,14 @@ Item {
                     foreColor: UI.COLOR_BASE_WHITE_BASE
                     hoverColor: UI.COLOR_BASE_RED
                     onClicked: {
-                        //注册                        
-                         AlgServer.push_pfr_imageFrame(id_root.itemName,id_root.itemImageUrl,0);
+                        //注册
+
+                        if(id_input.text){
+                            id_reg_busying.running = true
+                             AlgServer.push_pfr_imageFrame(id_input.text,id_root.itemImageUrl,0);
+                        }
+
+
                     }
                 }
                 MainMenuButton{
@@ -111,6 +165,66 @@ Item {
 
 
 
+        Item{
+            anchors.fill: parent
+            anchors.margins: 2
+            visible: id_reg_busying.running
+            Rectangle{
+                anchors.fill: parent
+                color:UI.COLOR_BASE_GREY_ACTIVE
+                opacity: 0.5
+            }
+
+            BusyIndicator{
+                id: id_reg_busying
+                running: false
+                anchors.centerIn: parent
+            }
+        }
+
+
+        Rectangle{
+            id: id_info_page
+            opacity:0
+            width: 200
+            height: 80
+            Rectangle{
+                anchors.fill: parent
+                anchors.margins: 1
+                color:UI.COLOR_BASE_TRANSPARENT
+                border.color: UI.COLOR_BASE_WHITE_LIGHT
+                border.width: 1
+            }
+
+            anchors.centerIn: parent
+            XmsText{
+                id: id_reg_info
+                size: 16
+                anchors.centerIn: parent
+            }
+            Timer{
+                id:id_timer
+                repeat: false
+                interval: 3000
+                onTriggered: {
+                    id_info_page.opacity = 0
+                }
+            }
+            function showInfo(message){
+                if(message === "1"){
+                    id_reg_info.text = "Register Success"
+                    id_info_page.color = UI.COLOR_BASE_GREEN
+                }else{
+                    id_reg_info.text = "register Failture"
+                    id_info_page.color = UI.COLOR_BASE_RED
+                }
+
+                id_timer.restart()
+                id_info_page.opacity = 1
+
+            }
+        }
+
         FlatButton{
             anchors.top: parent.top
             anchors.right: parent.right
@@ -124,6 +238,18 @@ Item {
             }
 
         }
+
+    }
+
+    Connections{
+        id: id_algserver_cnt
+        target: AlgServer
+        ignoreUnknownSignals: true
+        onSig_alg_pfr_reg_data: {
+            id_reg_busying.running = false
+            id_info_page.showInfo(message)
+        }
+
     }
 
 

@@ -12,32 +12,8 @@ Flickable{
     contentHeight: id_container.height
     property alias alarmCount: id_listModel.count
 
-    function appendItem(jsonObj){
 
-        var t_json = JSON.parse(jsonObj)
-
-        var t_no  = id_listModel.count + 1
-        var t_time =Utils.timeToDate(Date.now(),"HH:mm:ss")
-        var t_name = t_json.name
-        var t_imageUrl = "file:///"+t_json.imageUrl
-        var t_bigImageUrl = "file:///"+t_json.bigImageUrl
-        var t_bigImageName = t_json.bigImageName
-
-        var t_obj = {
-            itemId:t_no,
-            itemTime:t_time,
-            itemName:t_name,
-            itemImageUrl:t_imageUrl,
-            itemBigImageUrl:t_bigImageUrl,
-            itemBigImageName:t_bigImageName
-        }
-
-        id_listModel.insert(0,t_obj)
-        AlgServer.push_pfr_imageFrame(t_bigImageName,t_bigImageUrl,1)
-
-    }
-
-    signal emitShowDetailInfo(var nameStr,var imageUrl,var timeStr)
+    signal emitShowDetailInfo(var nameStr,var imageUrl,var timeStr,var metaNameStr,var metaImageUrl)
 
     Column{
         id: id_container
@@ -47,11 +23,11 @@ Flickable{
             model: id_listModel
             AlarmItemDelegate{
                 width: id_root.width
-                nameStr: itemBigImageName
+                nameStr: itemName
                 timeStr: itemTime
-                imageUrl: itemBigImageUrl
+                imageUrl: itemImageUrl
                 onEmitClick: {
-                    emitShowDetailInfo(nameStr,imageUrl,timeStr)
+                    emitShowDetailInfo(nameStr,imageUrl,timeStr,itemMetaImageName,itemMetaImageUrl)
                 }
             }
         }
@@ -62,8 +38,9 @@ Flickable{
                 itemTime:"001"
                 itemName:"sdfsdf"
                 itemImageUrl:""
-                itemBigImageUrl:""
-                itemBigImageName:""
+                itemMetaImageName:""
+                itemMetaImageUrl:""
+                itemPeopleName:""
             }
         }
     }
@@ -71,4 +48,59 @@ Flickable{
 
     Component.onCompleted: id_listModel.clear()
 
+    function appendItem(jsonObj){
+
+        var t_json = JSON.parse(jsonObj)
+
+        var t_no  = id_listModel.count + 1
+        var t_time =Utils.timeToDate(Date.now(),"HH:mm:ss")
+        var t_name = t_json.name
+        var t_imageUrl = "file:///"+t_json.imageUrl
+        var t_metaImageUrl = "file:///"+t_json.metaImageUrl
+        var t_metaImageName = t_json.metaImageName
+
+        var t_obj = {
+            itemId:t_no,
+            itemTime:t_time,
+            itemName:t_name,
+            itemImageUrl:t_imageUrl,
+            itemMetaImageName:t_metaImageName,
+            itemMetaImageUrl:t_metaImageUrl,
+            itemPeopleName:""
+        }
+
+        id_listModel.insert(0,t_obj)
+        AlgServer.push_pfr_imageFrame(t_metaImageName,t_metaImageUrl,1)
+
+    }
+
+
+    Connections{
+        id: id_algServer_cnt
+        target: AlgServer
+        ignoreUnknownSignals: true
+        onSig_alg_pfr_data: {
+            try{
+                var t_obj = JSON.parse(message)
+
+                var t_imageName = ""
+                t_imageName = t_obj.imageName
+                var t_peopleName = t_obj.peopleName
+
+                for(var index = 0; index < id_listModel.count; index ++){
+                    if(t_imageName.indexOf(id_listModel.get(index).itemMetaImageName)>=0){
+                        id_listModel.get(index).itemPeopleName = t_peopleName
+                        id_listModel.sync()
+                        break
+                    }
+                }
+
+            }catch(e){
+
+            }
+
+
+        }
+
+    }
 }

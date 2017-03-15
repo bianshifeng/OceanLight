@@ -1,5 +1,6 @@
 ﻿import QtQuick 2.7
 import "../../Controls"
+import "../../Fonts"
 import "../../Controls/UIConstants.js" as UI
 import "../../Fonts/XmsIconFont.js" as FontName
 
@@ -8,7 +9,19 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     implicitHeight: 40
+    z:100
     signal emitFullScreen()
+
+    XmsText{
+        text: "OCEAN"
+        size: 16
+        color:UI.COLOR_BASE_WHITE
+        font.bold: true
+        opacity: 0.8
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+    }
     MouseArea {
         id: id_dragArea
         property point clickPos: "0,0"
@@ -83,7 +96,5 @@ Item {
         }
 
     }
-
-
 
 }

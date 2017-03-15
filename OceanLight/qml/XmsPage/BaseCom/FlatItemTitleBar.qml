@@ -34,11 +34,12 @@ Item{
             anchors.left: id_logo.right
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
+            spacing: 2
             XmsText{
                 id: id_title_text
                 text:qsTr("Camera1")
                 font.bold: true
-                size: 12
+                size: 14
                 color:id_root.fontColor
             }
             XmsText{

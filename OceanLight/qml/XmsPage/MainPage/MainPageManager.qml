@@ -33,7 +33,6 @@ StackView {
 
             XmsText{
                 id: id_title_txt
-                text: "CPC"
                 size: 50
                 color:UI.COLOR_BASE_WHITE
                 font.bold: true
@@ -43,7 +42,6 @@ StackView {
                 anchors.bottomMargin: 60
                 XmsText{
                     id: id_info_txt
-                    text: "The alg is for people collection for the ai computer."
                     color: parent.color
                     anchors.left: parent.left
                     anchors.top: parent.bottom

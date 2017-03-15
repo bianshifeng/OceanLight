@@ -103,6 +103,10 @@ Flickable {
             algLogo: FontName.ICON_ALG_FACE
             algTitle: "PFR: People Face Recognition"
             algInfo: "This alg is for record the camera active people"
+            onAlgIsActiveChanged: {
+                AlgServer.setIsPfrActive(algIsActive)
+            }
+
             Component.onCompleted: {
                 id_config_pfr.algIsActive = AlgServer.isPfrActive
             }
