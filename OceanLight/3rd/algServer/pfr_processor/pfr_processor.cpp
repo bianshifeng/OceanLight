@@ -73,7 +73,10 @@ int sent_pic(QTcpSocket *client,char *filename,int len)
     qDebug()<<tmpimagename;
     char *tmpc = tmpba.data();
     qDebug("tmpc %s\n",tmpc);
-    client->write(tmpc,strlen(tmpc));
+	char filenamebuff[48] = {0};
+    memcpy(filenamebuff,tmpc,strlen(tmpc));
+    client->write(filenamebuff,48);
+    //client->write(tmpc,strlen(tmpc));
     //client->write(filename,len);
     client->waitForBytesWritten();
     //usleep(500);
@@ -88,7 +91,7 @@ int sent_pic(QTcpSocket *client,char *filename,int len)
     int count = 0 ;
     while(1)
     {
-        ret = fread(buff,1,1000,pfile);
+        ret = fread(buff,1,1024,pfile);
         send_size += ret;
         //tmp = send(fd,buff,ret,0);
 
@@ -96,7 +99,7 @@ int sent_pic(QTcpSocket *client,char *filename,int len)
         client->waitForBytesWritten();
         //printf("%d %d\n",ret,tmp);
 
-        if(tmp != 1000)
+        if(tmp != 1024)
         {
 
             break;
