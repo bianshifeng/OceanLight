@@ -28,6 +28,7 @@ Flickable{
                 timeStr: itemTime
                 imageUrl: itemImageUrl
                 peopleName:itemPeopleName
+                peopleIsReg:itemPeopleIsReg
                 onEmitClick: {
                     emitShowDetailInfo(nameStr,imageUrl,timeStr,itemMetaImageName,itemMetaImageUrl)
                 }
@@ -43,6 +44,7 @@ Flickable{
                 itemMetaImageName:"name2"
                 itemMetaImageUrl:""
                 itemPeopleName:""
+                itemPeopleIsReg:false
             }
         }
     }
@@ -68,7 +70,8 @@ Flickable{
             itemImageUrl:t_imageUrl,
             itemMetaImageName:t_metaImageName,
             itemMetaImageUrl:t_metaImageUrl,
-            itemPeopleName:""
+            itemPeopleName:"",
+            itemPeopleIsReg:false
         }
 
         id_listModel.insert(0,t_obj)
@@ -83,10 +86,12 @@ Flickable{
             var t_imageName = ""
             t_imageName = t_obj.imageName
             var t_peopleName = t_obj.peopleName
+            var t_peolpleIsReg = t_obj.isRegister
 
             for(var index = 0; index < id_listModel.count; index ++){
                 if(t_imageName.indexOf(id_listModel.get(index).itemMetaImageName)>=0){
                     id_listModel.get(index).itemPeopleName = t_peopleName
+                    id_listModel.get(index).itemPeopleIsReg =t_peolpleIsReg
                     break
                 }
             }

@@ -225,9 +225,18 @@ void PFRProcessor::run()
             QString *boolS = Face_Recog(client,path_tmp.path,path_tmp.pathlen);
 
 
+            QString back_people_name(*boolS);
             QJsonObject dataJson;
             dataJson.insert("imageName",QString(path_tmp.path));
-            dataJson.insert("peopleName",*boolS);
+            dataJson.insert("peopleName",back_people_name);
+
+            if(back_people_name.indexOf("NO DATA")>=0){
+                dataJson.insert("isRegister",false);
+
+            }else{
+                dataJson.insert("isRegister",true);
+            }
+
 
             emit sig_alg_result(QString(QJsonDocument(dataJson).toJson()));
 

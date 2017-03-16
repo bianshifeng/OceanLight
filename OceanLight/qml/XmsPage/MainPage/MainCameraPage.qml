@@ -61,13 +61,12 @@ Rectangle {
                         id_image_loader.showItem(nameStr,imageUrl,timeStr,metaNameStr,metaImageUrl)
                     }
                 }
-
             }
             FlatItemTitleBar_Vertical{
                 id: id_info_ipd
                 logo: FontName.ICON_ALG_RING
-                logoColor:  id_ipd_listView.isWarning ? UI.COLOR_BASE_RED_LIGHT:UI.COLOR_BASE_GREEN
-                fontColor: id_ipd_listView.isWarning ? UI.COLOR_BASE_RED_LIGHT:UI.COLOR_BASE_GREEN
+                logoColor:  id_ipd_listView.isWarning ? UI.COLOR_BASE_RED_LIGHT:UI.COLOR_BASE_YELLOW_LIGHT
+                fontColor: id_ipd_listView.isWarning ? UI.COLOR_BASE_RED_LIGHT:UI.COLOR_BASE_YELLOW_LIGHT
                 anchors.top: parent.top
                 height: 60
                 info: id_ipd_listView.alarmCount
@@ -108,8 +107,8 @@ Rectangle {
             FlatItemTitleBar_Vertical{
                 id: id_info_vfd
                 logo: FontName.ICON_ALG_FACE
-                logoColor:  UI.COLOR_BASE_GREEN
-                fontColor: UI.COLOR_BASE_GREEN
+                logoColor:  UI.COLOR_BASE_YELLOW_LIGHT
+                fontColor: UI.COLOR_BASE_YELLOW_LIGHT
                 info: id_vfd_listView.alarmCount
                 anchors.top: parent.top
                 height: 60
@@ -117,8 +116,6 @@ Rectangle {
                     cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent
                     onClicked:id_info_vfd.isChecked = id_info_vfd.isChecked ? false : true
-
-
                 }
 
             }
@@ -139,8 +136,6 @@ Rectangle {
         property string itemUrl
 
         function showItem(imgName,imgUrl,imgInfo,metaImgName,metaImgUrl){
-
-
             id_image_loader.sourceComponent = undefined;
 
             id_image_loader.sourceComponent = id_image_com
