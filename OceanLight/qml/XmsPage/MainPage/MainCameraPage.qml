@@ -16,45 +16,18 @@ import "../../Controls"
 //    }
 
 
-Item {
+Rectangle {
     id: id_root
     implicitHeight: 500
     implicitWidth: 600
+    color:"black"
 
-    Rectangle{
-        anchors.fill: parent
-        color:"black"
-    }
-
-    VideoOutput {
-        id: id_camera_output
-        source: id_camera
+    QtPlayer{
+        id: id_player
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.right: id_alg_message.left
-        focus : visible // to receive focus and capture key events when visible
-        filters: [id_cameraFilter]
-//        fillMode: VideoOutput.Stretch
-
-
-//        MediaPlayer{
-//            id: id_mediaPlayer
-//            autoLoad: true
-//            autoPlay: true
-//            source:"file:///g:/video2.mp4"
-//        }
-        Camera {
-             id: id_camera
-             captureMode: Camera.CaptureViewfinder
-             viewfinder.resolution:"960x540"     //"1920x1080"
-         }
-
-        CameraFilter{
-            id: id_cameraFilter
-            objectName: "cameraFilterObject"
-        }
-
+        anchors.right: parent.right
     }
 
     Row{
@@ -72,7 +45,7 @@ Item {
             spacing: 1
             Item{
                 visible: id_info_ipd.isChecked
-                width: 200
+                width: 160
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 clip: true
@@ -83,7 +56,6 @@ Item {
                 IPDListView{
                     id: id_ipd_listView
                     anchors.fill: parent
-
                     onEmitShowDetailInfo: {
                         //nameStr,var imageUrl,var timeStr
                         id_image_loader.showItem(nameStr,imageUrl,timeStr,metaNameStr,metaImageUrl)
@@ -94,27 +66,16 @@ Item {
             FlatItemTitleBar_Vertical{
                 id: id_info_ipd
                 logo: FontName.ICON_ALG_RING
-                logoColor:  id_ipd_listView.alarmCount >0 ? UI.COLOR_BASE_RED_LIGHT:UI.COLOR_BASE_YELLOW_BASE
+                logoColor:  id_ipd_listView.isWarning ? UI.COLOR_BASE_RED_LIGHT:UI.COLOR_BASE_GREEN
+                fontColor: id_ipd_listView.isWarning ? UI.COLOR_BASE_RED_LIGHT:UI.COLOR_BASE_GREEN
                 anchors.top: parent.top
-                anchors.bottom: parent.bottom
+                height: 60
                 info: id_ipd_listView.alarmCount
                 MouseArea{
+                    cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent
                     onClicked:id_info_ipd.isChecked = id_info_ipd.isChecked ? false : true
-
-                    FlatButton{
-                        text: "add"
-                        visible: false
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        onClicked:{
-                            id_ipd_listView.appendItem("{\"name\":\"IPD\",\"status\":\"warning\"}")
-                        }
-                        anchors.centerIn: parent
-                    }
                 }
-
-
             }
         }
         //alg vfd
@@ -125,7 +86,7 @@ Item {
             spacing: 1
             Item{
                 visible: id_info_vfd.isChecked
-                width: 200
+                width: 160
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 clip: true
@@ -147,14 +108,17 @@ Item {
             FlatItemTitleBar_Vertical{
                 id: id_info_vfd
                 logo: FontName.ICON_ALG_FACE
-
-                logoColor:  UI.COLOR_BASE_YELLOW_BASE
+                logoColor:  UI.COLOR_BASE_GREEN
+                fontColor: UI.COLOR_BASE_GREEN
                 info: id_vfd_listView.alarmCount
                 anchors.top: parent.top
-                anchors.bottom: parent.bottom
+                height: 60
                 MouseArea{
+                    cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent
                     onClicked:id_info_vfd.isChecked = id_info_vfd.isChecked ? false : true
+
+
                 }
 
             }

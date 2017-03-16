@@ -145,11 +145,9 @@ void AlgServer::push_pfr_imageFrame(const QString &imageName, const QString &ima
         QString t_imageName = imageName;
         QString t_imageUrl = imageUrl;
         t_imageUrl.replace("file:///","");
-
-
-        QString xx = qApp->applicationDirPath();
-        xx.append("/face_7_QA_395_230_537_372.jpg");
-        m_ptr_pfr_processor->push_frame(xx,regOrRec,t_imageName);
+        //QString xx = qApp->applicationDirPath();
+        //xx.append("/face_7_QA_395_230_537_372.jpg");
+        m_ptr_pfr_processor->push_frame(t_imageUrl,regOrRec,t_imageName);
     }
 }
 

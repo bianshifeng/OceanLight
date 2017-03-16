@@ -15,8 +15,6 @@ GridLayout{
     property alias cameraLogo: id_title_bar.logo
     property alias cameraTitle:id_title_bar.title
     property alias cameraInfo:id_title_bar.info
-    property alias cameraIsActive: id_ck_active.checked
-
 
     implicitWidth: 600
     columns: 3
@@ -53,8 +51,6 @@ GridLayout{
                     id_algWorker.getAlgConfig()
                 }
             }
-
-
         }
 
     }

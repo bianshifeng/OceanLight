@@ -28,7 +28,8 @@ Item{
     signal emitClick()
     Rectangle{
         anchors.fill: parent
-        color:id_mouseArea.containsMouse?UI.COLOR_BASE_YELLOW_LIGHT:UI.COLOR_BASE_YELLOW_DARK
+        opacity: id_mouseArea.containsMouse ? 1:0.8
+        color:id_root.peopleName ? UI.COLOR_BASE_GREEN : UI.COLOR_BASE_YELLOW
     }
 
     Rectangle{
@@ -75,7 +76,7 @@ Item{
         XmsText{
             id: id_reg_name
             color:UI.COLOR_BASE_WHITE
-            text: " "
+            text: ""
             anchors.left: parent.left
         }
 

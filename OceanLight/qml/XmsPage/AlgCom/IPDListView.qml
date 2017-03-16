@@ -11,6 +11,7 @@ Flickable{
     anchors.fill: parent
     contentHeight: id_container.height
     property alias alarmCount: id_listModel.count
+    property bool isWarning:false
 
 
 
@@ -61,30 +62,42 @@ Flickable{
 
     function appendItem(jsonObj){
 
-        var t_json = JSON.parse(jsonObj)
+
+        try{
+
+            var t_json = JSON.parse(jsonObj)
 
 
-        if(t_json.status === "warning"){
-            var t_no  = id_listModel.count + 1
-            var t_time =Utils.timeToDate(Date.now(),"HH:mm:ss")
-            var t_name = t_json.name
-            var t_imageUrl = "file:///"+t_json.imageUrl
-            var t_metaImageUrl = t_json.name
-            var t_metaImageName = "file:///"+t_json.imageUrl
+            if(t_json.status === "warning"){
 
-            var t_obj = {
-                itemId:t_no,
-                itemTime:t_time,
-                itemName:t_name,
-                itemImageUrl:t_imageUrl,
-                itemMetaImageName:t_metaImageName,
-                itemMetaImageUrl:t_metaImageUrl
+                id_root.isWarning = true
+
+                var t_no  = id_listModel.count + 1
+                var t_time =Utils.timeToDate(Date.now(),"HH:mm:ss")
+                var t_name = t_json.name
+                var t_imageUrl = "file:///"+t_json.imageUrl
+                var t_metaImageUrl = t_json.name
+                var t_metaImageName = "file:///"+t_json.imageUrl
+
+                var t_obj = {
+                    itemId:t_no,
+                    itemTime:t_time,
+                    itemName:t_name,
+                    itemImageUrl:t_imageUrl,
+                    itemMetaImageName:t_metaImageName,
+                    itemMetaImageUrl:t_metaImageUrl
+                }
+
+                id_listModel.insert(0,t_obj)
+
+            }else{
+                id_root.isWarning = false
             }
 
-            id_listModel.insert(0,t_obj)
+
+        }catch(e){
 
         }
-
 
 
     }

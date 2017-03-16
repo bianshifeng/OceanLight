@@ -12,6 +12,8 @@ Item {
     property double opacityClick:0.3
     property double opacitySelect:0.5
 
+    property alias showBackgroud:id_back.visible
+
     property string stateNormal:"normal"
     property string stateHover:"hover"
     property string stateSelect:"select"
@@ -44,6 +46,7 @@ Item {
 
 
     Item{
+        id: id_back
         anchors.fill: parent
         Rectangle{
             id: id_back_normal

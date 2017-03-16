@@ -1,4 +1,4 @@
-import QtQuick 2.4
+﻿import QtQuick 2.4
 import QtQuick.Controls 1.2
 import "../Controls"
 import "../Fonts/XmsIconFont.js" as FontName
@@ -44,10 +44,6 @@ Column{
             anchors.right: parent.right
             width: 100
             icon:FontName.ICON_ACTION_RIGHT
-            text: qsTr("OK")
-            onClicked: {
-                console.log("save tabel")
-            }
         }
     }
 

@@ -134,7 +134,7 @@ Item {
 
                         if(id_input.text){
                             id_reg_busying.running = true
-                             AlgServer.push_pfr_imageFrame(id_input.text,id_root.itemImageUrl,0);
+                             AlgServer.push_pfr_imageFrame(id_input.text,id_root.itemMetaImageUrl,0);
                         }
 
 

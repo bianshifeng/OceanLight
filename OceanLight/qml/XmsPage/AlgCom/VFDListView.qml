@@ -1,4 +1,5 @@
 ﻿import QtQuick 2.5
+import QtQuick.Controls 2.1
 import "../../Controls/UIConstants.js" as UI
 import "../../Controls"
 import "../../Fonts"
@@ -26,6 +27,7 @@ Flickable{
                 nameStr: itemName
                 timeStr: itemTime
                 imageUrl: itemImageUrl
+                peopleName:itemPeopleName
                 onEmitClick: {
                     emitShowDetailInfo(nameStr,imageUrl,timeStr,itemMetaImageName,itemMetaImageUrl)
                 }
@@ -38,7 +40,7 @@ Flickable{
                 itemTime:"001"
                 itemName:"sdfsdf"
                 itemImageUrl:""
-                itemMetaImageName:""
+                itemMetaImageName:"name2"
                 itemMetaImageUrl:""
                 itemPeopleName:""
             }
@@ -74,33 +76,67 @@ Flickable{
 
     }
 
+    function modifyItem(jsonObj){
+        try{
+            var t_obj = JSON.parse(jsonObj)
+
+            var t_imageName = ""
+            t_imageName = t_obj.imageName
+            var t_peopleName = t_obj.peopleName
+
+            for(var index = 0; index < id_listModel.count; index ++){
+                if(t_imageName.indexOf(id_listModel.get(index).itemMetaImageName)>=0){
+                    id_listModel.get(index).itemPeopleName = t_peopleName
+                    break
+                }
+            }
+
+        }catch(e){
+
+        }
+
+    }
 
     Connections{
         id: id_algServer_cnt
         target: AlgServer
         ignoreUnknownSignals: true
         onSig_alg_pfr_data: {
-            try{
-                var t_obj = JSON.parse(message)
+            id_root.modifyItem(message)
 
-                var t_imageName = ""
-                t_imageName = t_obj.imageName
-                var t_peopleName = t_obj.peopleName
+        }
 
-                for(var index = 0; index < id_listModel.count; index ++){
-                    if(t_imageName.indexOf(id_listModel.get(index).itemMetaImageName)>=0){
-                        id_listModel.get(index).itemPeopleName = t_peopleName
-                        id_listModel.sync()
-                        break
-                    }
-                }
+    }
 
-            }catch(e){
 
+
+    Button{
+        text: "add data"
+        anchors.centerIn: parent
+        visible: false
+
+        onClicked: {
+
+//            itemId:0
+//            itemTime:"001"
+//            itemName:"sdfsdf"
+//            itemImageUrl:"name1"
+//            itemMetaImageName:"name2"
+//            itemMetaImageUrl:"name3"
+//            itemPeopleName:"name4"
+
+            var t_obj = {
+                imageName:"name2.jpg",
+                peopleName:"bianshifeng"
             }
+
+
+            id_root.modifyItem(JSON.stringify(t_obj))
 
 
         }
 
     }
+
+
 }
