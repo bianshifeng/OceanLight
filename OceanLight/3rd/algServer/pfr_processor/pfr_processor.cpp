@@ -261,7 +261,10 @@ void PFRProcessor::run()
         usleep(100000);
     }
 
-
+    QString *one= new QString("3");
+    client->write((const char*)one->data(),1);
+    client->waitForBytesWritten();
+    client->disconnectFromHost();
     stopped = false;
 }
 
