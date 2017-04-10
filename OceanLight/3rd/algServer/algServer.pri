@@ -26,7 +26,9 @@ HEADERS += \
     $$PWD/alg_processor/alg_processor.h \
     $$PWD/pfr_processor/pfr_processor.h \
     $$PWD/pfr_processor/IMP_pfr_path.h \
-    $$PWD/pfr_processor/IMP_StringQueue.h
+    $$PWD/pfr_processor/IMP_StringQueue.h \
+    $$PWD/vfd_processor/imp_align_tab_5.h \
+    $$PWD/vfd_processor/imp_faceQA.h
 
 
 SOURCES += \

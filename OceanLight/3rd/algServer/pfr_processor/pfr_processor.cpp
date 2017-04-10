@@ -196,11 +196,11 @@ void PFRProcessor::run()
     path_tmp.name = (char*)malloc(256);
     path_tmp.pathlen = 0;
     path_tmp.namelen = 0;
-	client->waitForReadyRead();
+    //client->waitForReadyRead();
     while(!stopped)
     {
         
-        client->read(&tmprecv,1);
+        //client->read(&tmprecv,1);
 
         //printf("recv : %c\n",tmprecv);
         m_queue->Peek(&path_src);
@@ -216,6 +216,24 @@ void PFRProcessor::run()
         path_tmp.pathlen = path_src->pathlen;
         path_tmp.namelen = path_src->namelen;
         path_tmp.recOrReg = path_src->recOrReg;
+        int read_count = 0;
+        while(1)
+        {
+            client->waitForReadyRead(100);
+            //int ret = client->read(&tmprecv,1);
+            QByteArray qba = client->readAll();
+            int ret = qba.length();
+            qDebug("ret 111111111111111111111111= %d\n",ret);
+            if(ret > 0)
+                break;
+            usleep(100000);
+            read_count ++;
+            if(read_count > 20)
+            {
+                read_count = 0;
+                break;
+            }
+        }
         if(path_tmp.recOrReg == 1)
         {
             QString *zero = new QString("1");

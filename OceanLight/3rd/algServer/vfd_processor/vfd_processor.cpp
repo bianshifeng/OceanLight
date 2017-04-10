@@ -113,6 +113,7 @@ void VFDProcessor::run()
     stParas.u32RotateLevel = 0;
     stParas.s32Level = 2;
     stParas.s32Confidence = 0;
+	stParas.QAlevel = 2;
 
     IMP_VFD_Config(handle,&stParas);
 
@@ -177,7 +178,7 @@ void VFDProcessor::run()
                 if(0 == flag_isExist)
                 {
 
-                    if(stResult.stFace[i].faceQA == 1)
+                    if(stResult.stFace[i].faceQA_Res == 1)
                     {
                         int startX = stResult.stFace[i].stPosition.s16X1 * tmpSizeTimes;
                         int endX = stResult.stFace[i].stPosition.s16X2 * tmpSizeTimes;
@@ -221,7 +222,7 @@ void VFDProcessor::run()
                             {
                                 face_path[j].isUsed = 1;
                                 face_path[j].ID = stResult.stFace[i].u32FaceID;
-                                face_path[j].isQA = stResult.stFace[i].faceQA;
+                                face_path[j].isQA = stResult.stFace[i].faceQA_Res;
                                 //face_path[i].path = tmpPath;
                                 break;
                             }
@@ -474,7 +475,7 @@ QString VFDProcessor::_getPicName(IMP_VFD_RESULT_S &stResult,int i) const
     QString tmpID = QString::number(stResult.stFace[i].u32FaceID,10);
     QString picName("face_");
     picName.append(tmpID);
-    if(stResult.stFace[i].faceQA == 1)
+    if(stResult.stFace[i].faceQA_Res == 1)
     {
         picName.append("_QA");
     }
@@ -489,7 +490,7 @@ QString VFDProcessor::_getBigPicName(int tmpSizeTimes, IMP_VFD_RESULT_S &stResul
     QString bigPicName("face_");
     QString tmpIDSrc = QString::number(stResult.stFace[i].u32FaceID,10);
     bigPicName.append(tmpIDSrc);
-    if(stResult.stFace[i].faceQA == 1)
+    if(stResult.stFace[i].faceQA_Res == 1)
         bigPicName.append("_QA");
     else
         bigPicName.append("_common");

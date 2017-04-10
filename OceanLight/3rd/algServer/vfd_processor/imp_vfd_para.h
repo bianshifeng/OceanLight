@@ -1,14 +1,12 @@
 #ifndef _IMP_VFD_PARA_H_
 #define _IMP_VFD_PARA_H_
 
-#define ALIGN
-#define FACEQA
 
-#include "common/imp_algo_type.h"
+#include "imp_algo_type.h"
 
-#ifdef ALIGN
-#include"imp_align.h"// end chun
-#endif
+
+#include"imp_faceQA.h"
+
 
 #define IMP_VFD_MAX_FACE_NUMBER 16
 
@@ -27,11 +25,10 @@ extern "C"
 		IMP_U32 u32FaceID;          /*Face ID*/
 		IMP_U8 u8Flag;			/* If it would be shown */
 
-#ifdef ALIGN
-		IMP_S32 align_get;
-		IMP_Align_Res alignRes;
-		IMP_S16 faceQA;
-#endif
+
+		IMP_Align_RES_S alignRes;
+		IMP_S16 faceQA_Res;
+
 	}IMP_VFD_FACE_PROP_S;
 
 	typedef struct impVFD_FACE_ROI_S
@@ -55,6 +52,7 @@ extern "C"
 
 	typedef struct impVFD_PARA_S
 	{
+		IMP_U32 QAlevel;
 
 		IMP_VFD_ROI_S stROI;	/* 仅支持一个矩形区域*/
 		IMP_S32 s32Sizemax;	/* Max size of face */
