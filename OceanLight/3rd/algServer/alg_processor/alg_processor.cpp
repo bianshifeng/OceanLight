@@ -27,6 +27,8 @@ void AlgProcessor::initFrameQueue(const int width, const int height)
 {
     this->videoWidth = width;
     this->videoHeight = height;
+
+    m_frame_queue->ClearQueue();
     m_frame_queue->setMallocWidth(this->videoWidth);
     m_frame_queue->setMallocWidth(this->videoHeight);
     m_frame_queue->InitFrameQueue();
@@ -56,9 +58,21 @@ void AlgProcessor::push_video_frame(const QVideoFrame &videoFrame)
 void AlgProcessor::stop()
 {
     this->stopped = true;
+
+}
+
+void AlgProcessor::stopProcessor()
+{
+    this->stop();
     if(m_frame_queue){
         m_frame_queue->ClearQueue();
     }
+}
+
+void AlgProcessor::resetProcessor()
+{
+    this->stopProcessor();
+    this->is_processor_init = false;
 }
 
 void AlgProcessor::startProcessor()
@@ -67,7 +81,6 @@ void AlgProcessor::startProcessor()
     this->stopped = false;
     this->start();
 }
-
 QImage AlgProcessor::imageFromVideoFrame(const QVideoFrame &buffer) const
 {
     QImage img;
@@ -102,6 +115,58 @@ QImage AlgProcessor::imageFromVideoFrame(const QVideoFrame &buffer) const
     frame.unmap();
     return img;
 
+}
+
+QImage AlgProcessor::imageFromVideoFrame_convert(const QVideoFrame &buffer) const
+{
+
+    QVideoFrame frame(buffer);  // make a copy we can call map (non-const) on
+    frame.map(QAbstractVideoBuffer::ReadOnly);
+    QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(frame.pixelFormat());
+//    img = QImage(frame.bits(),frame.width(),frame.height(),frame.bytesPerLine(),imageFormat);
+
+
+//    unsigned char *data=img.bits();
+//    int width=img.width();//图像宽
+//    int height=img.height();//图像高
+//    int bytePerLine=(width*24+31)/8;//图像每行字节对齐
+
+    uchar* data = frame.bits();
+    int width = frame.width();
+    int height = frame.height();
+    int bytePerLine = frame.bytesPerLine();
+
+    uchar* graydata = (uchar*)malloc(sizeof(int)*width*height);
+//    uchar* graydata=new unsigned char[bytePerLine*height];//存储处理后的数据
+
+//    for(int i = 1 ; i <videoHeight;i++)
+
+//    for(int i = height -1 ; i >=0;i--)
+//    {
+//        memcpy(graydata,graydata + i * width * sizeof(int), width * sizeof(int));
+//        graydata += width * sizeof(int);
+//    }
+
+    unsigned char r,g,b;
+    for (int i=0;i<height;i++)
+    {
+        for (int j=0;j<width;j++)
+        {
+            r = *(data+2);
+            g = *(data+1);
+            b = *data;
+            graydata[i*bytePerLine+j*3]  =(r*30+g*59+b*11)/100;
+            graydata[i*bytePerLine+j*3+1]=(r*30+g*59+b*11)/100;
+            graydata[i*bytePerLine+j*3+2]=(r*30+g*59+b*11)/100;
+            data+=4;
+      }
+    }
+
+    QImage img(graydata,width,height,bytePerLine,imageFormat);
+
+    frame.unmap();
+
+    return img;
 }
 
 QString AlgProcessor::saveImageFrameMetaData(const QString &saveName, unsigned char *ptrFrameBuff, int nWidth, int nHeight, QImage::Format format) const

@@ -34,6 +34,7 @@ Row{
         }
     }
     MainMenuButton{
+        id: id_bt_monitor
         exclusiveGroup: id_group
         width: 120
         height: 34
@@ -81,6 +82,8 @@ Row{
         }
     }
 
-
-
+    function showMonitorPage(){
+        id_bt_monitor.checked = true
+        emitShowCameraPage()
+    }
 }

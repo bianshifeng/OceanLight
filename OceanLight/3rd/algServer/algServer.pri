@@ -1,8 +1,8 @@
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/ipd_processor
 
-LIBS += -LG:/OceanLightProject/ThirdProject/XmsAlg/lib -lIPD
-LIBS += -LG:/OceanLightProject/ThirdProject/XmsAlg/lib -lVFD
+LIBS += -LF:/OceanLightProject/ThirdProject/XmsAlg/lib -lIPD
+LIBS += -LF:/OceanLightProject/ThirdProject/XmsAlg/lib -lVFD
 
 #LIBS += -LI:/XMS/OceanLight/ThirdProject/XmsAlg/lib -lIPD
 #LIBS += -LI:/XMS/OceanLight/ThirdProject/XmsAlg/lib -lVFD
@@ -28,7 +28,8 @@ HEADERS += \
     $$PWD/pfr_processor/IMP_pfr_path.h \
     $$PWD/pfr_processor/IMP_StringQueue.h \
     $$PWD/vfd_processor/imp_align_tab_5.h \
-    $$PWD/vfd_processor/imp_faceQA.h
+    $$PWD/vfd_processor/imp_faceQA.h \
+    $$PWD/SimpleFilter.h
 
 
 SOURCES += \
@@ -40,4 +41,5 @@ SOURCES += \
     $$PWD/vfd_processor/vfd_processor.cpp \
     $$PWD/alg_processor/alg_processor.cpp \
     $$PWD/pfr_processor/pfr_processor.cpp \
-    $$PWD/pfr_processor/IMP_StringQueue.cpp
+    $$PWD/pfr_processor/IMP_StringQueue.cpp \
+    $$PWD/SimpleFilter.cpp

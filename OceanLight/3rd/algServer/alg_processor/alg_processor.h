@@ -17,9 +17,13 @@ public:
     void initFrameQueue(const int width, const int height);
     void push_video_frame(const QVideoFrame &videoFrame);
     void stop();
+    void stopProcessor();
+    void resetProcessor();
     void startProcessor();
 
     QImage imageFromVideoFrame(const QVideoFrame& buffer) const;
+
+    QImage imageFromVideoFrame_convert(const QVideoFrame& buffer) const;
 
     QString saveImageFrameMetaData(const QString &saveName,unsigned char *ptrFrameBuff,int nWidth,int nHeight,QImage::Format format) const;
 

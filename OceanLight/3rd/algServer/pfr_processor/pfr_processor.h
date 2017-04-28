@@ -15,7 +15,12 @@ public:
     void initFrameQueue();
     void push_frame(QString &file_path, int recOrReg, QString &name);
     void stop();
+    void stopProcessor();
+    void resetProcessor();
     void startProcessor();
+
+
+    bool is_processor_init;
 
 protected:
     void run();

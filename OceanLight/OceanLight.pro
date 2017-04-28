@@ -15,8 +15,8 @@ win32:CONFIG(release, debug|release){
 
 
 QT += qml quick sql quickcontrols2
-QT += widgets core gui multimedia
-
+QT += widgets core gui multimedia svg
+QT += av
 DEFINES += _WINDOWS
 
 QTPLUGIN += qsqlite

@@ -57,7 +57,14 @@ signals:
     void isPfrActiveChanged(bool isPfrActive);
 
 public slots:
+
+    void serverReset();
+
+    void resetVFD();
+
+    void setImageFrame(const QImage &image);
     void setVideoFrame(const QVideoFrame& frame);
+
 
     void add_ipd_processor();
     void setIsIpdActive(bool isIpdActive);
@@ -78,8 +85,6 @@ private:
     VFDProcessor* m_ptr_vfd_processor;
     PFRProcessor* m_ptr_pfr_processor;
 
-    bool m_is_vfd_processor_init;
-    bool m_is_pfr_processor_init;
 
     bool m_isIpdActive;
     bool m_isVfdActive;

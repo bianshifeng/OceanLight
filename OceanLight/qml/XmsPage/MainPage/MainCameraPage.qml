@@ -22,13 +22,57 @@ Rectangle {
     implicitWidth: 600
     color:"black"
 
-    QtPlayer{
-        id: id_player
+    Loader{
+        id: id_player_loader
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        onLoaded: {
+            if(id_player_loader.item){
+                item.play()
+            }
+        }
     }
+
+
+    function loadCamera(cameraId){
+        id_player_loader.setSource( "qrc:/qml/XmsPage/BaseCom/QtPlayer.qml",{"cameraId":cameraId})
+    }
+
+    function loadRtsp(rtspUrl){
+        id_player_loader.setSource("qrc:/qml/XmsPage/BaseCom/AvPlayer.qml",{"mediaUrl":rtspUrl})
+    }
+
+
+    Component{
+        id: id_loader_emptyPlayer_com
+        Item{
+            function play(){
+                id_root.changePlayerSource()
+            }
+
+
+
+            Rectangle{
+                height: 2
+                width: id_root.width
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: 16
+                color: UI.COLOR_BASE_YELLOW_LIGHT
+            }
+
+            XmsText {
+                text: qsTr("PLEASE ADD MEDIA SOURCE")
+                anchors.centerIn: parent
+                color: UI.COLOR_BASE_YELLOW_LIGHT
+            }
+
+
+
+        }
+    }
+
 
     Row{
         id: id_alg_message
@@ -158,6 +202,9 @@ Rectangle {
     }
 
 
+
+
+
     Connections{
         id: id_cnt
         target: AlgServer
@@ -181,9 +228,18 @@ Rectangle {
         }
     }
 
+
+    function changePlayerSource(){
+        if(id_app_window.mediaType===100){
+            id_root.loadCamera(id_app_window.mediaSource)
+        }
+        if(id_app_window.mediaType===200){
+            id_root.loadRtsp(id_app_window.mediaSource)
+        }
+    }
     Component.onCompleted: {
         id_ipd_result_panel.visible = AlgServer.isIpdActive
         id_vfd_result_panel.visible = AlgServer.isVfdActive
+        id_player_loader.sourceComponent = id_loader_emptyPlayer_com
     }
-
 }

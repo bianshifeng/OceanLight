@@ -54,6 +54,7 @@
 
 #include "3rd/algServer/alg_server.h"
 #include "3rd/algServer/camera_filter.h"
+#include "3rd/algServer/SimpleFilter.h"
 #include "3rd/webServer/webserver.h"
 
 
@@ -82,6 +83,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<XmsIpcBase>("Xms.Ipc", 1, 0, "IpcRstp");
     qmlRegisterSingletonType<AlgServer>("Xms.Server",1,0,"AlgServer",AlgServer::qml_singleton_provider);
     qmlRegisterType<CameraFilter>("Xms.Server",1,0,"CameraFilter");
+    qmlRegisterType<SimpleFilter>("Xms.Server",1,0,"TestFilter");
     qRegisterMetaType<AlgServer::AlgType>("AlgType");
 
     QSettings extraSettings;

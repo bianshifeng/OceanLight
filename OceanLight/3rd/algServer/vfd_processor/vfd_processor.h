@@ -14,11 +14,15 @@ class VFDProcessor : public QThread
 public:
     VFDProcessor();
     ~VFDProcessor();
-    void set_video_resolution(int width, int height);
-    void initFrameQueue();
+    void initFrameQueue(const int width, const int height);
     void push_video_frame(const QVideoFrame &videoFrame);
     void stop();
+    void stopProcessor();
+    void resetProcessor();
     void startProcessor();
+
+
+    bool is_processor_init;
 
 protected:
     void run();

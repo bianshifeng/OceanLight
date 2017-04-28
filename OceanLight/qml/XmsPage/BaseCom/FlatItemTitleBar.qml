@@ -9,7 +9,7 @@ Item{
     id: id_root
     height: 48
     implicitWidth: 500
-    property color fontColor: UI.COLOR_BASE_WHITE_LIGHT
+    property color fontColor: UI.COLOR_BASE_YELLOW_LIGHT
     property alias title:id_title_text.text
     property alias info:id_detail_text.text
     property alias logo:id_logo.text
@@ -27,6 +27,7 @@ Item{
             anchors.left: parent.left
             anchors.leftMargin: 14
             anchors.verticalCenter: parent.verticalCenter
+            color: id_root.fontColor
             size: 24
             text: FontName.ICON_DEVICE_CAMERA
         }

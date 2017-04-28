@@ -60,15 +60,23 @@ void IPDProcessor::run()
             continue;
         }
 		memcpy(tmpImageSrc,frame->pu8D1,sizeof(int)*videoWidth*videoHeight);
-        this->RGBA2YUV420P_QVideoFrame(tmpImageSrc,videoWidth,videoHeight,tmpImage.pu8D1);
+        //this->RGBA2YUV420P_QVideoFrame(tmpImageSrc,videoWidth,videoHeight,tmpImage.pu8D1);
+        this->RGBA2YUV420P(tmpImageSrc,videoWidth,videoHeight,tmpImage.pu8D1);
         this->downSize(&tmpImage,&image);
         IMP_IPD_Process(handle,&image,NULL,&stResult);
         frame_count ++;
         if(stResult.s32TgtNum > 0)ipd_count++;
 		if(frame_count%10 == 5)
 		{
-			for(int i = videoHeight -1 ; i >=0;i--)
-			{
+            //将图像数据上下翻转进行拷贝
+//            for(int i = videoHeight -1 ; i >=0;i--)
+//            {
+//                memcpy(tmpframe,tmpImageSrc + i * videoWidth * sizeof(int), videoWidth * sizeof(int));
+//                tmpframe += videoWidth * sizeof(int);
+//            }
+            //将图像数据直接拷贝
+            for(int i = 1 ; i <videoHeight;i++)
+            {
                 memcpy(tmpframe,tmpImageSrc + i * videoWidth * sizeof(int), videoWidth * sizeof(int));
                 tmpframe += videoWidth * sizeof(int);
             }
@@ -111,6 +119,12 @@ void IPDProcessor::run()
     free(image.pu8D1);
     free(tmpImage.pu8D1);
     stopped = false;
+
+    frame = Q_NULLPTR;
+    delete frame;
+    qDebug() << "exit ipd workder";
+
+
 }
 
 

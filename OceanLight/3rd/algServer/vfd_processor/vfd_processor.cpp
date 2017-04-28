@@ -22,7 +22,8 @@ VFDProcessor::VFDProcessor():
     m_frame_queue(Q_NULLPTR),
     videoWidth(DEFAULT_MALLOC_WIDTH),
     videoHeight(DEFAULT_MALLOC_WIDTH),
-    stopped(false)
+    stopped(false),
+    is_processor_init(false)
 {
     m_frame_queue = new IMP_FrameQueue();
     moveToThread(this);
@@ -38,16 +39,18 @@ VFDProcessor::~VFDProcessor()
 
 }
 
-void VFDProcessor::set_video_resolution(int width, int height)
+
+void VFDProcessor::initFrameQueue(const int width, const int height)
 {
     videoWidth = width;
     videoHeight = height;
-}
-void VFDProcessor::initFrameQueue()
-{
+
+    m_frame_queue->ClearQueue();
     m_frame_queue->setMallocWidth(this->videoWidth);
     m_frame_queue->setMallocWidth(this->videoHeight);
     m_frame_queue->InitFrameQueue();
+    this->is_processor_init = true;
+
 }
 
 void VFDProcessor::push_video_frame(const QVideoFrame &videoFrame)
@@ -102,8 +105,6 @@ void VFDProcessor::run()
 
     IMP_PicOutFrame *frame = NULL;
 	uchar* tmpImageSrc = (IMP_U8*)malloc(sizeof(int)*videoWidth*videoHeight);
-	uchar* tmpframe = (IMP_U8*)malloc(sizeof(int)*videoWidth*videoHeight);
-    uchar* tmpframeS = tmpframe;
 	
     stParas.s32Sizemax = 320;
 	stParas.s32Sizemin = 48;
@@ -114,17 +115,9 @@ void VFDProcessor::run()
     stParas.s32Level = 2;
     stParas.s32Confidence = 0;
 	stParas.QAlevel = 2;
-
     IMP_VFD_Config(handle,&stParas);
-
-    int frame_count = 0,ipd_count = 0, isWarning = 0;
     FACEPATH face_path[IMP_VFD_MAX_FACE_NUMBER];
     memset(face_path, 0, sizeof(FACEPATH)*IMP_VFD_MAX_FACE_NUMBER);
-
-    #define F_PATH "g:\\960x540.yuv"
-//    FILE *fp = NULL;
-//    fp = fopen(F_PATH,"wb");
-
     while(!stopped)
     {
         m_frame_queue->PeekFrame(&frame);
@@ -134,7 +127,8 @@ void VFDProcessor::run()
             continue;
         }
 		memcpy(tmpImageSrc,frame->pu8D1,sizeof(int)*videoWidth*videoHeight);
-        this->RGBA2YUV420P_QVideoFrame(tmpImageSrc,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
+        //this->RGBA2YUV420P_QVideoFrame(tmpImageSrc,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
+        this->RGBA2YUV420P(tmpImageSrc,frame->nWidth,frame->nHeight,tmpImage.pu8D1);
         this->downSize(&tmpImage,&image);
 
         IMP_VFD_Process(handle,&image);
@@ -189,7 +183,14 @@ void VFDProcessor::run()
                         uchar *tmpM = (uchar*)malloc(sizeof(int)*faceW*faceH);
                         uchar *tmpN = tmpM;
 
-                        tmpN = tmpM + (sizeof(int)*(faceW*faceH - 1));
+                        for(int j = startY; j < endY; j ++)
+                        {
+                            memcpy(tmpM,frame->pu8D1 + j * frame->nWidth * sizeof(int) + startX * sizeof(int),faceW * sizeof(int));
+                            tmpM += faceW * sizeof(int);
+                        }
+                        tmpM = tmpN;
+
+                        /*tmpN = tmpM + (sizeof(int)*(faceW*faceH - 1));
                         for(int j = frame->nHeight - endY; j < (frame->nHeight - startY); j++)
                         {
                             for (int m = frame->nWidth - endX; m <(frame->nWidth - startX);m++)
@@ -197,7 +198,7 @@ void VFDProcessor::run()
                                 memcpy(tmpN,tmpImageSrc + j * frame->nWidth * sizeof(int) + m * sizeof(int),sizeof(int));
                                 tmpN -= sizeof(int);
                             }
-                        }
+                        }*/
 
                         QString t_imageName = this->_getPicName(stResult,i);
                         QString t_imageUrl = this->_saveFacePic(t_imageName,tmpM,faceW,faceH);
@@ -236,17 +237,17 @@ void VFDProcessor::run()
         m_frame_queue->RemoveFrame();
         usleep(100000);
     }
-
-//    fclose(fp);//关闭文件
-//    fp=NULL;//需要指向空，否则会指向原打开文件地址
-
     IMP_VFD_Release(&handle);
     free(image.pu8D1);
     free(tmpImage.pu8D1);
     stopped = false;
 
+    handle = Q_NULLPTR;
+    delete handle;
+
     frame = Q_NULLPTR;
     delete frame;
+
     qDebug() << "exit vfd workder";
 }
 
@@ -255,8 +256,25 @@ void VFDProcessor::stop()
     stopped = true;
 }
 
+void VFDProcessor::stopProcessor()
+{
+    this->stopped = true;
+    if(m_frame_queue){
+        m_frame_queue->ClearQueue();
+    }
+
+}
+
+void VFDProcessor::resetProcessor()
+{
+
+    stopProcessor();
+    this->is_processor_init = false;
+}
+
 void VFDProcessor::startProcessor()
 {
+    if(!is_processor_init) return;
     this->stopped = false;
     this->start();
 }

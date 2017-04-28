@@ -63,6 +63,17 @@ AppWindow {
     implicitHeight: 700
     implicitWidth: (implicitHeight * UI.const_gold_mean-40)
     property bool isHoverEnabled: false
+    property int mediaType:0
+    property string mediaSource:""
+
+
+    onMediaSourceChanged: {
+        AlgServer.serverReset()
+        if(mediaType > 0){
+            id_mainPage_navbar.showMonitorPage()
+        }
+    }
+
     Item{
         anchors.fill: parent
         anchors.margins: 1
@@ -154,6 +165,7 @@ AppWindow {
                 anchors.bottom: parent.bottom
 
                 MainPageManagerNavbar{
+                    id: id_mainPage_navbar
                     anchors.left: parent.left
                     anchors.leftMargin: 0
                     onEmitShowHomePage: {
@@ -214,6 +226,27 @@ AppWindow {
 
     }
 
+
+    Item{
+        id: id_app_data
+        property alias videoListModel:id_media_list
+        ListModel{
+            id: id_media_list
+            ListElement{
+                itemName:"mp4"
+                itemId:"rtsp_001"
+                itemValue:"D:/movie/003.MP4"
+            }
+
+        }
+
+        function addMedia(jsonObj){
+            id_media_list.append(jsonObj)
+        }
+        Component.onCompleted: {
+//            id_media_list.clear()
+        }
+    }
 
     Component.onCompleted: {
         isHoverEnabled = touchSettings.isHoverEnabled()

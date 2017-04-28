@@ -7,7 +7,8 @@
 
 PFRProcessor::PFRProcessor():
     m_queue(Q_NULLPTR),
-    stopped(false)
+    stopped(false),
+    is_processor_init(false)
 {
     stopped = false;
     m_queue = new IMP_StringQueue();
@@ -26,6 +27,7 @@ PFRProcessor::~PFRProcessor()
 void PFRProcessor::initFrameQueue()
 {
     m_queue->InitQueue();
+    this->is_processor_init = true;
 }
 
 #define FILE_MAX_SIZE 1024*1024
@@ -289,10 +291,27 @@ void PFRProcessor::run()
 void PFRProcessor::stop()
 {
     stopped = true;
+
+    if(m_queue){
+        m_queue->ClearQueue();
+    }
+
+}
+
+void PFRProcessor::stopProcessor()
+{
+    this->stop();
+}
+
+void PFRProcessor::resetProcessor()
+{
+    this->stop();
+    this->is_processor_init = false;
 }
 
 void PFRProcessor::startProcessor()
 {
+    if(!is_processor_init) return;
     this->stopped = false;
     this->start();
 }
