@@ -5,7 +5,6 @@ VERSION = 1.0.0
 
 #程序编译发布路径
 
-
 win32:CONFIG(release, debug|release){
     DESTDIR = ./Bin/Win32/UnicodeRelease
 }else:win32:CONFIG(debug, debug|release){
@@ -17,6 +16,7 @@ win32:CONFIG(release, debug|release){
 QT += qml quick sql quickcontrols2
 QT += widgets core gui multimedia svg
 QT += av
+
 DEFINES += _WINDOWS
 
 QTPLUGIN += qsqlite
@@ -41,7 +41,7 @@ include(3rd/webServer/webServer.pri)
 include(3rd/algServer/algServer.pri)
 
 include(3rd/AiDevice/aidevice.pri)
-include(3rd/ffmpegPlayer/ffmpegPlayer.pri)
+#include(3rd/ffmpegPlayer/ffmpegPlayer.pri)
 include(src/src.pri)
 
 RESOURCES += \
