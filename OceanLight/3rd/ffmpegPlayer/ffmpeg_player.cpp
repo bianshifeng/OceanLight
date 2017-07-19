@@ -1,33 +1,11 @@
 #include "ffmpeg_player.h"
 
+#include <QVideoFrame>
+#include <QAbstractVideoBuffer>
 #include <QJSValueIterator>
+#include <QJSValue>
 
-#include "ffmpeg_worker.h"
-
-FFmpegPlayer::FFmpegPlayer(QObject *parent) : QObject(parent),
-    m_worker(Q_NULLPTR)
-{
-
-    m_worker = new FFmpegWorker(this);
-
-}
-
-QString FFmpegPlayer::source() const
-{
-    return m_source;
-}
-
-QJSValue FFmpegPlayer::params() const
-{
-    return m_params;
-}
-
-qreal FFmpegPlayer::volume() const
-{
-    return m_volume;
-}
-
-void FFmpegPlayer::setsource(QString source)
+void FFmpegPlayer::setSource(QString source)
 {
     if (m_source == source)
         return;
@@ -36,17 +14,13 @@ void FFmpegPlayer::setsource(QString source)
     emit sourceChanged(source);
 }
 
-void FFmpegPlayer::setParams(QJSValue params)
+void FFmpegPlayer::setPlaying(bool playing)
 {
-    m_params = params;
-    m_mediaParams.clear();
-    QJSValueIterator t_it(params);
-    while (t_it.hasNext())
-    {
-        t_it.next();
-        m_mediaParams.insert(pair<string,string>(t_it.name().toStdString(),t_it.value().toString().toStdString()));
-    }
-    emit paramsChanged(params);
+    if (m_playing == playing)
+        return;
+
+    m_playing = playing;
+    emit playingChanged(playing);
 }
 
 void FFmpegPlayer::setVolume(qreal volume)
@@ -58,43 +32,101 @@ void FFmpegPlayer::setVolume(qreal volume)
     emit volumeChanged(volume);
 }
 
-void FFmpegPlayer::handleVideoSurfaceError()
+void FFmpegPlayer::setParams(QJSValue params)
 {
-    switch (m_videoSurface->error()) {
-    case QAbstractVideoSurface::UnsupportedFormatError:
-        emit this->error("Video format was not supported");
-        break;
-    case QAbstractVideoSurface::IncorrectFormatError:
-        emit this->error("Video frame was not compatible with the format of the surface");
-        break;
-    case QAbstractVideoSurface::StoppedError:
-        emit this->error("Surface has been stopped error");
-        break;
-    case QAbstractVideoSurface::ResourceError:
-        emit this->error("Surface could not allocate meida resource");
-        break;
+    m_params = params;
+    m_core_params.clear();
+    QJSValueIterator it(params);
+    while (it.hasNext()) {
+
+        it.next();
+        m_core_params.insert(pair<string,string>(it.name().toStdString(),it.value().toString().toStdString()));
     }
+    emit paramsChanged(params);
 }
 
-void FFmpegPlayer::startVideoSurfaceByFormat(const QVideoSurfaceFormat &format)
+
+FFmpegPlayer::FFmpegPlayer(QObject *parent) : QObject(parent)
 {
+    m_worker->moveToThread(&m_thread);
+    connect(&m_thread,SIGNAL(finished()),m_worker,SLOT(deleteLater()));
+
+    connect(this,SIGNAL(sigPlay(QString,FFMPEGParams)),m_worker,SLOT(toPlay(QString,FFMPEGParams)));
+    connect(this,SIGNAL(sigStop()),m_worker,SLOT(toStop()));
+    connect(this,SIGNAL(sigChangeVolume(qreal)),m_worker,SLOT(toChangeVolume(qreal)));
+
+    connect(m_worker,SIGNAL(sigBeginVideoSurface(QVideoSurfaceFormat)),this,SLOT(beginVideoSurface(QVideoSurfaceFormat)));
+    connect(m_worker,SIGNAL(sigPresentVideoSurface(QVideoFrame)),this,SLOT(presentVideoSurface(QVideoFrame)));
+    connect(m_worker,SIGNAL(sigStopVideoSurface()),this,SLOT(stopVideoSurface()));
+
+    m_thread.start();
+}
+
+FFmpegPlayer::~FFmpegPlayer()
+{
+    this->stop();
+    m_thread.quit();
+    m_thread.wait();
+
+}
+
+void FFmpegPlayer::play()
+{
+    emit sigPlay(m_source,m_core_params);
+
+}
+
+void FFmpegPlayer::stop()
+{
+    emit sigStop();
+}
+
+bool FFmpegPlayer::save(const QString &path, int width)
+{
+    if(m_frame.map(QAbstractVideoBuffer::ReadOnly))
+    {
+        QImage t_image(m_frame.bits(),m_frame.width(),m_frame.height(),m_frame.bytesPerLine(),QImage::Format_RGBA8888);
+        const_cast<QVideoFrame&>(m_frame).unmap();
+        return t_image.scaledToWidth(width? width: m_frame.width(),Qt::SmoothTransformation).save(path);
+    }
+    return false;
+}
+
+void FFmpegPlayer::beginVideoSurface(const QVideoSurfaceFormat &format)
+{
+    this->setPlaying(false);
     if(!m_videoSurface->start(format))
     {
-        this->handleVideoSurfaceError();
+        emitVideoSurfaceError();
     }
-
 }
 
-void FFmpegPlayer::presentVideoSurfaceByFrame(const QVideoFrame &frame)
+void FFmpegPlayer::presentVideoSurface(const QVideoFrame &frame)
 {
-    QVideoFrame m_frame= frame;
-    if(!m_videoSurface->present(m_frame)){
-        this->handleVideoSurfaceError();
+    m_frame = frame;
+    if(m_videoSurface->present(frame))
+    {
+        this->setPlaying(true);
+    }else{
+        emitVideoSurfaceError();
     }
-
 }
 
 void FFmpegPlayer::stopVideoSurface()
 {
+    this->setPlaying(false);
     m_videoSurface->stop();
 }
+
+void FFmpegPlayer::emitVideoSurfaceError()
+{
+    switch (m_videoSurface->error())
+    {
+    case QAbstractVideoSurface::UnsupportedFormatError: emit sigError("video format was not supported"); break;
+    case QAbstractVideoSurface::IncorrectFormatError: emit sigError("video frame was not compatible with the format of the surface"); break;
+    case QAbstractVideoSurface::StoppedError: emit sigError("surface has not been started"); break;
+    case QAbstractVideoSurface::ResourceError: emit sigError("surface could not allocate some resource"); break;
+    }
+
+}
+

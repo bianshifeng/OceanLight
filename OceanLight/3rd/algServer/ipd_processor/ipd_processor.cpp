@@ -12,8 +12,8 @@ IPDProcessor::IPDProcessor():AlgProcessor()
 
 void IPDProcessor::run()
 {
-    IMP_S32 width = this->videoWidth/2;
-    IMP_S32 height = this->videoHeight/2;
+    IMP_S32 width = 640;//this->videoWidth/2;
+    IMP_S32 height = 360;//this->videoHeight/2;
     IMP_HANDLE handle;
 
     qDebug() << QString::number(width) << "x" << QString::number(height);
@@ -53,6 +53,7 @@ void IPDProcessor::run()
 
     while(!stopped)
     {
+
         m_frame_queue->PeekFrame(&frame);
         if(NULL == frame)
         {

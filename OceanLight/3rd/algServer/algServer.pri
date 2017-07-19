@@ -28,8 +28,7 @@ HEADERS += \
     $$PWD/pfr_processor/IMP_pfr_path.h \
     $$PWD/pfr_processor/IMP_StringQueue.h \
     $$PWD/vfd_processor/imp_align_tab_5.h \
-    $$PWD/vfd_processor/imp_faceQA.h \
-    $$PWD/SimpleFilter.h
+    $$PWD/vfd_processor/imp_faceQA.h
 
 
 SOURCES += \
@@ -41,5 +40,4 @@ SOURCES += \
     $$PWD/vfd_processor/vfd_processor.cpp \
     $$PWD/alg_processor/alg_processor.cpp \
     $$PWD/pfr_processor/pfr_processor.cpp \
-    $$PWD/pfr_processor/IMP_StringQueue.cpp \
-    $$PWD/SimpleFilter.cpp
+    $$PWD/pfr_processor/IMP_StringQueue.cpp

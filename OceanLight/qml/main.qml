@@ -174,6 +174,10 @@ AppWindow {
                     onEmitShowCameraPage: {
                         id_content_page.showCameraPage()
                     }
+                    onEmitShowWebInfoPage: {
+                        id_content_page.show_webinfo_page()
+                    }
+
                 }
 
 

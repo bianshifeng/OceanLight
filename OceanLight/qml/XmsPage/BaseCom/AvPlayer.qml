@@ -42,7 +42,8 @@ VideoOutput2 {
         }
         MouseArea{
             onClicked: {
-                AlgServer.resetVFD()
+                //AlgServer.resetVFD()
+                id_mediaPlayer.videoCapture.capture()
             }
             anchors.fill: parent
             Text {
@@ -57,14 +58,22 @@ VideoOutput2 {
 
     Timer{
         id: id_timer
-        interval: 1000
+        interval: 100000
         repeat: true
-        onTriggered: id_mediaPlayer.videoCapture.capture()
+        onTriggered: {} //id_mediaPlayer.videoCapture.capture()
     }
 
     function play(){
         id_mediaPlayer.play()
         id_timer.start()
+    }
+
+
+    VideoOutput2{
+        width: 300
+        height: 200
+        anchors.centerIn: parent
+        source: id_mediaPlayer
     }
 
 

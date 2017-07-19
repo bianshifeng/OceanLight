@@ -1,7 +1,8 @@
 import QtQuick 2.7
-import QtWebEngine 1.4
+import QtWebKit 3.0
 
 
-Item {
-
+WebView{
+    id: id_root
+    anchors.fill: parent
 }

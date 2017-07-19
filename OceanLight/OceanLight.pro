@@ -17,6 +17,7 @@ QT += qml quick sql quickcontrols2
 QT += widgets core gui multimedia svg
 QT += av
 
+
 DEFINES += _WINDOWS
 
 QTPLUGIN += qsqlite
@@ -41,8 +42,10 @@ include(3rd/webServer/webServer.pri)
 include(3rd/algServer/algServer.pri)
 
 include(3rd/AiDevice/aidevice.pri)
-#include(3rd/ffmpegPlayer/ffmpegPlayer.pri)
+include(3rd/ffmpegPlayer/ffmpegPlayer.pri)
 include(src/src.pri)
+
+
 
 RESOURCES += \
     qml.qrc

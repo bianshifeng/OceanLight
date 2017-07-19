@@ -54,7 +54,6 @@
 
 #include "3rd/algServer/alg_server.h"
 #include "3rd/algServer/camera_filter.h"
-#include "3rd/algServer/SimpleFilter.h"
 #include "3rd/webServer/webserver.h"
 
 
@@ -68,6 +67,9 @@
 //#include "common/cbox_allwidget_move_filter.h"
 //#include "quick_qml_widget.h"
 
+#include "../ffmpegPlayer/ffmpeg_worker.h"
+#include "../ffmpegPlayer/ffmpeg_player.h"
+
 
 
 AlgServer* AlgServer::_instance = nullptr;
@@ -79,11 +81,19 @@ int main(int argc, char *argv[])
 
     qApp->setWindowIcon(QIcon(":/images/images/bs_logo.ico")); //设置程序的主icon
 
+
+
+    qRegisterMetaType<FFMPEGParams>("FFParams");
+    qmlRegisterType<FFmpegPlayer>("Bian", 1, 0, "FFPlayer");
+
+
+
+
+
     qmlRegisterType<AlgCPC>("Xms.Alg", 1, 0, "AlgCPC");
     qmlRegisterType<XmsIpcBase>("Xms.Ipc", 1, 0, "IpcRstp");
     qmlRegisterSingletonType<AlgServer>("Xms.Server",1,0,"AlgServer",AlgServer::qml_singleton_provider);
     qmlRegisterType<CameraFilter>("Xms.Server",1,0,"CameraFilter");
-    qmlRegisterType<SimpleFilter>("Xms.Server",1,0,"TestFilter");
     qRegisterMetaType<AlgServer::AlgType>("AlgType");
 
     QSettings extraSettings;

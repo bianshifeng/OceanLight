@@ -41,7 +41,17 @@ Rectangle {
     }
 
     function loadRtsp(rtspUrl){
-        id_player_loader.setSource("qrc:/qml/XmsPage/BaseCom/AvPlayer.qml",{"mediaUrl":rtspUrl})
+//        var rtspUrl2 = "http://cctv1.live.cntv.dnion.com/live/cctv1hls_/index.m3u8?ptype=1&amode=1&AUTH=cntv000120170323C2vZjzIevHsP0leBxcOEjD6jNODP5xFGZc652PuPQNfcEngIM5wz20RonNfGMKDWrbYzAdgfI7KmfanOO2Noqw==&adapt=0&BR=md"
+
+//        rtspUrl2 = "file:///D:/movie/0013.MP4"
+//        id_player_loader.setSource("qrc:/qml/XmsPage/BaseCom/FFmpegPlayer.qml",{"mediaUrl":rtspUrl})
+
+        //rtspUrl = "http://cctv1.live.cntv.dnion.com/live/cctv1hls_/index.m3u8?ptype=1&amode=1&AUTH=SdzUegzm94rDBEDKV57Mi9hQjOKIxTIsLzXWNreQ5P+B11kCMD4k4Y2qxdgS9QeDToT4rEDOwRVto219qSLuhQ=="
+
+        //rtspUrl = "http://cctv1.live.cntv.dnion.com/live/cctv1hls_/index.m3u8?ptype=1&amode=1&AUTH=cntv000120170323C2vZjzIevHsP0leBxcOEjD6jNODP5xFGZc652PuPQNfcEngIM5wz20RonNfGMKDWrbYzAdgfI7KmfanOO2Noqw==&adapt=0&BR=md"
+
+        //id_player_loader.setSource("qrc:/qml/XmsPage/BaseCom/AvPlayer.qml",{"mediaUrl":rtspUrl})
+        id_player_loader.setSource("qrc:/qml/XmsPage/BaseCom/QtMediaPlayer.qml",{"mediaUrl":rtspUrl})
     }
 
 

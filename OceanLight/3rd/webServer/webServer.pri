@@ -1,6 +1,8 @@
 
 QT += network
 
+#include(../../../Bulid_debug/OceanLight/Bin/Win32/UnicodeDebug/etc/web.pri)
+
 # Enable very detailed debug messages when compiling the debug version
 CONFIG(debug, debug|release) {
     DEFINES += SUPERVERBOSE

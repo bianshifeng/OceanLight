@@ -12,6 +12,7 @@ Row{
     signal emitShowCameraPage()
     signal emitShowPricePage()
     signal emitShowHelpPage()
+    signal emitShowWebInfoPage()
 
     ExclusiveGroup{
         id: id_group
@@ -66,7 +67,7 @@ Row{
         }
     }
     MainMenuButton{
-        visible: false
+        visible: true
         exclusiveGroup: id_group
         width: 120
         height: 34
@@ -74,11 +75,11 @@ Row{
         sizeIcon: 14
         icon: FontName.ICON_BASE_PEOPLE
         isShowLine: true
-        text: qsTr("HELP")
+        text: qsTr("WEB")
         foreColor: UI.COLOR_BASE_WHITE_BASE
         hoverColor: UI.COLOR_BASE_ORANGE
         onClicked: {
-            emitShowHelpPage()
+            emitShowWebInfoPage()
         }
     }
 

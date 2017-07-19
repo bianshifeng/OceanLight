@@ -7,17 +7,24 @@ VideoOutput {
     id: id_root
     implicitWidth: 960
     implicitHeight: 540
-    property alias cameraId: id_camera.deviceId
+    property alias mediaUrl: id_player.source
     focus : visible // to receive focus and capture key events when visible
-    source: id_camera
-    Camera{
-         id: id_camera
-         captureMode: Camera.CaptureViewfinder
-         viewfinder.resolution:"960x540"     //"1920x1080"
+    source: id_player
+    MediaPlayer{
+         id: id_player
+         autoLoad: true
      }
 
     function play(){
         id_root.filters = [id_cameraFilter]
+        id_player.play()
+    }
+
+    VideoOutput{
+        width: 300
+        height: 200
+        anchors.centerIn: parent
+        source: id_player
     }
 
     CameraFilter{

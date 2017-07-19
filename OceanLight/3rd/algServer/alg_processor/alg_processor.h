@@ -16,6 +16,7 @@ public:
     ~AlgProcessor();
     void initFrameQueue(const int width, const int height);
     void push_video_frame(const QVideoFrame &videoFrame);
+    void push_video_image(const QImage &videoImage);
     void stop();
     void stopProcessor();
     void resetProcessor();

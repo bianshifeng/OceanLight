@@ -44,9 +44,9 @@ bool AlgServer::isPfrActive() const
 
 void AlgServer::setImageFrame(const QImage &image)
 {
-    QVideoFrame m_frame(image);
-    if(m_ptr_ipd_processor){this->push_ipd_videoFrame(m_frame);}
-    if(m_ptr_vfd_processor){this->push_vfd_videoFrame(m_frame);}
+    //QVideoFrame m_frame(image);
+    if(m_ptr_ipd_processor){this->push_ipd_videoImage(image);}
+    if(m_ptr_vfd_processor){this->push_vfd_videoImage(image);}
 
 }
 void AlgServer::setVideoFrame(const QVideoFrame &frame)
@@ -117,6 +117,20 @@ void AlgServer::push_ipd_videoFrame(const QVideoFrame &frame)
 
 }
 
+void AlgServer::push_ipd_videoImage(const QImage &image)
+{
+    if(!m_isIpdActive) return;
+
+    if(!m_ptr_ipd_processor->is_processor_init){
+        m_ptr_ipd_processor->initFrameQueue(image.width(),image.height());
+        qDebug() << "m_ptr_ipd_processor->initFrameQueue";
+        qDebug() << image.width();
+        m_ptr_ipd_processor->startProcessor();
+    }
+    m_ptr_ipd_processor->push_video_image(image);
+
+}
+
 void AlgServer::add_vfd_processor()
 {
     if(m_ptr_vfd_processor == Q_NULLPTR){
@@ -147,6 +161,18 @@ void AlgServer::push_vfd_videoFrame(const QVideoFrame &frame)
 
 }
 
+void AlgServer::push_vfd_videoImage(const QImage &image)
+{
+    if(!m_isVfdActive) return;
+
+    if(!m_ptr_vfd_processor->is_processor_init){
+        m_ptr_vfd_processor->initFrameQueue(image.width(),image.height());
+        m_ptr_vfd_processor->startProcessor();
+    }
+
+    m_ptr_vfd_processor->push_video_image(image);
+
+}
 
 void AlgServer::add_pfr_processor()
 {

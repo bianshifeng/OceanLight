@@ -27,12 +27,23 @@ StackView {
         }
     }
 
+    Component{
+        id: id_Page_webinfo
+        MainPageWebInfo{
+
+        }
+    }
+
 
     function showHomePage(){
         id_root.replace(id_HomePage)
     }
     function showCameraPage(){
         id_root.replace(id_CameraPage)
+    }
+
+    function show_webinfo_page(){
+        id_root.replace(id_Page_webinfo)
     }
 
 }

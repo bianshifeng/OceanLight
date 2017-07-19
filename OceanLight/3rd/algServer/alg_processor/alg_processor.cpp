@@ -55,6 +55,25 @@ void AlgProcessor::push_video_frame(const QVideoFrame &videoFrame)
 
 }
 
+void AlgProcessor::push_video_image(const QImage &videoImage)
+{
+    if(!is_processor_init) return;
+//    IMP_PicOutFrame *t_free_frame = m_frame_queue->GetFrameAddr();
+//    if(!t_free_frame) return;
+
+    QImage t_image(videoImage);
+
+    qDebug()<< t_image.width();
+    qDebug()<< t_image.height();
+    qDebug()<< t_image.bits();
+    qDebug()<< t_image.format();
+//    t_image.load(QStringLiteral("D:/6573.849.png"));
+
+//    memcpy(t_free_frame->pu8D1,t_image.bits(),t_image.width()*t_image.height()*4);
+//    t_free_frame->nWidth = t_image.width();
+//    t_free_frame->nHeight = t_image.height();
+}
+
 void AlgProcessor::stop()
 {
     this->stopped = true;

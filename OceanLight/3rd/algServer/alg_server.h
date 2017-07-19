@@ -69,10 +69,12 @@ public slots:
     void add_ipd_processor();
     void setIsIpdActive(bool isIpdActive);
     void push_ipd_videoFrame(const QVideoFrame& frame);
+    void push_ipd_videoImage(const QImage& image);
 
     void add_vfd_processor();
     void setIsVfdActive(bool isVfdActive);
     void push_vfd_videoFrame(const QVideoFrame& frame);
+    void push_vfd_videoImage(const QImage& image);
 
     void add_pfr_processor();
     void setIsPfrActive(bool isPfrActive);
