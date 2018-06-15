@@ -4,6 +4,7 @@ import QtQuick.Controls 2.1
 import "../../Controls/UIConstants.js" as UI
 import "../../Controls"
 import "../../Fonts"
+import "../BaseCom"
 
 
 StackView {
@@ -22,7 +23,10 @@ StackView {
 
     Component{
         id: id_CameraPage
-        MainCameraPage{
+//        MainCameraPage{
+
+//        }
+        QtPlayer{
 
         }
     }

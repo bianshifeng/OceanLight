@@ -243,3 +243,14 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+
+
+#ocean object
+
+.DS_Store
+Bulid_debug/OceanLight/.DS_Store
+OceanLight/3rd/.DS_Store
+OceanLight/qml/.DS_Store
+OceanLight/qml/XmsPage/.DS_Store
+ThirdProject/XmsAlg/.DS_Store

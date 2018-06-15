@@ -15,10 +15,10 @@ VideoOutput {
          viewfinder.resolution:"960x540"     //"1920x1080"
      }
 
-    CameraFilter{
-        id: id_cameraFilter
-        objectName: "cameraFilterObject"
-    }
+//    CameraFilter{
+//        id: id_cameraFilter
+//        objectName: "cameraFilterObject"
+//    }
 
     function play(){
         id_root.filters = [id_cameraFilter]

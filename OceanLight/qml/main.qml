@@ -251,6 +251,6 @@ AppWindow {
     Component.onCompleted: {
         isHoverEnabled = touchSettings.isHoverEnabled()
 
-        console.log(AlgServer.Alg_IPD);
+        //console.log(AlgServer.Alg_IPD);
     }
 }

@@ -52,10 +52,10 @@
 #include <QSystemTrayIcon>
 #include <QQmlApplicationEngine>
 
-#include "3rd/algServer/alg_server.h"
-#include "3rd/algServer/camera_filter.h"
-#include "3rd/algServer/SimpleFilter.h"
-#include "3rd/webServer/webserver.h"
+//#include "3rd/algServer/alg_server.h"
+//#include "3rd/algServer/camera_filter.h"
+//#include "3rd/algServer/SimpleFilter.h"
+//#include "3rd/webServer/webserver.h"
 
 
 #include "sqleventmodel.h"
@@ -70,7 +70,7 @@
 
 
 
-AlgServer* AlgServer::_instance = nullptr;
+//AlgServer* AlgServer::_instance = nullptr;
 
 int main(int argc, char *argv[])
 {
@@ -81,10 +81,11 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<AlgCPC>("Xms.Alg", 1, 0, "AlgCPC");
     qmlRegisterType<XmsIpcBase>("Xms.Ipc", 1, 0, "IpcRstp");
-    qmlRegisterSingletonType<AlgServer>("Xms.Server",1,0,"AlgServer",AlgServer::qml_singleton_provider);
-    qmlRegisterType<CameraFilter>("Xms.Server",1,0,"CameraFilter");
-    qmlRegisterType<SimpleFilter>("Xms.Server",1,0,"TestFilter");
-    qRegisterMetaType<AlgServer::AlgType>("AlgType");
+    qmlRegisterType<XmsIpcBase>("Xms.Server", 1, 0, "IpcRstp");
+//    qmlRegisterSingletonType<AlgServer>("Xms.Server",1,0,"AlgServer",AlgServer::qml_singleton_provider);
+//    qmlRegisterType<CameraFilter>("Xms.Server",1,0,"CameraFilter");
+//    qmlRegisterType<SimpleFilter>("Xms.Server",1,0,"TestFilter");
+//    qRegisterMetaType<AlgServer::AlgType>("AlgType");
 
     QSettings extraSettings;
     extraSettings.beginGroup("CPP");
@@ -104,6 +105,7 @@ int main(int argc, char *argv[])
     TouchSettings touchSettings;
     QString rootPath = qApp->applicationDirPath();
 
+    qDebug()<< rootPath;
     view.rootContext()->setContextProperty("touchSettings", &touchSettings);
     view.rootContext()->setContextProperty("g_root_path",rootPath);
     view.rootContext()->setContextProperty("g_window",&view);
@@ -115,7 +117,7 @@ int main(int argc, char *argv[])
     view.showNormal();
     view.setPosition(200,200);
 
-    WebServer webServer;
+//    WebServer webServer;
     return app.exec();
 }
 

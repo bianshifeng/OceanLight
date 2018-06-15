@@ -78,7 +78,9 @@ Item {
             visible: false
             icon:FontName.ICON_CAMERA_FULLSCREEM
             onClicked: {
-                g_window.showNormal()
+                //g_window.showNormal()
+                //
+                g_window.showFullScreen()
                 id_max_to_normal.visible = false
                 id_normal_to_max.visible = true
             }

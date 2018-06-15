@@ -208,6 +208,7 @@ Rectangle {
     Connections{
         id: id_cnt
         target: AlgServer
+        ignoreUnknownSignals: true
         onSig_alg_test_data:{
             //id_txt_image.text = message;
             //id_camera.imageCapture.capture()
